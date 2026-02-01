@@ -1,4 +1,4 @@
-import { ArrowRight, Zap } from "lucide-react";
+import { ArrowRight, Scroll } from "lucide-react";
 import { Button } from "./ui/button";
 
 interface QuickReviewCardProps {
@@ -10,16 +10,19 @@ export function QuickReviewCard({ itemsToReview, onStartReview }: QuickReviewCar
   if (itemsToReview === 0) return null;
 
   return (
-    <div className="card-atmospheric p-4 md:p-5 bg-gradient-to-r from-accent/15 to-accent/5 border border-accent/30">
+    <div className="card-paper p-4 md:p-5 border-2 border-foreground/20 relative overflow-hidden">
+      {/* Brush stroke accent */}
+      <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent" />
+      
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 md:gap-4">
-          <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-accent/20 flex items-center justify-center border border-accent/30">
-            <Zap className="w-5 h-5 md:w-6 md:h-6 text-accent" />
+          <div className="w-11 h-11 rounded-sm bg-foreground/5 flex items-center justify-center border-2 border-foreground/20">
+            <Scroll className="w-5 h-5 text-foreground" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground text-sm md:text-base">Spirit Review</h3>
-            <p className="text-xs md:text-sm text-muted-foreground">
-              {itemsToReview} memories ready to strengthen
+            <h3 className="font-brush font-bold text-foreground">Review Scrolls</h3>
+            <p className="text-sm text-muted-foreground">
+              {itemsToReview} memories await
             </p>
           </div>
         </div>
@@ -27,7 +30,7 @@ export function QuickReviewCard({ itemsToReview, onStartReview }: QuickReviewCar
         <Button 
           onClick={onStartReview}
           variant="outline"
-          className="rounded-xl border-accent/40 hover:bg-accent/15 hover:border-accent/60 text-sm"
+          className="rounded-sm border-2 border-foreground/20 hover:bg-foreground/5 hover:border-foreground/40 font-brush"
         >
           Begin
           <ArrowRight className="w-4 h-4 ml-2" />

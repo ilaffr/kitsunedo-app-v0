@@ -13,7 +13,7 @@ const studyCategories = [
   {
     title: "Hiragana",
     japanese: "ひらがな",
-    description: "Master the basic Japanese syllabary with 46 characters",
+    description: "Master the flowing brush strokes of the basic syllabary",
     icon: PenTool,
     progress: 85,
     totalLessons: 12,
@@ -23,7 +23,7 @@ const studyCategories = [
   {
     title: "Katakana",
     japanese: "カタカナ",
-    description: "Learn the script used for foreign words and emphasis",
+    description: "Learn the angular script for foreign words",
     icon: Languages,
     progress: 60,
     totalLessons: 12,
@@ -33,7 +33,7 @@ const studyCategories = [
   {
     title: "Kanji",
     japanese: "漢字",
-    description: "Study Japanese characters derived from Chinese",
+    description: "Study the ancient characters of wisdom",
     icon: BookText,
     progress: 25,
     totalLessons: 50,
@@ -43,7 +43,7 @@ const studyCategories = [
   {
     title: "Vocabulary",
     japanese: "語彙",
-    description: "Build your word knowledge for everyday conversation",
+    description: "Build your arsenal of words",
     icon: BookOpen,
     progress: 40,
     totalLessons: 30,
@@ -53,7 +53,7 @@ const studyCategories = [
   {
     title: "Grammar",
     japanese: "文法",
-    description: "Understand sentence structure and patterns",
+    description: "Understand the structure of the language",
     icon: MessageSquare,
     progress: 15,
     totalLessons: 25,
@@ -122,31 +122,31 @@ export default function Index() {
             <HeroBanner />
 
             {/* Stats Row */}
-            <section className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+            <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6 md:mb-8">
               <StatsCard
                 icon={Flame}
-                label="Fire Streak"
-                value={12}
-                sublabel="days"
-                variant="golden"
+                label="Streak"
+                value="12日"
+                sublabel="days of honor"
+                variant="vermillion"
               />
               <StatsCard
                 icon={Star}
-                label="Spirit XP"
+                label="Spirit"
                 value="2,450"
-                sublabel="earned"
-                variant="cherry"
+                sublabel="points earned"
+                variant="ink"
               />
               <StatsCard
                 icon={BookOpen}
-                label="Lessons"
+                label="Scrolls"
                 value={45}
                 sublabel="completed"
               />
               <StatsCard
                 icon={Clock}
                 label="Training"
-                value="24h"
+                value="24時"
                 sublabel="this moon"
               />
             </section>
@@ -158,7 +158,7 @@ export default function Index() {
 
             {/* Main Grid */}
             <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
-              {/* Left Column - Daily Goal */}
+              {/* Daily Goal */}
               <section>
                 <DailyGoalCard
                   currentXP={65}
@@ -168,12 +168,12 @@ export default function Index() {
                 />
               </section>
 
-              {/* Right Column - Continue Learning */}
+              {/* Continue Learning */}
               <section>
-                <div className="card-atmospheric p-5 md:p-6">
+                <div className="card-paper p-5 md:p-6 border-2">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-base md:text-lg font-title font-semibold text-foreground">Continue Journey</h3>
-                    <button className="text-xs md:text-sm text-primary font-medium hover:underline">
+                    <h3 className="font-brush font-bold text-foreground">Continue Path</h3>
+                    <button className="text-sm text-primary font-brush hover:underline">
                       View all
                     </button>
                   </div>
@@ -189,7 +189,10 @@ export default function Index() {
 
             {/* Study Categories */}
             <section className="mt-6 md:mt-8">
-              <h3 className="text-lg md:text-xl font-title font-semibold text-foreground mb-4">Training Grounds</h3>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-1 h-6 bg-primary rounded-full" />
+                <h3 className="text-xl font-brush font-bold text-foreground">Training Grounds</h3>
+              </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                 {studyCategories.map((category, index) => (
                   <StudyCategoryCard key={index} {...category} />

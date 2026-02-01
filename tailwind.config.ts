@@ -16,7 +16,8 @@ export default {
       fontFamily: {
         sans: ['Outfit', 'Noto Sans JP', 'sans-serif'],
         japanese: ['Noto Sans JP', 'sans-serif'],
-        title: ['Cinzel', 'serif'],
+        serif: ['Noto Serif JP', 'serif'],
+        brush: ['Noto Serif JP', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -60,6 +61,9 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        ink: "hsl(0 0% 8%)",
+        paper: "hsl(40 30% 98%)",
+        vermillion: "hsl(5 85% 45%)",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -77,14 +81,13 @@ export default {
         sm: "calc(var(--radius) - 4px)",
         xl: "calc(var(--radius) + 4px)",
         "2xl": "calc(var(--radius) + 8px)",
-        "3xl": "calc(var(--radius) + 16px)",
       },
       boxShadow: {
         'sm': 'var(--shadow-sm)',
         'md': 'var(--shadow-md)',
         'lg': 'var(--shadow-lg)',
-        'glow': 'var(--shadow-glow)',
-        'cherry': 'var(--shadow-cherry)',
+        'ink': 'var(--shadow-ink)',
+        'vermillion': 'var(--shadow-vermillion)',
       },
       keyframes: {
         "accordion-down": {
