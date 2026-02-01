@@ -1,40 +1,38 @@
-import foxMascot from "@/assets/fox-mascot.png";
+import foxBrush from "@/assets/fox-brush.png";
 import { cn } from "@/lib/utils";
 
 interface FoxMascotProps {
   size?: "sm" | "md" | "lg";
   message?: string;
   className?: string;
-  animate?: boolean;
 }
 
 const sizeClasses = {
-  sm: "w-16 h-16",
-  md: "w-24 h-24",
-  lg: "w-32 h-32",
+  sm: "w-20 h-20",
+  md: "w-28 h-28",
+  lg: "w-36 h-36",
 };
 
 export function FoxMascot({ 
   size = "md", 
   message, 
   className,
-  animate = true 
 }: FoxMascotProps) {
   return (
-    <div className={cn("relative flex items-end gap-3", className)}>
+    <div className={cn("relative flex items-end gap-4", className)}>
       <img 
-        src={foxMascot} 
-        alt="Kitsune guide" 
+        src={foxBrush} 
+        alt="Kitsune spirit" 
         className={cn(
           sizeClasses[size],
-          "object-contain drop-shadow-lg",
-          animate && "animate-float"
+          "object-contain animate-float"
         )}
       />
       {message && (
-        <div className="relative bg-card/90 backdrop-blur-sm rounded-2xl rounded-bl-sm px-4 py-3 max-w-xs border border-primary/20 shadow-glow">
-          <p className="text-sm text-foreground">{message}</p>
-          <div className="absolute -bottom-1 left-0 w-3 h-3 bg-card/90 border-l border-b border-primary/20 transform -skew-x-12" />
+        <div className="relative bg-card border-2 border-foreground/20 rounded-sm px-4 py-3 max-w-xs shadow-ink">
+          <p className="text-sm text-foreground font-serif">{message}</p>
+          {/* Brush stroke accent */}
+          <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-full transform -skew-y-6" />
         </div>
       )}
     </div>

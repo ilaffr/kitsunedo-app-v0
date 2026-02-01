@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Check, Lock, Play, Star } from "lucide-react";
+import { Check, Lock, Play, Circle } from "lucide-react";
 
 interface LessonCardProps {
   title: string;
@@ -12,16 +12,16 @@ interface LessonCardProps {
 }
 
 const statusStyles = {
-  locked: "opacity-40 cursor-not-allowed bg-muted/50 border-border",
-  available: "card-interactive bg-card border-border hover:border-primary/40",
-  "in-progress": "card-interactive bg-primary/10 border-primary/40",
-  completed: "card-interactive bg-success/10 border-success/40",
+  locked: "opacity-40 cursor-not-allowed bg-muted/30 border-border",
+  available: "card-interactive bg-card border-border hover:border-foreground/30",
+  "in-progress": "card-interactive bg-primary/5 border-primary/40",
+  completed: "card-interactive bg-success/5 border-success/40",
 };
 
-const difficultyColors = {
-  easy: "bg-success/20 text-success border-success/30",
-  medium: "bg-warning/20 text-warning border-warning/30",
-  hard: "bg-destructive/20 text-destructive border-destructive/30",
+const difficultyLabels = {
+  easy: "初級",
+  medium: "中級", 
+  hard: "上級",
 };
 
 export function LessonCard({
@@ -42,44 +42,41 @@ export function LessonCard({
       onClick={onClick}
       disabled={isLocked}
       className={cn(
-        "w-full p-3 md:p-4 rounded-xl border text-left transition-all duration-300",
+        "w-full p-3 md:p-4 rounded-sm border-2 text-left transition-all duration-300",
         statusStyles[status]
       )}
     >
       <div className="flex items-center gap-3 md:gap-4">
-        {/* Lesson number / status icon */}
+        {/* Lesson number with brush stroke style */}
         <div className={cn(
-          "w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center font-bold text-base md:text-lg border",
+          "w-10 h-10 md:w-11 md:h-11 rounded-sm flex items-center justify-center font-brush font-bold text-lg border-2",
           isLocked && "bg-muted border-border text-muted-foreground",
-          isCompleted && "bg-success border-success/50 text-success-foreground",
-          isInProgress && "btn-golden border-primary/50 text-primary-foreground",
-          status === "available" && "bg-secondary border-border text-secondary-foreground"
+          isCompleted && "bg-success border-success text-success-foreground",
+          isInProgress && "bg-primary border-primary text-primary-foreground",
+          status === "available" && "bg-card border-foreground/20 text-foreground"
         )}>
-          {isLocked ? <Lock className="w-4 h-4 md:w-5 md:h-5" /> : 
-           isCompleted ? <Check className="w-4 h-4 md:w-5 md:h-5" /> :
-           isInProgress ? <Play className="w-4 h-4 md:w-5 md:h-5" /> :
-           lessonNumber}
+          {isLocked ? <Lock className="w-4 h-4" /> : 
+           isCompleted ? <Check className="w-5 h-5" strokeWidth={3} /> :
+           isInProgress ? <Play className="w-4 h-4" /> :
+           <span className="font-japanese">{lessonNumber}</span>}
         </div>
         
         {/* Lesson info */}
         <div className="flex-1 min-w-0">
-          <h4 className="font-semibold text-foreground truncate text-sm md:text-base">{title}</h4>
+          <h4 className="font-brush font-bold text-foreground truncate">{title}</h4>
           {japanese && (
-            <p className="text-base md:text-lg font-japanese text-muted-foreground">{japanese}</p>
+            <p className="text-lg font-japanese text-muted-foreground">{japanese}</p>
           )}
         </div>
         
-        {/* Right side info */}
+        {/* Right side - XP and difficulty */}
         <div className="flex flex-col items-end gap-1">
-          <div className="flex items-center gap-1 text-xs md:text-sm font-medium text-primary">
-            <Star className="w-3 h-3 md:w-4 md:h-4 fill-primary" />
+          <div className="flex items-center gap-1 text-sm font-brush font-bold text-primary">
+            <Circle className="w-2 h-2 fill-primary" />
             <span>+{xpReward}</span>
           </div>
-          <span className={cn(
-            "text-[10px] md:text-xs px-2 py-0.5 rounded-full font-medium border",
-            difficultyColors[difficulty]
-          )}>
-            {difficulty}
+          <span className="text-xs font-japanese text-muted-foreground">
+            {difficultyLabels[difficulty]}
           </span>
         </div>
       </div>

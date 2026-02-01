@@ -22,51 +22,50 @@ export function DailyGoalCard({
   const isComplete = currentXP >= goalXP;
 
   const foxMessage = isComplete 
-    ? "素晴らしい! You completed today's goal!" 
-    : "Follow me on the path to mastery!";
+    ? "素晴らしい! Your spirit grows stronger." 
+    : "The path reveals itself to those who walk it.";
 
   return (
-    <div className="card-atmospheric p-5 md:p-6 animate-slide-up">
-      <div className="flex items-start justify-between mb-5 md:mb-6">
+    <div className="card-paper p-5 md:p-6 animate-fade-up border-2">
+      {/* Brush stroke header accent */}
+      <div className="absolute top-0 left-6 right-6 h-1 bg-gradient-to-r from-transparent via-foreground/20 to-transparent" />
+      
+      <div className="flex items-start justify-between mb-5">
         <div>
-          <h2 className="text-lg font-title font-semibold text-foreground mb-1">Daily Journey</h2>
+          <h2 className="text-lg font-brush font-bold text-foreground mb-1">Daily Practice</h2>
           <p className="text-sm text-muted-foreground">
-            {isComplete ? "Your spirit grows stronger! 🌸" : "The path awaits, warrior"}
+            {isComplete ? "Today's training complete 🌸" : "Honor demands dedication"}
           </p>
         </div>
         
-        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/15 rounded-full border border-primary/30">
-          <Flame className="w-4 h-4 text-primary animate-pulse-glow" />
-          <span className="text-sm font-semibold text-primary">{streak} days</span>
+        {/* Hanko-style streak badge */}
+        <div className="hanko-badge animate-stamp">
+          <span className="text-sm">{streak}日</span>
         </div>
       </div>
       
-      <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 mb-5 md:mb-6">
-        <ProgressRing progress={progress} size={130} strokeWidth={10} variant="golden">
+      <div className="flex flex-col md:flex-row items-center gap-6 mb-5">
+        <ProgressRing progress={progress} size={120} strokeWidth={8} variant="vermillion">
           <div className="text-center">
-            <p className="text-2xl md:text-3xl font-bold text-foreground">{currentXP}</p>
-            <p className="text-xs md:text-sm text-muted-foreground">/ {goalXP} XP</p>
+            <p className="text-2xl font-brush font-bold text-foreground">{currentXP}</p>
+            <p className="text-xs text-muted-foreground">/ {goalXP}</p>
           </div>
         </ProgressRing>
         
-        <div className="flex-1 w-full space-y-3 md:space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-success/15 flex items-center justify-center border border-success/30">
-              <Target className="w-4 h-4 md:w-5 md:h-5 text-success" />
-            </div>
+        <div className="flex-1 w-full space-y-3">
+          <div className="flex items-center gap-3 p-3 bg-secondary/50 rounded-sm border border-border">
+            <Target className="w-5 h-5 text-success" />
             <div>
-              <p className="text-xs md:text-sm text-muted-foreground">Today's Progress</p>
-              <p className="font-semibold text-foreground">{Math.round(progress)}% complete</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider">Progress</p>
+              <p className="font-brush font-bold text-foreground">{Math.round(progress)}% mastered</p>
             </div>
           </div>
           
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-accent/15 flex items-center justify-center border border-accent/30">
-              <Clock className="w-4 h-4 md:w-5 md:h-5 text-accent" />
-            </div>
+          <div className="flex items-center gap-3 p-3 bg-secondary/50 rounded-sm border border-border">
+            <Clock className="w-5 h-5 text-primary" />
             <div>
-              <p className="text-xs md:text-sm text-muted-foreground">Study Time</p>
-              <p className="font-semibold text-foreground">{studyTime} minutes today</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider">Training</p>
+              <p className="font-brush font-bold text-foreground">{studyTime} minutes</p>
             </div>
           </div>
         </div>
@@ -79,9 +78,9 @@ export function DailyGoalCard({
       
       <Button 
         onClick={onStartStudy}
-        className="w-full h-11 md:h-12 text-sm md:text-base font-semibold btn-golden text-primary-foreground hover:opacity-90 transition-opacity"
+        className="w-full h-12 text-base font-brush font-bold btn-vermillion text-primary-foreground hover:opacity-90 transition-opacity rounded-sm"
       >
-        {isComplete ? "Continue Your Journey" : "Begin Today's Training"}
+        {isComplete ? "Continue Training" : "Begin Practice"}
       </Button>
     </div>
   );

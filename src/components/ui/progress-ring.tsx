@@ -6,63 +6,54 @@ interface ProgressRingProps {
   strokeWidth?: number;
   className?: string;
   children?: React.ReactNode;
-  variant?: "golden" | "cherry" | "jade";
+  variant?: "ink" | "vermillion" | "bamboo";
 }
 
-const gradientColors = {
-  golden: { start: "hsl(38, 90%, 55%)", end: "hsl(25, 85%, 50%)" },
-  cherry: { start: "hsl(340, 65%, 65%)", end: "hsl(350, 70%, 55%)" },
-  jade: { start: "hsl(160, 50%, 45%)", end: "hsl(145, 55%, 40%)" },
+const variantColors = {
+  ink: { stroke: "hsl(0, 0%, 15%)", bg: "hsl(0, 0%, 90%)" },
+  vermillion: { stroke: "hsl(5, 85%, 45%)", bg: "hsl(5, 30%, 90%)" },
+  bamboo: { stroke: "hsl(150, 35%, 35%)", bg: "hsl(150, 20%, 90%)" },
 };
 
 export function ProgressRing({
   progress,
   size = 120,
-  strokeWidth = 8,
+  strokeWidth = 6,
   className,
   children,
-  variant = "golden",
+  variant = "ink",
 }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (progress / 100) * circumference;
-  const colors = gradientColors[variant];
-  const gradientId = `progressGradient-${variant}`;
+  const colors = variantColors[variant];
 
   return (
     <div className={cn("relative inline-flex items-center justify-center", className)}>
       <svg width={size} height={size} className="-rotate-90">
-        {/* Background circle */}
+        {/* Background circle - light brush stroke */}
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="hsl(220, 15%, 20%)"
+          stroke={colors.bg}
           strokeWidth={strokeWidth}
+          strokeLinecap="round"
         />
-        {/* Progress circle */}
+        {/* Progress circle - bold ink stroke */}
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke={`url(#${gradientId})`}
-          strokeWidth={strokeWidth}
+          stroke={colors.stroke}
+          strokeWidth={strokeWidth + 1}
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           className="transition-all duration-700 ease-out"
-          style={{
-            filter: "drop-shadow(0 0 6px hsl(38, 90%, 55%, 0.5))",
-          }}
         />
-        <defs>
-          <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={colors.start} />
-            <stop offset="100%" stopColor={colors.end} />
-          </linearGradient>
-        </defs>
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
         {children}

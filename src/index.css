@@ -2,81 +2,123 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ghost of Yotei Inspired Design System
-   Moody feudal Japan with golden lantern accents and misty atmospheres
+/* Sumi-e Brush Stroke Design System
+   Japanese ink calligraphy aesthetic inspired by Ghost of Yotei
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@300;400;500;600&display=swap');
 
 @layer base {
   :root {
-    /* Deep night sky / charcoal */
-    --background: 220 20% 10%;
-    --foreground: 45 20% 95%;
+    /* Aged rice paper / washi */
+    --background: 40 25% 96%;
+    --foreground: 0 0% 8%;
 
-    /* Slightly lighter slate for cards */
-    --card: 220 18% 14%;
-    --card-foreground: 45 20% 95%;
+    /* Paper card - slightly warmer */
+    --card: 40 30% 98%;
+    --card-foreground: 0 0% 8%;
 
-    --popover: 220 18% 14%;
-    --popover-foreground: 45 20% 95%;
+    --popover: 40 30% 98%;
+    --popover-foreground: 0 0% 8%;
 
-    /* Golden lantern amber - primary */
-    --primary: 38 90% 55%;
-    --primary-foreground: 220 20% 10%;
+    /* Vermillion red - hanko stamp color */
+    --primary: 5 85% 45%;
+    --primary-foreground: 40 30% 98%;
 
-    /* Misty blue-gray */
-    --secondary: 210 15% 25%;
-    --secondary-foreground: 45 15% 85%;
+    /* Ink wash gray */
+    --secondary: 30 8% 88%;
+    --secondary-foreground: 0 0% 15%;
 
-    /* Deep slate muted */
-    --muted: 220 15% 18%;
-    --muted-foreground: 220 10% 55%;
+    /* Muted paper tone */
+    --muted: 35 15% 90%;
+    --muted-foreground: 0 0% 40%;
 
-    /* Cherry blossom pink accent */
-    --accent: 340 65% 65%;
-    --accent-foreground: 220 20% 10%;
+    /* Deep ink black accent */
+    --accent: 0 0% 12%;
+    --accent-foreground: 40 30% 98%;
 
-    /* Jade success green */
-    --success: 160 50% 45%;
-    --success-foreground: 220 20% 10%;
+    /* Bamboo green for success */
+    --success: 150 35% 35%;
+    --success-foreground: 40 30% 98%;
 
-    /* Warm amber warning */
-    --warning: 30 85% 55%;
-    --warning-foreground: 220 20% 10%;
+    /* Autumn gold warning */
+    --warning: 35 80% 50%;
+    --warning-foreground: 0 0% 8%;
 
-    --destructive: 0 65% 50%;
-    --destructive-foreground: 45 20% 95%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 40 30% 98%;
 
-    --border: 220 15% 20%;
-    --input: 220 15% 20%;
-    --ring: 38 90% 55%;
+    --border: 30 15% 85%;
+    --input: 30 15% 85%;
+    --ring: 5 85% 45%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    /* Custom gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(38 90% 55%), hsl(25 85% 50%));
-    --gradient-mist: linear-gradient(180deg, hsl(220 20% 10% / 0), hsl(220 20% 10%));
-    --gradient-sky: linear-gradient(180deg, hsl(220 25% 18%), hsl(220 20% 10%));
-    --gradient-cherry: linear-gradient(135deg, hsl(340 65% 65%), hsl(350 70% 55%));
-    --gradient-jade: linear-gradient(135deg, hsl(160 50% 45%), hsl(145 55% 40%));
+    /* Ink gradients */
+    --gradient-ink: linear-gradient(180deg, hsl(0 0% 8%), hsl(0 0% 25%));
+    --gradient-vermillion: linear-gradient(135deg, hsl(5 85% 45%), hsl(0 75% 40%));
+    --gradient-paper: linear-gradient(180deg, hsl(40 30% 98%), hsl(35 20% 93%));
+    --gradient-wash: linear-gradient(180deg, hsl(0 0% 8% / 0.8), hsl(0 0% 8% / 0));
 
-    /* Atmospheric shadows */
-    --shadow-sm: 0 2px 8px -2px hsl(0 0% 0% / 0.3);
-    --shadow-md: 0 8px 24px -8px hsl(0 0% 0% / 0.5);
-    --shadow-lg: 0 16px 48px -12px hsl(0 0% 0% / 0.6);
-    --shadow-glow: 0 0 30px -5px hsl(38 90% 55% / 0.3);
-    --shadow-cherry: 0 0 20px -5px hsl(340 65% 65% / 0.4);
+    /* Brush stroke shadows */
+    --shadow-sm: 0 1px 3px hsl(0 0% 0% / 0.08);
+    --shadow-md: 0 4px 12px hsl(0 0% 0% / 0.1);
+    --shadow-lg: 0 8px 24px hsl(0 0% 0% / 0.12);
+    --shadow-ink: 2px 2px 0 hsl(0 0% 8%);
+    --shadow-vermillion: 0 4px 16px hsl(5 85% 45% / 0.3);
 
     /* Sidebar */
-    --sidebar-background: 220 18% 12%;
-    --sidebar-foreground: 45 15% 85%;
-    --sidebar-primary: 38 90% 55%;
-    --sidebar-primary-foreground: 220 20% 10%;
-    --sidebar-accent: 220 15% 18%;
-    --sidebar-accent-foreground: 45 20% 95%;
-    --sidebar-border: 220 15% 18%;
-    --sidebar-ring: 38 90% 55%;
+    --sidebar-background: 40 25% 94%;
+    --sidebar-foreground: 0 0% 15%;
+    --sidebar-primary: 5 85% 45%;
+    --sidebar-primary-foreground: 40 30% 98%;
+    --sidebar-accent: 35 15% 88%;
+    --sidebar-accent-foreground: 0 0% 8%;
+    --sidebar-border: 30 15% 85%;
+    --sidebar-ring: 5 85% 45%;
+  }
+
+  .dark {
+    /* Dark ink paper */
+    --background: 30 10% 8%;
+    --foreground: 35 20% 90%;
+
+    --card: 30 10% 12%;
+    --card-foreground: 35 20% 90%;
+
+    --popover: 30 10% 12%;
+    --popover-foreground: 35 20% 90%;
+
+    --primary: 5 80% 55%;
+    --primary-foreground: 0 0% 8%;
+
+    --secondary: 30 8% 20%;
+    --secondary-foreground: 35 15% 80%;
+
+    --muted: 30 8% 18%;
+    --muted-foreground: 30 10% 55%;
+
+    --accent: 35 20% 85%;
+    --accent-foreground: 0 0% 8%;
+
+    --success: 150 40% 45%;
+    --success-foreground: 0 0% 8%;
+
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 35 20% 90%;
+
+    --border: 30 8% 20%;
+    --input: 30 8% 20%;
+    --ring: 5 80% 55%;
+
+    --sidebar-background: 30 10% 10%;
+    --sidebar-foreground: 35 15% 85%;
+    --sidebar-primary: 5 80% 55%;
+    --sidebar-primary-foreground: 0 0% 8%;
+    --sidebar-accent: 30 8% 16%;
+    --sidebar-accent-foreground: 35 20% 90%;
+    --sidebar-border: 30 8% 18%;
+    --sidebar-ring: 5 80% 55%;
   }
 }
 
@@ -90,8 +132,9 @@
     font-family: 'Outfit', 'Noto Sans JP', sans-serif;
   }
 
+  /* Brush stroke titles */
   h1, h2, h3 {
-    font-family: 'Cinzel', serif;
+    font-family: 'Noto Serif JP', serif;
     @apply font-semibold tracking-wide;
   }
 
@@ -101,94 +144,126 @@
 }
 
 @layer components {
-  .card-atmospheric {
-    @apply bg-card rounded-2xl border border-border relative overflow-hidden;
+  /* Paper texture cards */
+  .card-paper {
+    @apply bg-card rounded-lg border border-border relative;
     box-shadow: var(--shadow-md);
-  }
-
-  .card-atmospheric::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, hsl(38 90% 55% / 0.03), transparent);
-    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
   }
 
   .card-interactive {
-    @apply bg-card rounded-2xl border border-border transition-all duration-300 relative overflow-hidden;
+    @apply bg-card rounded-lg border border-border transition-all duration-300 relative;
     box-shadow: var(--shadow-sm);
   }
 
   .card-interactive:hover {
     box-shadow: var(--shadow-md);
-    border-color: hsl(var(--primary) / 0.3);
-    transform: translateY(-2px);
+    border-color: hsl(var(--primary) / 0.4);
   }
 
-  .card-interactive::before {
+  /* Brush stroke button */
+  .btn-vermillion {
+    background: var(--gradient-vermillion);
+    box-shadow: var(--shadow-vermillion);
+    position: relative;
+  }
+
+  .btn-vermillion::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, hsl(38 90% 55% / 0.02), transparent);
-    pointer-events: none;
+    inset: -2px;
+    background: hsl(var(--primary));
     opacity: 0;
+    filter: blur(8px);
     transition: opacity 0.3s;
+    z-index: -1;
   }
 
-  .card-interactive:hover::before {
-    opacity: 1;
+  .btn-vermillion:hover::before {
+    opacity: 0.4;
   }
 
-  .btn-golden {
-    background: var(--gradient-primary);
-    box-shadow: var(--shadow-glow);
+  /* Ink black button */
+  .btn-ink {
+    background: var(--gradient-ink);
+    @apply text-card;
   }
 
-  .btn-cherry {
-    background: var(--gradient-cherry);
-    box-shadow: var(--shadow-cherry);
+  /* Brush stroke text */
+  .text-brush {
+    font-family: 'Noto Serif JP', serif;
+    @apply font-bold tracking-wider;
   }
 
-  .text-gradient-golden {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .text-gradient-cherry {
-    background: var(--gradient-cherry);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .bg-mist {
-    background: var(--gradient-mist);
+  .text-vermillion {
+    @apply text-primary;
   }
 
   .japanese-text {
     font-family: 'Noto Sans JP', sans-serif;
   }
 
-  .title-font {
-    font-family: 'Cinzel', serif;
+  .serif-jp {
+    font-family: 'Noto Serif JP', serif;
   }
 
-  /* Fog overlay effect */
-  .fog-overlay {
+  /* Brush stroke underline */
+  .brush-underline {
+    position: relative;
+    display: inline-block;
+  }
+
+  .brush-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: hsl(var(--primary));
+    transform: scaleX(0.9) skewX(-5deg);
+    border-radius: 2px;
+  }
+
+  /* Ink wash divider */
+  .ink-divider {
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent, 
+      hsl(var(--foreground) / 0.2) 20%, 
+      hsl(var(--foreground) / 0.3) 50%, 
+      hsl(var(--foreground) / 0.2) 80%, 
+      transparent
+    );
+  }
+
+  /* Hanko stamp style badge */
+  .hanko-badge {
+    @apply border-2 border-primary text-primary font-bold px-2 py-1 rounded-sm;
+    transform: rotate(-3deg);
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  /* Brush stroke border */
+  .brush-border {
     position: relative;
   }
 
-  .fog-overlay::after {
+  .brush-border::before {
     content: '';
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     right: 0;
-    height: 40%;
-    background: linear-gradient(to top, hsl(220 20% 10%), transparent);
-    pointer-events: none;
+    height: 4px;
+    background: linear-gradient(90deg, 
+      transparent, 
+      hsl(var(--foreground)) 10%, 
+      hsl(var(--foreground)) 90%, 
+      transparent
+    );
+    transform: scaleY(0.5) translateY(-50%);
+    opacity: 0.8;
   }
 }
 
@@ -197,52 +272,58 @@
     animation: float 4s ease-in-out infinite;
   }
 
-  .animate-pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
+  .animate-brush-in {
+    animation: brush-in 0.8s ease-out;
   }
 
-  .animate-slide-up {
-    animation: slide-up 0.6s ease-out;
+  .animate-fade-up {
+    animation: fade-up 0.6s ease-out;
   }
 
-  .animate-fade-in {
-    animation: fade-in 0.8s ease-out;
-  }
-
-  .animate-cherry-fall {
-    animation: cherry-fall 8s linear infinite;
+  .animate-stamp {
+    animation: stamp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); }
   }
 
-  @keyframes pulse-glow {
-    0%, 100% { 
+  @keyframes brush-in {
+    from { 
+      opacity: 0; 
+      transform: translateX(-20px) scaleX(0.8);
+      filter: blur(4px);
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0) scaleX(1);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes fade-up {
+    from { 
+      opacity: 0; 
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes stamp {
+    0% { 
+      opacity: 0;
+      transform: scale(1.5) rotate(-10deg);
+    }
+    50% {
+      transform: scale(0.95) rotate(-2deg);
+    }
+    100% { 
       opacity: 1;
-      filter: drop-shadow(0 0 8px hsl(38 90% 55% / 0.4));
+      transform: scale(1) rotate(-3deg);
     }
-    50% { 
-      opacity: 0.85;
-      filter: drop-shadow(0 0 16px hsl(38 90% 55% / 0.6));
-    }
-  }
-
-  @keyframes slide-up {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes cherry-fall {
-    0% { transform: translateY(-10px) rotate(0deg); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
   }
 }

@@ -6,22 +6,20 @@ interface StatsCardProps {
   label: string;
   value: string | number;
   sublabel?: string;
-  variant?: "default" | "golden" | "cherry" | "jade";
+  variant?: "default" | "vermillion" | "ink";
   className?: string;
 }
 
 const variantStyles = {
   default: "bg-card border-border",
-  golden: "bg-gradient-to-br from-primary/20 to-primary/5 border-primary/30",
-  cherry: "bg-gradient-to-br from-accent/20 to-accent/5 border-accent/30",
-  jade: "bg-gradient-to-br from-success/20 to-success/5 border-success/30",
+  vermillion: "bg-primary/5 border-primary/30",
+  ink: "bg-accent/5 border-accent/20",
 };
 
 const iconStyles = {
-  default: "bg-muted text-muted-foreground",
-  golden: "bg-primary/20 text-primary",
-  cherry: "bg-accent/20 text-accent",
-  jade: "bg-success/20 text-success",
+  default: "bg-secondary text-foreground",
+  vermillion: "bg-primary/15 text-primary",
+  ink: "bg-accent/10 text-accent",
 };
 
 export function StatsCard({
@@ -35,24 +33,24 @@ export function StatsCard({
   return (
     <div
       className={cn(
-        "card-interactive p-4 md:p-5 flex items-center gap-3 md:gap-4 border",
+        "card-interactive p-4 flex items-center gap-3 border-2",
         variantStyles[variant],
         className
       )}
     >
       <div
         className={cn(
-          "w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center",
+          "w-10 h-10 md:w-11 md:h-11 rounded-sm flex items-center justify-center",
           iconStyles[variant]
         )}
       >
-        <Icon className="w-5 h-5 md:w-6 md:h-6" />
+        <Icon className="w-5 h-5" />
       </div>
       <div>
-        <p className="text-xs md:text-sm font-medium text-muted-foreground">
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
           {label}
         </p>
-        <p className="text-xl md:text-2xl font-bold text-foreground">{value}</p>
+        <p className="text-xl md:text-2xl font-brush font-bold text-foreground">{value}</p>
         {sublabel && (
           <p className="text-xs text-muted-foreground">
             {sublabel}
