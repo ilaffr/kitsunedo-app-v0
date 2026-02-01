@@ -7,6 +7,7 @@ import { StudyCategoryCard } from "@/components/study-category-card";
 import { QuickReviewCard } from "@/components/quick-review-card";
 import { StatsCard } from "@/components/stats-card";
 import { LessonCard } from "@/components/lesson-card";
+import { HeroBanner } from "@/components/hero-banner";
 
 const studyCategories = [
   {
@@ -116,32 +117,25 @@ export default function Index() {
         <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
         
         <main className="flex-1 pb-20 md:pb-8">
-          <div className="container max-w-6xl px-4 py-6 md:py-8">
-            {/* Welcome Section */}
-            <section className="mb-8 animate-slide-up">
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-                Welcome back, <span className="text-gradient-primary">Learner</span>! 👋
-              </h2>
-              <p className="text-muted-foreground">
-                Ready to continue your Japanese learning journey?
-              </p>
-            </section>
+          <div className="container max-w-6xl px-4 py-4 md:py-6">
+            {/* Hero Banner */}
+            <HeroBanner />
 
             {/* Stats Row */}
-            <section className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <section className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
               <StatsCard
                 icon={Flame}
-                label="Current Streak"
+                label="Fire Streak"
                 value={12}
                 sublabel="days"
-                variant="primary"
+                variant="golden"
               />
               <StatsCard
                 icon={Star}
-                label="Total XP"
+                label="Spirit XP"
                 value="2,450"
                 sublabel="earned"
-                variant="success"
+                variant="cherry"
               />
               <StatsCard
                 icon={BookOpen}
@@ -151,19 +145,19 @@ export default function Index() {
               />
               <StatsCard
                 icon={Clock}
-                label="Study Time"
+                label="Training"
                 value="24h"
-                sublabel="this month"
+                sublabel="this moon"
               />
             </section>
 
             {/* Quick Review */}
-            <section className="mb-8">
+            <section className="mb-6 md:mb-8">
               <QuickReviewCard itemsToReview={23} />
             </section>
 
             {/* Main Grid */}
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
               {/* Left Column - Daily Goal */}
               <section>
                 <DailyGoalCard
@@ -176,15 +170,15 @@ export default function Index() {
 
               {/* Right Column - Continue Learning */}
               <section>
-                <div className="card-elevated p-6">
+                <div className="card-atmospheric p-5 md:p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-foreground">Continue Learning</h3>
-                    <button className="text-sm text-primary font-medium hover:underline">
+                    <h3 className="text-base md:text-lg font-title font-semibold text-foreground">Continue Journey</h3>
+                    <button className="text-xs md:text-sm text-primary font-medium hover:underline">
                       View all
                     </button>
                   </div>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-2 md:space-y-3">
                     {recentLessons.map((lesson, index) => (
                       <LessonCard key={index} {...lesson} />
                     ))}
@@ -194,9 +188,9 @@ export default function Index() {
             </div>
 
             {/* Study Categories */}
-            <section className="mt-8">
-              <h3 className="text-xl font-semibold text-foreground mb-4">Study Categories</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <section className="mt-6 md:mt-8">
+              <h3 className="text-lg md:text-xl font-title font-semibold text-foreground mb-4">Training Grounds</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                 {studyCategories.map((category, index) => (
                   <StudyCategoryCard key={index} {...category} />
                 ))}

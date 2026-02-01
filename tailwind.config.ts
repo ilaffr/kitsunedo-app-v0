@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         sans: ['Outfit', 'Noto Sans JP', 'sans-serif'],
         japanese: ['Noto Sans JP', 'sans-serif'],
+        title: ['Cinzel', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -82,7 +83,8 @@ export default {
         'sm': 'var(--shadow-sm)',
         'md': 'var(--shadow-md)',
         'lg': 'var(--shadow-lg)',
-        'primary': 'var(--shadow-primary)',
+        'glow': 'var(--shadow-glow)',
+        'cherry': 'var(--shadow-cherry)',
       },
       keyframes: {
         "accordion-down": {
