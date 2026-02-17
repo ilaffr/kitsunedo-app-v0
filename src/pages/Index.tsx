@@ -9,6 +9,7 @@ import { QuickReviewCard } from "@/components/quick-review-card";
 import { StatsCard } from "@/components/stats-card";
 import { LessonCard } from "@/components/lesson-card";
 import { HeroBanner } from "@/components/hero-banner";
+import { AchievementsPanel } from "@/components/achievements-panel";
 
 const studyCategories = [
   {
@@ -200,6 +201,15 @@ export default function Index() {
                   <StudyCategoryCard key={index} {...category} onClick={() => navigate("/lesson/1")} />
                 ))}
               </div>
+            </section>
+
+            {/* Spirit Bestiary — Achievements */}
+            <section className="mt-6 md:mt-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-1 h-6 bg-primary rounded-full" />
+                <h3 className="text-xl font-brush font-bold text-foreground">Spirit Bestiary</h3>
+              </div>
+              <AchievementsPanel />
             </section>
           </div>
         </main>
