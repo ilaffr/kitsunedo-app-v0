@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { loadAchievements, type AchievementId } from "@/lib/achievements";
+import { loadAchievements, type AchievementId } from "@/hooks/use-achievement";
+import { useAuth } from "@/context/AuthContext";
 import kitsuneImg from "@/assets/achievement-kitsune.png";
 import tanukiImg from "@/assets/achievement-tanuki.png";
 import tenguImg from "@/assets/achievement-tengu.png";
@@ -201,12 +202,13 @@ function AchievementCard({ def, unlocked, expanded, onToggle }: AchievementCardP
 }
 
 export function AchievementsPanel() {
+  const { user } = useAuth();
   const [unlocked, setUnlocked] = useState<Set<AchievementId>>(new Set());
   const [expanded, setExpanded] = useState<AchievementId | null>(null);
 
   useEffect(() => {
-    setUnlocked(loadAchievements());
-  }, []);
+    loadAchievements(user?.id).then(setUnlocked);
+  }, [user?.id]);
 
   const unlockedCount = ACHIEVEMENTS.filter((a) => unlocked.has(a.id)).length;
 
