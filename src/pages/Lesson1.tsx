@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, X, BookOpen, MessageSquare, PenTool } from "lucide-react";
 import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
+import { useAchievement, useAchievementEffect } from "@/hooks/use-achievement";
 
 type Section = "vocabulary" | "grammar" | "practice";
 
@@ -30,7 +31,10 @@ const vocabulary = [
 const grammarPoints = [
   {
     title: "〜は　〜です",
-    explanation: "The basic sentence pattern. は (wa) marks the topic, です (desu) is the polite copula meaning 'is/am/are'.",
+    rule: "Topic は + Noun/Adjective + です",
+    explanation:
+      "The foundation of Japanese sentences. は (wa) is the topic-marking particle — it tells us what the sentence is about. です (desu) is the polite copula meaning 'is / am / are'. The topic is not always the grammatical subject; it marks what you are making a statement about.",
+    tip: "Think of は as saying \"as for [topic]…\" — it sets the stage for everything that follows.",
     examples: [
       { jp: "わたしは がくせいです。", en: "I am a student." },
       { jp: "マリアさんは エンジニアです。", en: "Maria is an engineer." },
@@ -38,7 +42,10 @@ const grammarPoints = [
   },
   {
     title: "〜は　〜じゃ ありません",
-    explanation: "Negative form of です. じゃ ありません (ja arimasen) means 'is not'. More formal: では ありません.",
+    rule: "Topic は + Noun + じゃ ありません",
+    explanation:
+      "The negative form of です. じゃ ありません (ja arimasen) means 'is not'. It is the polite spoken contraction of では ありません (de wa arimasen). The more formal written version is では ありません, used in business or academic writing.",
+    tip: "じゃ is a casual contraction of では. Both are correct — じゃ for conversation, では for formal writing.",
     examples: [
       { jp: "わたしは せんせいじゃ ありません。", en: "I am not a teacher." },
       { jp: "サントスさんは がくせいじゃ ありません。", en: "Santos is not a student." },
@@ -46,7 +53,10 @@ const grammarPoints = [
   },
   {
     title: "〜は　〜ですか",
-    explanation: "Add か (ka) at the end to form a question. Japanese doesn't change word order for questions.",
+    rule: "Topic は + Noun + ですか？",
+    explanation:
+      "Adding the question particle か (ka) at the end of a です sentence turns it into a yes/no question. Unlike English, Japanese does NOT change word order to ask a question — the structure is identical to a statement, just with か appended. No question mark is technically needed in Japanese writing, but か alone signals a question.",
+    tip: "か at the end always signals a question. The rising intonation of your voice is optional but natural.",
     examples: [
       { jp: "ミラーさんは アメリカじんですか。", en: "Is Miller American?" },
       { jp: "はい、アメリカじんです。", en: "Yes, (he) is American." },
@@ -54,7 +64,10 @@ const grammarPoints = [
   },
   {
     title: "〜も",
-    explanation: "も (mo) replaces は to mean 'also/too'. It indicates the same predicate applies.",
+    rule: "Topic も + Predicate (replaces は)",
+    explanation:
+      "も (mo) means 'also / too / as well'. It replaces は entirely — you never use は and も together on the same noun. When も appears, it signals that the same predicate applies to this topic just as it did to the previous one. It creates parallel structure between two topics.",
+    tip: "も replaces は. Never say 「わたしはも」— drop the は completely when adding も.",
     examples: [
       { jp: "ミラーさんは かいしゃいんです。", en: "Miller is a company employee." },
       { jp: "グプタさんも かいしゃいんです。", en: "Gupta is also a company employee." },
@@ -62,7 +75,10 @@ const grammarPoints = [
   },
   {
     title: "Noun の Noun",
-    explanation: "の (no) connects two nouns, showing possession, affiliation, or description.",
+    rule: "Noun₁ の Noun₂ → Noun₂ of/belonging to Noun₁",
+    explanation:
+      "の (no) is a possessive/descriptive particle that connects two nouns. The first noun modifies the second — think of it as English 's (possessive) or 'of'. It can show: possession (わたしの本 = my book), affiliation (IMCのしゃいん = employee of IMC), or categorisation (にほんごのがくせい = student of Japanese).",
+    tip: "の links two nouns and the first noun always describes or owns the second. The order is reversed compared to English: 'Japan's language student' = にほんごのがくせい.",
     examples: [
       { jp: "わたしは にほんごの がくせいです。", en: "I am a student of Japanese." },
       { jp: "ミラーさんは IMCの しゃいんです。", en: "Miller is an employee of IMC." },
@@ -120,9 +136,12 @@ const practiceQuestions = [
 
 export default function Lesson1() {
   const navigate = useNavigate();
+  const { unlock } = useAchievement();
   const [activeSection, setActiveSection] = useState<Section>("vocabulary");
   const [practiceAnswers, setPracticeAnswers] = useState<Record<number, number>>({});
   const [showResults, setShowResults] = useState(false);
+  const [viewedGrammar, setViewedGrammar] = useState<Set<number>>(new Set());
+  const lessonCompleteFired = useRef(false);
 
   const handleAnswer = (qIndex: number, optIndex: number) => {
     if (showResults) return;
@@ -138,6 +157,43 @@ export default function Lesson1() {
   const correctCount = showResults
     ? practiceQuestions.filter((q, i) => practiceAnswers[i] === q.correct).length
     : 0;
+
+  // Track grammar points viewed
+  const handleSectionChange = (section: Section) => {
+    setActiveSection(section);
+  };
+
+  const handleGrammarView = (index: number) => {
+    setViewedGrammar((prev) => {
+      const next = new Set(prev);
+      next.add(index);
+      return next;
+    });
+  };
+
+  // Achievements
+  useAchievementEffect("vocabulary_master", activeSection === "vocabulary");
+  useAchievementEffect("all_grammar", viewedGrammar.size >= grammarPoints.length);
+
+  useEffect(() => {
+    if (showResults && !lessonCompleteFired.current) {
+      lessonCompleteFired.current = true;
+      unlock("first_lesson");
+    }
+  }, [showResults]);
+
+  useEffect(() => {
+    if (showResults && correctCount === practiceQuestions.length) {
+      unlock("perfect_practice");
+    }
+  }, [showResults, correctCount]);
+
+  // Track all grammar points as viewed when grammar section is opened
+  useEffect(() => {
+    if (activeSection === "grammar") {
+      setViewedGrammar(new Set(grammarPoints.map((_, i) => i)));
+    }
+  }, [activeSection]);
 
   const sections: { key: Section; label: string; kanji: string; icon: typeof BookOpen }[] = [
     { key: "vocabulary", label: "Vocabulary", kanji: "語彙", icon: BookOpen },
@@ -185,7 +241,7 @@ export default function Lesson1() {
           {sections.map((s) => (
             <button
               key={s.key}
-              onClick={() => setActiveSection(s.key)}
+              onClick={() => handleSectionChange(s.key)}
               className={cn(
                 "flex items-center gap-2 px-4 py-2.5 rounded-sm border-2 text-sm font-medium transition-colors",
                 activeSection === s.key
@@ -200,7 +256,7 @@ export default function Lesson1() {
           ))}
         </div>
 
-        {/* Vocabulary section */}
+        {/* ── Vocabulary section ── */}
         {activeSection === "vocabulary" && (
           <div className="card-paper border-2 overflow-hidden">
             <div className="p-5 border-b border-border">
@@ -222,37 +278,80 @@ export default function Lesson1() {
           </div>
         )}
 
-        {/* Grammar section */}
+        {/* ── Grammar section ── */}
         {activeSection === "grammar" && (
-          <div className="space-y-4">
+          <div className="space-y-5">
+            {/* Overview note */}
+            <div className="card-paper border-2 p-4 bg-muted/20 flex gap-3 items-start">
+              <span className="text-primary serif-jp text-lg mt-0.5">筆</span>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Each grammar point shows the <strong className="text-foreground">pattern rule</strong>, a plain-English <strong className="text-foreground">explanation</strong>, a quick <strong className="text-foreground">tip</strong>, and model sentences. Read each section carefully before moving to Practice.
+              </p>
+            </div>
+
             {grammarPoints.map((point, i) => (
-              <div key={i} className="card-paper border-2 p-5 md:p-6">
-                <div className="flex items-start gap-3 mb-3">
-                  <span className="hanko-badge text-sm">{i + 1}</span>
-                  <h3 className="text-xl font-bold japanese-text text-foreground">{point.title}</h3>
+              <div key={i} className="card-paper border-2 overflow-hidden">
+                {/* Title bar */}
+                <div className="flex items-center gap-3 p-5 pb-4 border-b border-border bg-muted/10">
+                  <span className="hanko-badge text-sm flex-shrink-0">{i + 1}</span>
+                  <div>
+                    <h3 className="text-xl font-bold japanese-text text-foreground leading-tight">
+                      {point.title}
+                    </h3>
+                    <code className="text-xs text-primary font-mono mt-0.5 block">
+                      {point.rule}
+                    </code>
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{point.explanation}</p>
-                <div className="ink-divider mb-4" />
-                <div className="space-y-3">
-                  {point.examples.map((ex, j) => (
-                    <div key={j} className="bg-muted/30 rounded-sm p-3 border border-border">
-                      <p className="text-lg japanese-text text-foreground">{ex.jp}</p>
-                      <p className="text-sm text-muted-foreground mt-1">{ex.en}</p>
+
+                <div className="p-5 space-y-4">
+                  {/* Explanation */}
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 serif-jp">
+                      Explanation
+                    </p>
+                    <p className="text-sm text-foreground leading-relaxed">
+                      {point.explanation}
+                    </p>
+                  </div>
+
+                  {/* Tip */}
+                  <div className="bg-primary/5 border border-primary/25 rounded-sm p-3 flex gap-2.5 items-start">
+                    <span className="text-primary text-base flex-shrink-0 serif-jp">✦</span>
+                    <p className="text-sm text-foreground leading-relaxed">
+                      <strong className="text-primary serif-jp">Tip: </strong>
+                      {point.tip}
+                    </p>
+                  </div>
+
+                  {/* Examples */}
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 serif-jp">
+                      Examples
+                    </p>
+                    <div className="ink-divider mb-3" />
+                    <div className="space-y-3">
+                      {point.examples.map((ex, j) => (
+                        <div key={j} className="bg-muted/30 rounded-sm p-3 border border-border">
+                          <p className="text-lg japanese-text text-foreground">{ex.jp}</p>
+                          <p className="text-sm text-muted-foreground mt-1">{ex.en}</p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         )}
 
-        {/* Practice section */}
+        {/* ── Practice section ── */}
         {activeSection === "practice" && (
           <div className="space-y-4">
             {practiceQuestions.map((q, i) => (
               <div key={i} className="card-paper border-2 p-5">
                 <div className="flex items-start gap-3 mb-4">
-                  <span className="text-sm font-bold serif-jp text-muted-foreground">問{i + 1}</span>
+                  <span className="text-sm font-bold serif-jp text-muted-foreground flex-shrink-0">問{i + 1}</span>
                   <p className="text-foreground font-medium japanese-text">{q.question}</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
