@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BookOpen, Languages, PenTool, BookText, MessageSquare, Flame, Star, Clock } from "lucide-react";
 import { Header } from "@/components/header";
 import { Navigation } from "@/components/navigation";
@@ -107,6 +108,7 @@ const recentLessons = [
 ];
 
 export default function Index() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("home");
 
   return (
@@ -180,7 +182,7 @@ export default function Index() {
                   
                   <div className="space-y-2 md:space-y-3">
                     {recentLessons.map((lesson, index) => (
-                      <LessonCard key={index} {...lesson} />
+                      <LessonCard key={index} {...lesson} onClick={() => navigate("/lesson/1")} />
                     ))}
                   </div>
                 </div>
@@ -195,7 +197,7 @@ export default function Index() {
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                 {studyCategories.map((category, index) => (
-                  <StudyCategoryCard key={index} {...category} />
+                  <StudyCategoryCard key={index} {...category} onClick={() => navigate("/lesson/1")} />
                 ))}
               </div>
             </section>
