@@ -4,6 +4,7 @@ import { ArrowLeft, Check, X, BookOpen, MessageSquare, PenTool } from "lucide-re
 import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
 import { useAchievement, useAchievementEffect } from "@/hooks/use-achievement";
+import { useStreak, useLessonProgress } from "@/hooks/use-user-data";
 
 type Section = "vocabulary" | "grammar" | "practice";
 
@@ -137,6 +138,8 @@ const practiceQuestions = [
 export default function Lesson1() {
   const navigate = useNavigate();
   const { unlock } = useAchievement();
+  const { recordStudy } = useStreak();
+  const { saveProgress } = useLessonProgress("lesson_1");
   const [activeSection, setActiveSection] = useState<Section>("vocabulary");
   const [practiceAnswers, setPracticeAnswers] = useState<Record<number, number>>({});
   const [showResults, setShowResults] = useState(false);
@@ -179,6 +182,9 @@ export default function Lesson1() {
     if (showResults && !lessonCompleteFired.current) {
       lessonCompleteFired.current = true;
       unlock("first_lesson");
+      // Record study session for streak + persist lesson completion
+      recordStudy();
+      saveProgress({ completed: true, bestScore: correctCount, section: "practice" });
     }
   }, [showResults]);
 

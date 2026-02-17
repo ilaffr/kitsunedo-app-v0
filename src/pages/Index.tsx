@@ -10,6 +10,7 @@ import { StatsCard } from "@/components/stats-card";
 import { LessonCard } from "@/components/lesson-card";
 import { HeroBanner } from "@/components/hero-banner";
 import { AchievementsPanel } from "@/components/achievements-panel";
+import { useStreak } from "@/hooks/use-user-data";
 
 const studyCategories = [
   {
@@ -111,6 +112,7 @@ const recentLessons = [
 export default function Index() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("home");
+  const { streak } = useStreak();
 
   return (
     <div className="min-h-screen bg-background">
@@ -129,7 +131,7 @@ export default function Index() {
               <StatsCard
                 icon={Flame}
                 label="Streak"
-                value="12日"
+                value={`${streak.currentStreak}日`}
                 sublabel="days of honor"
                 variant="vermillion"
               />
@@ -163,10 +165,10 @@ export default function Index() {
             <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
               {/* Daily Goal */}
               <section>
-                <DailyGoalCard
+              <DailyGoalCard
                   currentXP={65}
                   goalXP={100}
-                  streak={12}
+                  streak={streak.currentStreak}
                   studyTime={15}
                 />
               </section>

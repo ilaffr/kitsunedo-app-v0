@@ -1,12 +1,15 @@
-import { Search, Menu } from "lucide-react";
+import { Search, LogOut, User } from "lucide-react";
 import { Button } from "./ui/button";
 import foxBrush from "@/assets/fox-brush.png";
+import { useAuth } from "@/context/AuthContext";
 
 export function Header() {
+  const { user, signOut } = useAuth();
+
   return (
     <header className="sticky top-0 z-40 w-full bg-background/95 backdrop-blur-sm border-b-2 border-border">
       <div className="container flex items-center justify-between h-14 md:h-16 px-4">
-        {/* Logo with brush stroke style */}
+        {/* Logo */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 md:w-11 md:h-11 rounded-sm overflow-hidden bg-card border-2 border-foreground/20 p-0.5">
             <img src={foxBrush} alt="Kitsune" className="w-full h-full object-contain" />
@@ -29,14 +32,30 @@ export function Header() {
           </div>
         </div>
 
-        {/* Actions */}
+        {/* User actions */}
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" className="rounded-sm md:hidden">
             <Search className="w-5 h-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="rounded-sm bg-card border-2 border-border">
-            <Menu className="w-5 h-5" />
-          </Button>
+          {user && (
+            <>
+              <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-card border-2 border-border">
+                <User className="w-3.5 h-3.5 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground serif-jp max-w-[120px] truncate">
+                  {user.email?.split("@")[0]}
+                </span>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={signOut}
+                className="rounded-sm bg-card border-2 border-border"
+                title="Sign out"
+              >
+                <LogOut className="w-4 h-4" />
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>
