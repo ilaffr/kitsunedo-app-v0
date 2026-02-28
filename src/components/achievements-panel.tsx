@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { loadAchievements, type AchievementId } from "@/hooks/use-achievement";
 import { useAuth } from "@/context/AuthContext";
+import { usePersonalBadges } from "@/hooks/use-personal-badges";
+import { PersonalBadgesSection } from "@/components/personal-badges-section";
 import kitsuneImg from "@/assets/achievement-kitsune.png";
 import tanukiImg from "@/assets/achievement-tanuki.png";
 import tenguImg from "@/assets/achievement-tengu.png";
@@ -205,6 +207,7 @@ export function AchievementsPanel() {
   const { user } = useAuth();
   const [unlocked, setUnlocked] = useState<Set<AchievementId>>(new Set());
   const [expanded, setExpanded] = useState<AchievementId | null>(null);
+  const { badges: personalBadges, loading: personalLoading, generating } = usePersonalBadges();
 
   useEffect(() => {
     loadAchievements(user?.id).then(setUnlocked);
@@ -248,6 +251,13 @@ export function AchievementsPanel() {
           />
         ))}
       </div>
+
+      {/* Personal Spirits (AI-generated) */}
+      <PersonalBadgesSection
+        badges={personalBadges}
+        loading={personalLoading}
+        generating={generating}
+      />
     </div>
   );
 }

@@ -44,6 +44,78 @@ export type Database = {
         }
         Relationships: []
       }
+      mistake_log: {
+        Row: {
+          id: string
+          lesson_id: string
+          mistake_count: number
+          updated_at: string
+          user_id: string
+          word: string
+        }
+        Insert: {
+          id?: string
+          lesson_id: string
+          mistake_count?: number
+          updated_at?: string
+          user_id: string
+          word: string
+        }
+        Update: {
+          id?: string
+          lesson_id?: string
+          mistake_count?: number
+          updated_at?: string
+          user_id?: string
+          word?: string
+        }
+        Relationships: []
+      }
+      personal_badges: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          myth: string | null
+          rarity: string
+          tier: number
+          title: string
+          title_jp: string | null
+          trigger_detail: string
+          trigger_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          myth?: string | null
+          rarity?: string
+          tier?: number
+          title: string
+          title_jp?: string | null
+          trigger_detail: string
+          trigger_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          myth?: string | null
+          rarity?: string
+          tier?: number
+          title?: string
+          title_jp?: string | null
+          trigger_detail?: string
+          trigger_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string

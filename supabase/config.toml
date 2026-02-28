@@ -1,1 +1,4 @@
 project_id = "hrxcnmgrtbzenqdgzieq"
+
+[functions.generate-badge]
+verify_jwt = false
