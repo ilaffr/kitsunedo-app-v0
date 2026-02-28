@@ -170,6 +170,7 @@ export default function Index() {
                   goalXP={100}
                   streak={streak.currentStreak}
                   studyTime={15}
+                  onStartStudy={() => navigate("/daily-practice")}
                 />
               </section>
 
