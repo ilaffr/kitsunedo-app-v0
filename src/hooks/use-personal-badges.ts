@@ -89,14 +89,25 @@ export function usePersonalBadges() {
           if (count < threshold) continue;
           const tier = TIER_FOR_THRESHOLD[threshold];
 
-          // Check if badge already exists
-          const existing = badges.find(
+          // Check if badge already exists in local state
+          const existingLocal = badges.find(
             (b) =>
               b.trigger_type === "word_struggle" &&
               b.trigger_detail === word &&
               b.tier === tier
           );
-          if (existing) continue;
+          if (existingLocal) continue;
+
+          // Also check the DB to avoid duplicate calls
+          const { data: existingDb } = await supabase
+            .from("personal_badges")
+            .select("id")
+            .eq("user_id", user.id)
+            .eq("trigger_type", "word_struggle")
+            .eq("trigger_detail", word)
+            .eq("tier", tier)
+            .maybeSingle();
+          if (existingDb) continue;
 
           // Generate badge
           setGenerating(true);

@@ -38,6 +38,22 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+    // Check if badge already exists
+    const { data: existingBadge } = await supabase
+      .from("personal_badges")
+      .select("*")
+      .eq("user_id", user_id)
+      .eq("trigger_type", trigger_type)
+      .eq("trigger_detail", trigger_detail)
+      .eq("tier", tier)
+      .maybeSingle();
+
+    if (existingBadge) {
+      return new Response(JSON.stringify({ badge: existingBadge }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const tierConf = TIER_CONFIG[tier] || TIER_CONFIG[1];
 
     // 1. Generate badge text via AI
