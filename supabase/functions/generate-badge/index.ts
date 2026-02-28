@@ -175,7 +175,7 @@ Keep it lighthearted and motivating, never mocking. Higher tiers should be progr
       console.error("Image generation failed:", imgErr);
     }
 
-    // 3. Save badge to database
+    // 3. Save badge to database (idempotent)
     const { data: badge, error: insertError } = await supabase
       .from("personal_badges")
       .insert({
@@ -194,6 +194,24 @@ Keep it lighthearted and motivating, never mocking. Higher tiers should be progr
       .single();
 
     if (insertError) {
+      // Race condition safe: if another request inserted first, return the existing row
+      if ((insertError as { code?: string }).code === "23505") {
+        const { data: duplicateBadge, error: fetchDupError } = await supabase
+          .from("personal_badges")
+          .select("*")
+          .eq("user_id", user_id)
+          .eq("trigger_type", trigger_type)
+          .eq("trigger_detail", trigger_detail)
+          .eq("tier", tier)
+          .maybeSingle();
+
+        if (duplicateBadge && !fetchDupError) {
+          return new Response(JSON.stringify({ badge: duplicateBadge }), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+      }
+
       console.error("Insert error:", insertError);
       throw new Error(`Failed to save badge: ${insertError.message}`);
     }
