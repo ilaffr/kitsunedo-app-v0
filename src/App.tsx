@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import Index from "./pages/Index";
 import Lesson1 from "./pages/Lesson1";
+import DailyPractice from "./pages/DailyPractice";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -54,6 +55,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Lesson1 />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/daily-practice"
+              element={
+                <ProtectedRoute>
+                  <DailyPractice />
                 </ProtectedRoute>
               }
             />
