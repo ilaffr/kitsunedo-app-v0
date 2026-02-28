@@ -153,7 +153,8 @@ Keep it lighthearted and motivating, never mocking. Higher tiers should be progr
           // Extract base64 data and upload to storage
           const base64Data = base64Url.replace(/^data:image\/\w+;base64,/, "");
           const imageBytes = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
-          const fileName = `${user_id}/${trigger_type}_${trigger_detail}_tier${tier}_${Date.now()}.png`;
+          const safeDetail = encodeURIComponent(trigger_detail).replace(/%/g, "_");
+          const fileName = `${user_id}/${trigger_type}_${safeDetail}_tier${tier}_${Date.now()}.png`;
 
           const { error: uploadError } = await supabase.storage
             .from("badge-images")
