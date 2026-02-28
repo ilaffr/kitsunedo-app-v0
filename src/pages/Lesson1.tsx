@@ -5,6 +5,8 @@ import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
 import { useAchievement, useAchievementEffect } from "@/hooks/use-achievement";
 import { useStreak, useLessonProgress } from "@/hooks/use-user-data";
+import { usePersonalBadges } from "@/hooks/use-personal-badges";
+import { useAuth } from "@/context/AuthContext";
 
 type Section = "vocabulary" | "grammar" | "practice";
 
@@ -135,26 +137,70 @@ const practiceQuestions = [
   },
 ];
 
+// Map question index to the word/particle being tested
+const QUESTION_WORD_MAP: { word: string; meaning: string }[] = [
+  { word: "は", meaning: "topic-marking particle (wa)" },
+  { word: "じゃ ありません", meaning: "is not (negative copula)" },
+  { word: "も", meaning: "also/too particle" },
+  { word: "ですか", meaning: "question-forming particle" },
+  { word: "の", meaning: "possessive/descriptive particle" },
+  { word: "はじめまして", meaning: "How do you do (first meeting)" },
+];
+
+function extractWordFromQuestion(qIndex: number): string {
+  return QUESTION_WORD_MAP[qIndex]?.word || `q${qIndex}`;
+}
+
+function extractMeaningFromQuestion(qIndex: number): string {
+  return QUESTION_WORD_MAP[qIndex]?.meaning || "unknown";
+}
+
 export default function Lesson1() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { unlock } = useAchievement();
   const { recordStudy } = useStreak();
   const { saveProgress } = useLessonProgress("lesson_1");
+  const { trackMistake, checkAndGenerate } = usePersonalBadges();
   const [activeSection, setActiveSection] = useState<Section>("vocabulary");
   const [practiceAnswers, setPracticeAnswers] = useState<Record<number, number>>({});
   const [showResults, setShowResults] = useState(false);
   const [viewedGrammar, setViewedGrammar] = useState<Set<number>>(new Set());
   const lessonCompleteFired = useRef(false);
+  // Track per-word mistakes within this session
+  const sessionMistakes = useRef<Record<string, { count: number; meaning: string }>>({});
 
   const handleAnswer = (qIndex: number, optIndex: number) => {
     if (showResults) return;
     setPracticeAnswers((prev) => ({ ...prev, [qIndex]: optIndex }));
   };
 
-  const handleSubmit = () => setShowResults(true);
+  const handleSubmit = async () => {
+    setShowResults(true);
+
+    // Track mistakes for each wrong answer
+    if (user?.id) {
+      for (let i = 0; i < practiceQuestions.length; i++) {
+        if (practiceAnswers[i] !== practiceQuestions[i].correct) {
+          // Extract the key word/particle from the question
+          const word = extractWordFromQuestion(i);
+          const meaning = extractMeaningFromQuestion(i);
+          const newCount = await trackMistake("lesson_1", word);
+          sessionMistakes.current[word] = { count: newCount, meaning };
+        }
+      }
+
+      // Check if any words crossed badge thresholds
+      if (Object.keys(sessionMistakes.current).length > 0) {
+        checkAndGenerate("lesson_1", sessionMistakes.current);
+      }
+    }
+  };
+
   const handleReset = () => {
     setPracticeAnswers({});
     setShowResults(false);
+    sessionMistakes.current = {};
   };
 
   const correctCount = showResults
