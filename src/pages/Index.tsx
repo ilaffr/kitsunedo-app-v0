@@ -122,7 +122,7 @@ export default function Index() {
         <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
         
         <main className="flex-1 pb-20 md:pb-8">
-          <div className="container max-w-6xl px-4 py-4 md:py-6">
+          <div className="container max-w-6xl px-4 md:px-6 py-5 md:py-8">
             {/* Hero Banner */}
             <HeroBanner />
 
@@ -162,10 +162,10 @@ export default function Index() {
             </section>
 
             {/* Main Grid */}
-            <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
+            <div className="grid lg:grid-cols-2 gap-5 md:gap-6">
               {/* Daily Goal */}
               <section>
-              <DailyGoalCard
+                <DailyGoalCard
                   currentXP={65}
                   goalXP={100}
                   streak={streak.currentStreak}
@@ -176,15 +176,15 @@ export default function Index() {
 
               {/* Continue Learning */}
               <section>
-                <div className="card-paper p-5 md:p-6 border-2">
+                <div className="card-paper p-5 md:p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-brush font-bold text-foreground">Continue Path</h3>
-                    <button className="text-sm text-primary font-brush hover:underline">
+                    <button className="text-sm text-primary font-medium hover:underline underline-offset-4">
                       View all
                     </button>
                   </div>
                   
-                  <div className="space-y-2 md:space-y-3">
+                  <div className="space-y-2">
                     {recentLessons.map((lesson, index) => (
                       <LessonCard key={index} {...lesson} onClick={() => navigate("/lesson/1")} />
                     ))}
@@ -196,8 +196,8 @@ export default function Index() {
             {/* Study Categories */}
             <section className="mt-6 md:mt-8">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-1 h-6 bg-primary rounded-full" />
-                <h3 className="text-xl font-brush font-bold text-foreground">Training Grounds</h3>
+                <div className="w-1 h-5 bg-primary rounded-full" />
+                <h3 className="text-lg font-brush font-bold text-foreground">Training Grounds</h3>
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                 {studyCategories.map((category, index) => (
@@ -209,8 +209,8 @@ export default function Index() {
             {/* Spirit Bestiary — Achievements */}
             <section className="mt-6 md:mt-8">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-1 h-6 bg-primary rounded-full" />
-                <h3 className="text-xl font-brush font-bold text-foreground">Spirit Bestiary</h3>
+                <div className="w-1 h-5 bg-primary rounded-full" />
+                <h3 className="text-lg font-brush font-bold text-foreground">Spirit Bestiary</h3>
               </div>
               <AchievementsPanel />
             </section>
