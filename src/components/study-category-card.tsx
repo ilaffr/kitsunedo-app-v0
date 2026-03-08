@@ -37,8 +37,8 @@ const variantStyles = {
     ringVariant: "vermillion" as const,
   },
   grammar: {
-    iconBg: "bg-secondary",
-    iconColor: "text-secondary-foreground",
+    iconBg: "bg-muted",
+    iconColor: "text-muted-foreground",
     ringVariant: "ink" as const,
   },
 };
@@ -62,14 +62,14 @@ export function StudyCategoryCard({
       onClick={onClick}
       disabled={isLocked}
       className={cn(
-        "w-full text-left card-paper p-5 relative overflow-hidden group border-2 transition-all duration-300",
+        "w-full text-left card-paper p-5 relative overflow-hidden group transition-all duration-300",
         isLocked 
-          ? "opacity-50 cursor-not-allowed border-border" 
-          : "border-border hover:border-primary/40 hover:shadow-md"
+          ? "opacity-50 cursor-not-allowed" 
+          : "hover:shadow-lg hover:-translate-y-0.5"
       )}
     >
-      {/* Brush stroke accent line */}
-      <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary via-primary/50 to-transparent" />
+      {/* Subtle left accent */}
+      <div className="absolute top-3 bottom-3 left-0 w-[3px] rounded-r-full bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity" />
       
       {isLocked && (
         <div className="absolute top-4 right-4">
@@ -77,31 +77,30 @@ export function StudyCategoryCard({
         </div>
       )}
       
-      <div className="flex items-start justify-between gap-4 pl-3">
+      <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
           <div className={cn(
-            "w-12 h-12 rounded-sm flex items-center justify-center mb-3 border",
-            styles.iconBg,
-            "border-current/10"
+            "w-11 h-11 rounded-xl flex items-center justify-center mb-3",
+            styles.iconBg
           )}>
-            <Icon className={cn("w-6 h-6", styles.iconColor)} />
+            <Icon className={cn("w-5 h-5", styles.iconColor)} />
           </div>
           
           <div className="mb-2">
-            <h3 className="text-lg font-brush font-bold text-foreground">{title}</h3>
-            <p className="text-2xl font-japanese text-foreground/60">{japanese}</p>
+            <h3 className="text-base font-brush font-bold text-foreground">{title}</h3>
+            <p className="text-xl font-japanese text-foreground/40">{japanese}</p>
           </div>
           
-          <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{description}</p>
+          <p className="text-xs text-muted-foreground mb-3 line-clamp-2 leading-relaxed">{description}</p>
           
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span className="font-medium">{completedLessons}/{totalLessons} scrolls</span>
-            <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:text-primary" />
+            <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 group-hover:text-primary" />
           </div>
         </div>
         
-        <ProgressRing progress={progress} size={64} strokeWidth={5} variant={styles.ringVariant}>
-          <span className="text-sm font-brush font-bold text-foreground">{progress}%</span>
+        <ProgressRing progress={progress} size={56} strokeWidth={4} variant={styles.ringVariant}>
+          <span className="text-xs font-brush font-bold text-foreground">{progress}%</span>
         </ProgressRing>
       </div>
     </button>
