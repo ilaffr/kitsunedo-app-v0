@@ -140,6 +140,27 @@ export default function KanjiWritingPractice() {
               </div>
             </div>
 
+            {/* Stroke Order Diagram */}
+            <div className="card-paper border-2 p-5 md:p-6 mb-4">
+              <button
+                onClick={() => updateState({ showStrokeOrder: !state.showStrokeOrder })}
+                className="flex items-center gap-2 w-full justify-between text-sm mb-3"
+              >
+                <span className="flex items-center gap-1.5 font-medium text-foreground">
+                  <PenTool className="w-4 h-4 text-primary" />
+                  Stroke Order Guide
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {state.showStrokeOrder ? "Hide" : "Show"}
+                </span>
+              </button>
+              {state.showStrokeOrder && (
+                <div className="flex justify-center">
+                  <StrokeOrderDiagram kanji={current.kanji} size={240} />
+                </div>
+              )}
+            </div>
+
             {/* Canvas */}
             <div className="card-paper border-2 p-5 md:p-6 mb-4 flex flex-col items-center">
               <p className="text-xs text-muted-foreground uppercase tracking-widest mb-4 serif-jp">
