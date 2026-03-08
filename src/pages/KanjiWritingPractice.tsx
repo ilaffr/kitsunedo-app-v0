@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Eye, EyeOff, ChevronRight, ChevronLeft, Check, Sparkles } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, ChevronRight, ChevronLeft, Check, Sparkles, PenTool } from "lucide-react";
 import { Header } from "@/components/header";
 import { KanjiCanvas } from "@/components/kanji-canvas";
+import { StrokeOrderDiagram } from "@/components/stroke-order-diagram";
 import { kanjiEntries, type KanjiEntry } from "@/data/daily-practice-data";
 import { cn } from "@/lib/utils";
 
