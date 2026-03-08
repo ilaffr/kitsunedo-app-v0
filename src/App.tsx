@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "@/context/AuthContext";
 import Index from "./pages/Index";
 import Lesson1 from "./pages/Lesson1";
 import DailyPractice from "./pages/DailyPractice";
+import KanjiWritingPractice from "./pages/KanjiWritingPractice";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
