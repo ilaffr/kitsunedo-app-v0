@@ -10,10 +10,13 @@ export function QuickReviewCard({ itemsToReview, onStartReview }: QuickReviewCar
   if (itemsToReview === 0) return null;
 
   return (
-    <div className="card-paper p-4 md:p-5 relative overflow-hidden">
+    <div className="card-paper p-4 md:p-5 border-2 border-foreground/20 relative overflow-hidden">
+      {/* Brush stroke accent */}
+      <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent" />
+      
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 md:gap-4">
-          <div className="w-11 h-11 rounded-xl bg-accent/5 flex items-center justify-center">
+          <div className="w-11 h-11 rounded-sm bg-foreground/5 flex items-center justify-center border-2 border-foreground/20">
             <Scroll className="w-5 h-5 text-foreground" />
           </div>
           <div>
@@ -27,10 +30,10 @@ export function QuickReviewCard({ itemsToReview, onStartReview }: QuickReviewCar
         <Button 
           onClick={onStartReview}
           variant="outline"
-          className="rounded-xl font-brush gap-2"
+          className="rounded-sm border-2 border-foreground/20 hover:bg-foreground/5 hover:border-foreground/40 font-brush"
         >
           Begin
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       </div>
     </div>

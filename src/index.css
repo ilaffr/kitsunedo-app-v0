@@ -2,121 +2,123 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Kitsune-dō Design System
-   Refined sumi-e aesthetic — polished & modern
+/* Sumi-e Brush Stroke Design System
+   Japanese ink calligraphy aesthetic inspired by Ghost of Yotei
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@300;400;500;600&display=swap');
 
 @layer base {
   :root {
-    /* Clean warm paper */
-    --background: 40 20% 97%;
-    --foreground: 220 15% 12%;
+    /* Aged rice paper / washi */
+    --background: 40 25% 96%;
+    --foreground: 0 0% 8%;
 
-    /* Card surface */
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 12%;
+    /* Paper card - slightly warmer */
+    --card: 40 30% 98%;
+    --card-foreground: 0 0% 8%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 12%;
+    --popover: 40 30% 98%;
+    --popover-foreground: 0 0% 8%;
 
-    /* Vermillion — refined */
-    --primary: 6 78% 50%;
-    --primary-foreground: 0 0% 100%;
+    /* Vermillion red - hanko stamp color */
+    --primary: 5 85% 45%;
+    --primary-foreground: 40 30% 98%;
 
-    /* Soft neutral */
-    --secondary: 220 10% 94%;
-    --secondary-foreground: 220 15% 25%;
+    /* Ink wash gray */
+    --secondary: 30 8% 88%;
+    --secondary-foreground: 0 0% 15%;
 
-    /* Muted */
-    --muted: 220 10% 95%;
-    --muted-foreground: 220 8% 50%;
+    /* Muted paper tone */
+    --muted: 35 15% 90%;
+    --muted-foreground: 0 0% 40%;
 
-    /* Deep accent */
-    --accent: 220 15% 12%;
-    --accent-foreground: 0 0% 100%;
+    /* Deep ink black accent */
+    --accent: 0 0% 12%;
+    --accent-foreground: 40 30% 98%;
 
-    /* Bamboo success */
-    --success: 155 40% 42%;
-    --success-foreground: 0 0% 100%;
+    /* Bamboo green for success */
+    --success: 150 35% 35%;
+    --success-foreground: 40 30% 98%;
 
-    /* Warm gold warning */
-    --warning: 38 90% 55%;
-    --warning-foreground: 220 15% 12%;
+    /* Autumn gold warning */
+    --warning: 35 80% 50%;
+    --warning-foreground: 0 0% 8%;
 
-    --destructive: 0 72% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 40 30% 98%;
 
-    --border: 220 10% 91%;
-    --input: 220 10% 91%;
-    --ring: 6 78% 50%;
+    --border: 30 15% 85%;
+    --input: 30 15% 85%;
+    --ring: 5 85% 45%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    /* Refined shadows */
-    --shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.04), 0 1px 4px hsl(0 0% 0% / 0.03);
-    --shadow-md: 0 2px 8px hsl(0 0% 0% / 0.06), 0 4px 16px hsl(0 0% 0% / 0.04);
-    --shadow-lg: 0 4px 16px hsl(0 0% 0% / 0.08), 0 8px 32px hsl(0 0% 0% / 0.06);
-    --shadow-ink: 0 2px 8px hsl(220 15% 12% / 0.12);
-    --shadow-vermillion: 0 4px 20px hsl(6 78% 50% / 0.2);
+    /* Ink gradients */
+    --gradient-ink: linear-gradient(180deg, hsl(0 0% 8%), hsl(0 0% 25%));
+    --gradient-vermillion: linear-gradient(135deg, hsl(5 85% 45%), hsl(0 75% 40%));
+    --gradient-paper: linear-gradient(180deg, hsl(40 30% 98%), hsl(35 20% 93%));
+    --gradient-wash: linear-gradient(180deg, hsl(0 0% 8% / 0.8), hsl(0 0% 8% / 0));
 
-    /* Gradients */
-    --gradient-vermillion: linear-gradient(135deg, hsl(6 78% 50%), hsl(2 70% 44%));
-    --gradient-ink: linear-gradient(135deg, hsl(220 15% 12%), hsl(220 12% 22%));
-    --gradient-paper: linear-gradient(180deg, hsl(0 0% 100%), hsl(40 15% 96%));
+    /* Brush stroke shadows */
+    --shadow-sm: 0 1px 3px hsl(0 0% 0% / 0.08);
+    --shadow-md: 0 4px 12px hsl(0 0% 0% / 0.1);
+    --shadow-lg: 0 8px 24px hsl(0 0% 0% / 0.12);
+    --shadow-ink: 2px 2px 0 hsl(0 0% 8%);
+    --shadow-vermillion: 0 4px 16px hsl(5 85% 45% / 0.3);
 
     /* Sidebar */
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 220 15% 25%;
-    --sidebar-primary: 6 78% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 10% 96%;
-    --sidebar-accent-foreground: 220 15% 12%;
-    --sidebar-border: 220 10% 92%;
-    --sidebar-ring: 6 78% 50%;
+    --sidebar-background: 40 25% 94%;
+    --sidebar-foreground: 0 0% 15%;
+    --sidebar-primary: 5 85% 45%;
+    --sidebar-primary-foreground: 40 30% 98%;
+    --sidebar-accent: 35 15% 88%;
+    --sidebar-accent-foreground: 0 0% 8%;
+    --sidebar-border: 30 15% 85%;
+    --sidebar-ring: 5 85% 45%;
   }
 
   .dark {
-    --background: 225 12% 7%;
-    --foreground: 220 10% 90%;
+    /* Dark ink paper */
+    --background: 30 10% 8%;
+    --foreground: 35 20% 90%;
 
-    --card: 225 12% 10%;
-    --card-foreground: 220 10% 90%;
+    --card: 30 10% 12%;
+    --card-foreground: 35 20% 90%;
 
-    --popover: 225 12% 10%;
-    --popover-foreground: 220 10% 90%;
+    --popover: 30 10% 12%;
+    --popover-foreground: 35 20% 90%;
 
-    --primary: 6 75% 58%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 5 80% 55%;
+    --primary-foreground: 0 0% 8%;
 
-    --secondary: 225 10% 16%;
-    --secondary-foreground: 220 10% 75%;
+    --secondary: 30 8% 20%;
+    --secondary-foreground: 35 15% 80%;
 
-    --muted: 225 10% 14%;
-    --muted-foreground: 220 8% 50%;
+    --muted: 30 8% 18%;
+    --muted-foreground: 30 10% 55%;
 
-    --accent: 220 10% 88%;
-    --accent-foreground: 225 12% 7%;
+    --accent: 35 20% 85%;
+    --accent-foreground: 0 0% 8%;
 
-    --success: 155 45% 48%;
-    --success-foreground: 225 12% 7%;
+    --success: 150 40% 45%;
+    --success-foreground: 0 0% 8%;
 
-    --destructive: 0 68% 55%;
-    --destructive-foreground: 220 10% 90%;
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 35 20% 90%;
 
-    --border: 225 10% 16%;
-    --input: 225 10% 16%;
-    --ring: 6 75% 58%;
+    --border: 30 8% 20%;
+    --input: 30 8% 20%;
+    --ring: 5 80% 55%;
 
-    --sidebar-background: 225 12% 8%;
-    --sidebar-foreground: 220 10% 80%;
-    --sidebar-primary: 6 75% 58%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 225 10% 14%;
-    --sidebar-accent-foreground: 220 10% 90%;
-    --sidebar-border: 225 10% 15%;
-    --sidebar-ring: 6 75% 58%;
+    --sidebar-background: 30 10% 10%;
+    --sidebar-foreground: 35 15% 85%;
+    --sidebar-primary: 5 80% 55%;
+    --sidebar-primary-foreground: 0 0% 8%;
+    --sidebar-accent: 30 8% 16%;
+    --sidebar-accent-foreground: 35 20% 90%;
+    --sidebar-border: 30 8% 18%;
+    --sidebar-ring: 5 80% 55%;
   }
 }
 
@@ -130,6 +132,7 @@
     font-family: 'Outfit', 'Noto Sans JP', sans-serif;
   }
 
+  /* Brush stroke titles */
   h1, h2, h3 {
     font-family: 'Noto Serif JP', serif;
     @apply font-semibold tracking-wide;
@@ -141,41 +144,52 @@
 }
 
 @layer components {
-  /* Clean elevated card */
+  /* Paper texture cards */
   .card-paper {
-    @apply bg-card rounded-2xl border border-border relative;
+    @apply bg-card rounded-lg border border-border relative;
     box-shadow: var(--shadow-md);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
   }
 
   .card-interactive {
-    @apply bg-card rounded-2xl border border-border transition-all duration-300 relative;
+    @apply bg-card rounded-lg border border-border transition-all duration-300 relative;
     box-shadow: var(--shadow-sm);
   }
 
   .card-interactive:hover {
     box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
+    border-color: hsl(var(--primary) / 0.4);
   }
 
-  /* Vermillion gradient button */
+  /* Brush stroke button */
   .btn-vermillion {
     background: var(--gradient-vermillion);
     box-shadow: var(--shadow-vermillion);
-    @apply rounded-xl;
+    position: relative;
   }
 
-  .btn-vermillion:hover {
-    box-shadow: 0 6px 24px hsl(6 78% 50% / 0.3);
-    transform: translateY(-1px);
+  .btn-vermillion::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: hsl(var(--primary));
+    opacity: 0;
+    filter: blur(8px);
+    transition: opacity 0.3s;
+    z-index: -1;
   }
 
-  /* Ink button */
+  .btn-vermillion:hover::before {
+    opacity: 0.4;
+  }
+
+  /* Ink black button */
   .btn-ink {
     background: var(--gradient-ink);
-    @apply text-card rounded-xl;
+    @apply text-card;
   }
 
-  /* Typography */
+  /* Brush stroke text */
   .text-brush {
     font-family: 'Noto Serif JP', serif;
     @apply font-bold tracking-wider;
@@ -193,7 +207,7 @@
     font-family: 'Noto Serif JP', serif;
   }
 
-  /* Brush underline — refined */
+  /* Brush stroke underline */
   .brush-underline {
     position: relative;
     display: inline-block;
@@ -207,24 +221,30 @@
     right: 0;
     height: 3px;
     background: hsl(var(--primary));
-    border-radius: 4px;
-    transform: scaleX(0.85);
+    transform: scaleX(0.9) skewX(-5deg);
+    border-radius: 2px;
   }
 
-  /* Clean divider */
+  /* Ink wash divider */
   .ink-divider {
-    height: 1px;
-    @apply bg-border;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent, 
+      hsl(var(--foreground) / 0.2) 20%, 
+      hsl(var(--foreground) / 0.3) 50%, 
+      hsl(var(--foreground) / 0.2) 80%, 
+      transparent
+    );
   }
 
-  /* Hanko stamp badge */
+  /* Hanko stamp style badge */
   .hanko-badge {
-    @apply border-2 border-primary text-primary font-bold px-2.5 py-1 rounded-lg;
+    @apply border-2 border-primary text-primary font-bold px-2 py-1 rounded-sm;
     transform: rotate(-3deg);
     font-family: 'Noto Serif JP', serif;
   }
 
-  /* Brush top border */
+  /* Brush stroke border */
   .brush-border {
     position: relative;
   }
@@ -233,12 +253,17 @@
     content: '';
     position: absolute;
     top: 0;
-    left: 8px;
-    right: 8px;
-    height: 3px;
-    background: hsl(var(--primary));
-    border-radius: 4px;
-    opacity: 0.7;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, 
+      transparent, 
+      hsl(var(--foreground)) 10%, 
+      hsl(var(--foreground)) 90%, 
+      transparent
+    );
+    transform: scaleY(0.5) translateY(-50%);
+    opacity: 0.8;
   }
 }
 
@@ -248,11 +273,11 @@
   }
 
   .animate-brush-in {
-    animation: brush-in 0.6s ease-out;
+    animation: brush-in 0.8s ease-out;
   }
 
   .animate-fade-up {
-    animation: fade-up 0.5s ease-out;
+    animation: fade-up 0.6s ease-out;
   }
 
   .animate-stamp {
@@ -261,22 +286,44 @@
 
   @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
+    50% { transform: translateY(-8px); }
   }
 
   @keyframes brush-in {
-    from { opacity: 0; transform: translateX(-16px); }
-    to { opacity: 1; transform: translateX(0); }
+    from { 
+      opacity: 0; 
+      transform: translateX(-20px) scaleX(0.8);
+      filter: blur(4px);
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0) scaleX(1);
+      filter: blur(0);
+    }
   }
 
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { 
+      opacity: 0; 
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0);
+    }
   }
 
   @keyframes stamp {
-    0% { opacity: 0; transform: scale(1.5) rotate(-10deg); }
-    50% { transform: scale(0.95) rotate(-2deg); }
-    100% { opacity: 1; transform: scale(1) rotate(-3deg); }
+    0% { 
+      opacity: 0;
+      transform: scale(1.5) rotate(-10deg);
+    }
+    50% {
+      transform: scale(0.95) rotate(-2deg);
+    }
+    100% { 
+      opacity: 1;
+      transform: scale(1) rotate(-3deg);
+    }
   }
 }
