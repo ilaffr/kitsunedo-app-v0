@@ -42,6 +42,7 @@ const studyCategories = [
     totalLessons: 50,
     completedLessons: 12,
     variant: "kanji" as const,
+    href: "/kanji-writing",
   },
   {
     title: "Vocabulary",
