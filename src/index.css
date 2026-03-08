@@ -336,13 +336,3 @@
     }
   }
 }
-    }
-    50% {
-      transform: scale(0.95) rotate(-2deg);
-    }
-    100% { 
-      opacity: 1;
-      transform: scale(1) rotate(-3deg);
-    }
-  }
-}
