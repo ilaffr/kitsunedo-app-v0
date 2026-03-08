@@ -336,7 +336,6 @@
     }
   }
 }
-      transform: scale(1.5) rotate(-10deg);
     }
     50% {
       transform: scale(0.95) rotate(-2deg);
