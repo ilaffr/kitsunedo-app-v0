@@ -326,4 +326,13 @@
       transform: scale(1) rotate(-3deg);
     }
   }
+
+  @keyframes stroke-draw {
+    from {
+      stroke-dashoffset: 300;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
 }

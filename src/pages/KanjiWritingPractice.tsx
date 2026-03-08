@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Eye, EyeOff, ChevronRight, ChevronLeft, Check, Sparkles } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, ChevronRight, ChevronLeft, Check, Sparkles, PenTool } from "lucide-react";
 import { Header } from "@/components/header";
 import { KanjiCanvas } from "@/components/kanji-canvas";
+import { StrokeOrderDiagram } from "@/components/stroke-order-diagram";
 import { kanjiEntries, type KanjiEntry } from "@/data/daily-practice-data";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,7 @@ type SelfGrade = "perfect" | "okay" | "missed" | null;
 interface PracticeState {
   showGuide: boolean;
   showAnswer: boolean;
+  showStrokeOrder: boolean;
   selfGrade: SelfGrade;
 }
 
@@ -31,7 +33,7 @@ export default function KanjiWritingPractice() {
   const [finished, setFinished] = useState(false);
 
   const current = practiceSet[currentIndex];
-  const state = states[currentIndex] ?? { showGuide: true, showAnswer: false, selfGrade: null };
+  const state = states[currentIndex] ?? { showGuide: true, showAnswer: false, showStrokeOrder: false, selfGrade: null };
 
   const updateState = (patch: Partial<PracticeState>) => {
     setStates((prev) => ({
@@ -136,6 +138,27 @@ export default function KanjiWritingPractice() {
                 </p>
                 <p className="text-sm text-foreground italic">"{current.mnemonic}"</p>
               </div>
+            </div>
+
+            {/* Stroke Order Diagram */}
+            <div className="card-paper border-2 p-5 md:p-6 mb-4">
+              <button
+                onClick={() => updateState({ showStrokeOrder: !state.showStrokeOrder })}
+                className="flex items-center gap-2 w-full justify-between text-sm mb-3"
+              >
+                <span className="flex items-center gap-1.5 font-medium text-foreground">
+                  <PenTool className="w-4 h-4 text-primary" />
+                  Stroke Order Guide
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {state.showStrokeOrder ? "Hide" : "Show"}
+                </span>
+              </button>
+              {state.showStrokeOrder && (
+                <div className="flex justify-center">
+                  <StrokeOrderDiagram kanji={current.kanji} size={240} />
+                </div>
+              )}
             </div>
 
             {/* Canvas */}
