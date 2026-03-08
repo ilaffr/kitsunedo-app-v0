@@ -334,8 +334,8 @@
     to {
       stroke-dashoffset: 0;
     }
-  }
-    0% { 
+}
+
       opacity: 0;
       transform: scale(1.5) rotate(-10deg);
     }
