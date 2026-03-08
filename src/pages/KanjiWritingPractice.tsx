@@ -21,6 +21,7 @@ type SelfGrade = "perfect" | "okay" | "missed" | null;
 interface PracticeState {
   showGuide: boolean;
   showAnswer: boolean;
+  showStrokeOrder: boolean;
   selfGrade: SelfGrade;
 }
 
