@@ -33,7 +33,7 @@ export default function KanjiWritingPractice() {
   const [finished, setFinished] = useState(false);
 
   const current = practiceSet[currentIndex];
-  const state = states[currentIndex] ?? { showGuide: true, showAnswer: false, selfGrade: null };
+  const state = states[currentIndex] ?? { showGuide: true, showAnswer: false, showStrokeOrder: false, selfGrade: null };
 
   const updateState = (patch: Partial<PracticeState>) => {
     setStates((prev) => ({
