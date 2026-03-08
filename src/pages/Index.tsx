@@ -202,7 +202,7 @@ export default function Index() {
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                 {studyCategories.map((category, index) => (
-                  <StudyCategoryCard key={index} {...category} onClick={() => navigate("/lesson/1")} />
+                  <StudyCategoryCard key={index} {...category} onClick={() => navigate((category as any).href ?? "/lesson/1")} />
                 ))}
               </div>
             </section>
