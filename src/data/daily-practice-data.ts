@@ -123,8 +123,158 @@ export const kanjiEntries: KanjiEntry[] = [
     ],
     mnemonic: "Rain hammering the rice field — farmers screaming at THUNDER!",
   },
+  // ── New entries ──
+  {
+    kanji: "鳴",
+    reading: "なく (naku)",
+    meaning: "to cry / to chirp",
+    radicals: [
+      { radical: "口", meaning: "mouth" },
+      { radical: "鳥", meaning: "bird" },
+    ],
+    mnemonic: "A bird opening its mouth — CHIRPING so loud the neighbors complain!",
+  },
+  {
+    kanji: "思",
+    reading: "おもう (omou)",
+    meaning: "to think",
+    radicals: [
+      { radical: "田", meaning: "rice field" },
+      { radical: "心", meaning: "heart" },
+    ],
+    mnemonic: "Your heart is in the rice field — all you THINK about is lunch!",
+  },
+  {
+    kanji: "忘",
+    reading: "わすれる (wasureru)",
+    meaning: "to forget",
+    radicals: [
+      { radical: "亡", meaning: "to perish / dead" },
+      { radical: "心", meaning: "heart" },
+    ],
+    mnemonic: "Your heart has perished — you FORGOT everything because your feelings died!",
+  },
+  {
+    kanji: "空",
+    reading: "そら (sora)",
+    meaning: "sky / empty",
+    radicals: [
+      { radical: "穴", meaning: "hole / cave" },
+      { radical: "工", meaning: "craft / work" },
+    ],
+    mnemonic: "A craftsman digs a hole so deep he reaches the SKY on the other side!",
+  },
+  {
+    kanji: "花",
+    reading: "はな (hana)",
+    meaning: "flower",
+    radicals: [
+      { radical: "艹", meaning: "grass / plant" },
+      { radical: "化", meaning: "to change" },
+    ],
+    mnemonic: "A plant that CHANGES into something beautiful — that's a FLOWER blooming!",
+  },
+  {
+    kanji: "泣",
+    reading: "なく (naku)",
+    meaning: "to cry / weep",
+    radicals: [
+      { radical: "氵", meaning: "water" },
+      { radical: "立", meaning: "to stand" },
+    ],
+    mnemonic: "Standing in water? No, those are your tears — you're CRYING standing up!",
+  },
+  {
+    kanji: "飲",
+    reading: "のむ (nomu)",
+    meaning: "to drink",
+    radicals: [
+      { radical: "食", meaning: "eat / food" },
+      { radical: "欠", meaning: "yawn / lack" },
+    ],
+    mnemonic: "You're yawning at food because you'd rather DRINK than eat!",
+  },
+  {
+    kanji: "教",
+    reading: "おしえる (oshieru)",
+    meaning: "to teach",
+    radicals: [
+      { radical: "孝", meaning: "filial piety" },
+      { radical: "攵", meaning: "to strike / hit" },
+    ],
+    mnemonic: "Teaching filial piety by hitting — old-school TEACHING methods!",
+  },
+  {
+    kanji: "話",
+    reading: "はなす (hanasu)",
+    meaning: "to speak / story",
+    radicals: [
+      { radical: "言", meaning: "say / words" },
+      { radical: "舌", meaning: "tongue" },
+    ],
+    mnemonic: "Words flying off your tongue — you just can't stop TALKING!",
+  },
+  {
+    kanji: "寺",
+    reading: "てら (tera)",
+    meaning: "temple",
+    radicals: [
+      { radical: "土", meaning: "earth / soil" },
+      { radical: "寸", meaning: "measurement / inch" },
+    ],
+    mnemonic: "Every inch of earth is sacred — that's what makes it a TEMPLE!",
+  },
+  {
+    kanji: "持",
+    reading: "もつ (motsu)",
+    meaning: "to hold / to have",
+    radicals: [
+      { radical: "扌", meaning: "hand" },
+      { radical: "寺", meaning: "temple" },
+    ],
+    mnemonic: "A hand grabbing a temple — you can't HOLD an entire temple, but you're trying!",
+  },
+  {
+    kanji: "鉄",
+    reading: "てつ (tetsu)",
+    meaning: "iron",
+    radicals: [
+      { radical: "金", meaning: "metal / gold" },
+      { radical: "失", meaning: "to lose" },
+    ],
+    mnemonic: "You lost your gold and all that's left is boring IRON!",
+  },
+  {
+    kanji: "読",
+    reading: "よむ (yomu)",
+    meaning: "to read",
+    radicals: [
+      { radical: "言", meaning: "say / words" },
+      { radical: "売", meaning: "to sell" },
+    ],
+    mnemonic: "Selling words? That's just writing books — someone has to READ them!",
+  },
+  {
+    kanji: "聞",
+    reading: "きく (kiku)",
+    meaning: "to hear / to ask",
+    radicals: [
+      { radical: "門", meaning: "gate" },
+      { radical: "耳", meaning: "ear" },
+    ],
+    mnemonic: "An ear pressed against the gate — eavesdropping is just HEARING with extra steps!",
+  },
+  {
+    kanji: "体",
+    reading: "からだ (karada)",
+    meaning: "body",
+    radicals: [
+      { radical: "亻", meaning: "person" },
+      { radical: "本", meaning: "book / origin" },
+    ],
+    mnemonic: "A person IS the origin of everything — your BODY is your first book!",
+  },
 ];
-
 // ─── Exercise types ────────────────────────────────────────────────
 
 export type ExerciseType = "kanji_radical" | "kanji_mnemonic" | "vocab_recall" | "grammar_fill";
