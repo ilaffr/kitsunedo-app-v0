@@ -180,7 +180,10 @@ export default function Index() {
                 <div className="card-paper p-5 md:p-6 border-2">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-brush font-bold text-foreground">Continue Path</h3>
-                    <button className="text-sm text-primary font-brush hover:underline">
+                    <button
+                      className="text-sm text-primary font-brush hover:underline"
+                      onClick={() => navigate("/lessons")}
+                    >
                       View all
                     </button>
                   </div>
