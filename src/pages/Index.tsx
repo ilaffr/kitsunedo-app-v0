@@ -69,49 +69,6 @@ const studyCategories = [
   },
 ];
 
-const recentLessons = [
-  {
-    title: "Basic Greetings",
-    japanese: "あいさつ",
-    lessonNumber: 1,
-    status: "completed" as const,
-    xpReward: 25,
-    difficulty: "easy" as const,
-  },
-  {
-    title: "Numbers 1-10",
-    japanese: "数字",
-    lessonNumber: 2,
-    status: "completed" as const,
-    xpReward: 30,
-    difficulty: "easy" as const,
-  },
-  {
-    title: "Self Introduction",
-    japanese: "自己紹介",
-    lessonNumber: 3,
-    status: "in-progress" as const,
-    xpReward: 35,
-    difficulty: "medium" as const,
-  },
-  {
-    title: "Daily Routines",
-    japanese: "日課",
-    lessonNumber: 4,
-    status: "available" as const,
-    xpReward: 40,
-    difficulty: "medium" as const,
-  },
-  {
-    title: "Shopping Phrases",
-    japanese: "買い物",
-    lessonNumber: 5,
-    status: "locked" as const,
-    xpReward: 45,
-    difficulty: "hard" as const,
-  },
-];
-
 export default function Index() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("home");
