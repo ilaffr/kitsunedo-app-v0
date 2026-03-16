@@ -74,11 +74,42 @@ export default function Index() {
   const [activeTab, setActiveTab] = useState("home");
   const { streak } = useStreak();
   const { getTodayXP } = usePracticeSession();
+  const { lessons: progressList } = useAllLessonProgress();
   const [todayXP, setTodayXP] = useState(0);
 
   useEffect(() => {
     getTodayXP().then(setTodayXP);
   }, [getTodayXP]);
+
+  const progressMap = useMemo(
+    () => new Map(progressList.map((p) => [p.lessonId, p])),
+    [progressList]
+  );
+
+  const continueLessons = useMemo(() => {
+    const first5 = minnaLessons.slice(0, 5);
+    return first5.map((l) => {
+      const prog = progressMap.get(`lesson_${l.id}`);
+      const completed = prog?.completed ?? false;
+      // Find the first non-completed lesson to mark as in-progress
+      const firstIncomplete = first5.find(
+        (x) => !(progressMap.get(`lesson_${x.id}`)?.completed)
+      );
+      let status: "completed" | "in-progress" | "available" | "locked";
+      if (completed) status = "completed";
+      else if (firstIncomplete?.id === l.id) status = "in-progress";
+      else if (l.id <= (firstIncomplete?.id ?? 1)) status = "available";
+      else status = "available";
+      return {
+        title: l.title,
+        japanese: l.titleJp,
+        lessonNumber: l.id,
+        status,
+        xpReward: 20 + l.id * 5,
+        difficulty: (l.difficulty === "beginner" ? "easy" : l.difficulty === "elementary" ? "medium" : "hard") as "easy" | "medium" | "hard",
+      };
+    });
+  }, [progressMap]);
 
   return (
     <div className="min-h-screen bg-background">
