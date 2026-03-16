@@ -28,7 +28,7 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
   const { saveProgress } = useLessonProgress(`lesson_${lesson.number}`);
 
   const steps = useMemo(
-    () => generateLessonSteps(lesson.vocabulary, lesson.grammarPoints),
+    () => generateLessonSteps(lesson.vocabulary, lesson.grammarPoints, lesson.readingPassages),
     [lesson]
   );
 
