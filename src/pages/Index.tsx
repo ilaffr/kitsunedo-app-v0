@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookOpen, Languages, PenTool, BookText, MessageSquare, Flame, Star, Clock } from "lucide-react";
 import { Header } from "@/components/header";
@@ -10,7 +10,8 @@ import { StatsCard } from "@/components/stats-card";
 import { LessonCard } from "@/components/lesson-card";
 import { HeroBanner } from "@/components/hero-banner";
 import { AchievementsPanel } from "@/components/achievements-panel";
-import { useStreak, usePracticeSession } from "@/hooks/use-user-data";
+import { useStreak, usePracticeSession, useAllLessonProgress } from "@/hooks/use-user-data";
+import { minnaLessons } from "@/data/minna-lessons";
 
 const studyCategories = [
   {
@@ -68,59 +69,47 @@ const studyCategories = [
   },
 ];
 
-const recentLessons = [
-  {
-    title: "Basic Greetings",
-    japanese: "あいさつ",
-    lessonNumber: 1,
-    status: "completed" as const,
-    xpReward: 25,
-    difficulty: "easy" as const,
-  },
-  {
-    title: "Numbers 1-10",
-    japanese: "数字",
-    lessonNumber: 2,
-    status: "completed" as const,
-    xpReward: 30,
-    difficulty: "easy" as const,
-  },
-  {
-    title: "Self Introduction",
-    japanese: "自己紹介",
-    lessonNumber: 3,
-    status: "in-progress" as const,
-    xpReward: 35,
-    difficulty: "medium" as const,
-  },
-  {
-    title: "Daily Routines",
-    japanese: "日課",
-    lessonNumber: 4,
-    status: "available" as const,
-    xpReward: 40,
-    difficulty: "medium" as const,
-  },
-  {
-    title: "Shopping Phrases",
-    japanese: "買い物",
-    lessonNumber: 5,
-    status: "locked" as const,
-    xpReward: 45,
-    difficulty: "hard" as const,
-  },
-];
-
 export default function Index() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("home");
   const { streak } = useStreak();
   const { getTodayXP } = usePracticeSession();
+  const { lessons: progressList } = useAllLessonProgress();
   const [todayXP, setTodayXP] = useState(0);
 
   useEffect(() => {
     getTodayXP().then(setTodayXP);
   }, [getTodayXP]);
+
+  const progressMap = useMemo(
+    () => new Map(progressList.map((p) => [p.lessonId, p])),
+    [progressList]
+  );
+
+  const continueLessons = useMemo(() => {
+    const first5 = minnaLessons.slice(0, 5);
+    return first5.map((l) => {
+      const prog = progressMap.get(`lesson_${l.id}`);
+      const completed = prog?.completed ?? false;
+      // Find the first non-completed lesson to mark as in-progress
+      const firstIncomplete = first5.find(
+        (x) => !(progressMap.get(`lesson_${x.id}`)?.completed)
+      );
+      let status: "completed" | "in-progress" | "available" | "locked";
+      if (completed) status = "completed";
+      else if (firstIncomplete?.id === l.id) status = "in-progress";
+      else if (l.id <= (firstIncomplete?.id ?? 1)) status = "available";
+      else status = "available";
+      return {
+        title: l.title,
+        japanese: l.titleJp,
+        lessonNumber: l.id,
+        status,
+        xpReward: 20 + l.id * 5,
+        difficulty: (l.difficulty === "beginner" ? "easy" : l.difficulty === "elementary" ? "medium" : "hard") as "easy" | "medium" | "hard",
+      };
+    });
+  }, [progressMap]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -196,8 +185,8 @@ export default function Index() {
                   </div>
                   
                   <div className="space-y-2 md:space-y-3">
-                    {recentLessons.map((lesson, index) => (
-                      <LessonCard key={index} {...lesson} onClick={() => navigate("/lesson/1")} />
+                    {continueLessons.map((lesson, index) => (
+                      <LessonCard key={index} {...lesson} onClick={() => navigate(`/lesson/${lesson.lessonNumber}`)} />
                     ))}
                   </div>
                 </div>

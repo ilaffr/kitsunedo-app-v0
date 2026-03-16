@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, BookOpen, Lock, Check, Play, ChevronDown, ChevronUp } from "lucide-react";
 import { Header } from "@/components/header";
 import { minnaLessons, type MinnaLesson } from "@/data/minna-lessons";
+import { useAllLessonProgress } from "@/hooks/use-user-data";
 import { cn } from "@/lib/utils";
 
 const difficultyColors = {
@@ -21,6 +22,8 @@ export default function Lessons() {
   const navigate = useNavigate();
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [filter, setFilter] = useState<"all" | "beginner" | "elementary" | "intermediate">("all");
+  const { lessons: progressList } = useAllLessonProgress();
+  const progressMap = new Map(progressList.map((p) => [p.lessonId, p]));
 
   const filtered = filter === "all" ? minnaLessons : minnaLessons.filter(l => l.difficulty === filter);
 
@@ -59,15 +62,20 @@ export default function Lessons() {
 
         {/* Lesson list */}
         <div className="space-y-2">
-          {filtered.map((lesson) => (
-            <LessonRow
-              key={lesson.id}
-              lesson={lesson}
-              expanded={expandedId === lesson.id}
-              onToggle={() => setExpandedId(expandedId === lesson.id ? null : lesson.id)}
-              onStart={() => lesson.id <= 5 ? navigate(`/lesson/${lesson.id}`) : undefined}
-            />
-          ))}
+          {filtered.map((lesson) => {
+            const prog = progressMap.get(`lesson_${lesson.id}`);
+            return (
+              <LessonRow
+                key={lesson.id}
+                lesson={lesson}
+                completed={prog?.completed ?? false}
+                bestScore={prog?.bestScore ?? null}
+                expanded={expandedId === lesson.id}
+                onToggle={() => setExpandedId(expandedId === lesson.id ? null : lesson.id)}
+                onStart={() => lesson.id <= 5 ? navigate(`/lesson/${lesson.id}`) : undefined}
+              />
+            );
+          })}
         </div>
       </main>
     </div>
@@ -76,11 +84,15 @@ export default function Lessons() {
 
 function LessonRow({
   lesson,
+  completed,
+  bestScore,
   expanded,
   onToggle,
   onStart,
 }: {
   lesson: MinnaLesson;
+  completed: boolean;
+  bestScore: number | null;
   expanded: boolean;
   onToggle: () => void;
   onStart: () => void;
@@ -90,12 +102,14 @@ function LessonRow({
   return (
     <div className={cn("border-2 rounded-sm transition-colors", expanded ? "border-foreground/30" : "border-border")}>
       <button onClick={onToggle} className="w-full p-3 md:p-4 text-left flex items-center gap-3">
-        {/* Number */}
+        {/* Number / Status */}
         <div className={cn(
           "w-9 h-9 rounded-sm flex items-center justify-center font-brush font-bold text-sm border-2 shrink-0",
+          completed ? "bg-success border-success text-success-foreground" :
           available ? "bg-primary border-primary text-primary-foreground" : "bg-muted border-border text-muted-foreground"
         )}>
-          {available ? <Play className="w-3.5 h-3.5" /> : lesson.id}
+          {completed ? <Check className="w-4 h-4" strokeWidth={3} /> :
+           available ? <Play className="w-3.5 h-3.5" /> : lesson.id}
         </div>
 
         {/* Info */}
@@ -105,7 +119,10 @@ function LessonRow({
               第{lesson.id}課 — {lesson.title}
             </h3>
           </div>
-          <p className="text-xs text-muted-foreground serif-jp truncate">{lesson.titleJp} · {lesson.theme}</p>
+          <p className="text-xs text-muted-foreground serif-jp truncate">
+            {lesson.titleJp} · {lesson.theme}
+            {completed && bestScore != null && ` · ${bestScore}%`}
+          </p>
         </div>
 
         {/* Badge + chevron */}

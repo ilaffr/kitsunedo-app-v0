@@ -4,8 +4,7 @@ import { ArrowLeft, BookmarkPlus, BookmarkCheck, Heart, Zap } from "lucide-react
 import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
 import { useFlashcards } from "@/hooks/use-flashcards";
-import { usePracticeSession } from "@/hooks/use-user-data";
-import { useStreak } from "@/hooks/use-user-data";
+import { usePracticeSession, useStreak, useLessonProgress } from "@/hooks/use-user-data";
 import {
   MultipleChoiceCard,
   TypeAnswerCard,
@@ -25,6 +24,7 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
   const { savedSet, addCard, removeCard, fetchCards } = useFlashcards();
   const { savePractice } = usePracticeSession();
   const { recordStudy } = useStreak();
+  const { saveProgress } = useLessonProgress(`lesson_${lesson.number}`);
 
   const steps = useMemo(
     () => generateLessonSteps(lesson.vocabulary, lesson.grammarPoints),
@@ -71,6 +71,7 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
 
   const handleFinish = async () => {
     setFinished(true);
+    const pctScore = exerciseCount > 0 ? Math.round((correctCount / exerciseCount) * 100) : 0;
     await savePractice({
       practiceType: `lesson_${lesson.number}`,
       perfect: correctCount,
@@ -78,6 +79,7 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
       missed: exerciseCount - correctCount,
       total: exerciseCount,
     });
+    await saveProgress({ completed: true, bestScore: pctScore });
     await recordStudy();
   };
 
