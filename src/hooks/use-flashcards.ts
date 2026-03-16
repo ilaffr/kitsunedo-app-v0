@@ -12,6 +12,7 @@ interface Flashcard {
   interval_days: number;
   repetitions: number;
   next_review_at: string;
+  image_url: string | null;
 }
 
 type SRSGrade = "again" | "hard" | "good" | "easy";
