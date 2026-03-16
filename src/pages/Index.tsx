@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookOpen, Languages, PenTool, BookText, MessageSquare, Flame, Star, Clock } from "lucide-react";
+import { BookOpen, Languages, PenTool, BookText, MessageSquare, Flame, Star, Clock, ChevronRight } from "lucide-react";
 import { Header } from "@/components/header";
 import { Navigation } from "@/components/navigation";
 import { DailyGoalCard } from "@/components/daily-goal-card";
