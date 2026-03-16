@@ -186,6 +186,10 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
             />
           )}
 
+          {step.type === "phase_label" && (
+            <PhaseLabelView title={step.title} subtitle={step.subtitle} emoji={step.emoji} onContinue={advanceStep} />
+          )}
+
           {step.type === "grammar_intro" && (
             <GrammarIntroView point={step.point} onContinue={advanceStep} />
           )}
