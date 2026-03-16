@@ -24,6 +24,7 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
   const { savedSet, addCard, removeCard, fetchCards } = useFlashcards();
   const { savePractice } = usePracticeSession();
   const { recordStudy } = useStreak();
+  const { saveProgress } = useLessonProgress(`lesson_${lesson.number}`);
 
   const steps = useMemo(
     () => generateLessonSteps(lesson.vocabulary, lesson.grammarPoints),
