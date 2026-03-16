@@ -1,7 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, BookmarkPlus, BookmarkCheck, Heart, Zap } from "lucide-react";
+import { ArrowLeft, BookmarkPlus, BookmarkCheck, Heart, Zap, Volume2 } from "lucide-react";
 import { Header } from "@/components/header";
+import { speakJapanese } from "@/lib/japanese-tts";
 import { cn } from "@/lib/utils";
 import { useFlashcards } from "@/hooks/use-flashcards";
 import { usePracticeSession, useStreak, useLessonProgress } from "@/hooks/use-user-data";
@@ -301,6 +302,14 @@ function VocabIntroView({
                     <span className="text-xl japanese-text text-primary mt-1">{word.japanese}</span>
                   </>
                 )}
+              </button>
+              {/* Audio button */}
+              <button
+                onClick={(e) => { e.stopPropagation(); speakJapanese(word.japanese); }}
+                className="absolute top-2 left-2 p-1.5 rounded-sm text-muted-foreground/40 hover:text-primary transition-colors"
+                title="Listen to pronunciation"
+              >
+                <Volume2 className="w-4 h-4" />
               </button>
               {/* Bookmark button */}
               <button

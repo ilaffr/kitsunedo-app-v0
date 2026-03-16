@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Check, X, ArrowRight } from "lucide-react";
+import { Check, X, ArrowRight, Volume2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { speakJapanese } from "@/lib/japanese-tts";
 import type {
   MultipleChoiceExercise,
   TypeAnswerExercise,
@@ -42,7 +43,12 @@ export function MultipleChoiceCard({
     <div className="space-y-4">
       <p className="text-lg font-medium text-foreground serif-jp">{exercise.prompt}</p>
       {exercise.promptJp && (
-        <p className="text-3xl japanese-text text-center font-bold text-foreground py-2">{exercise.promptJp}</p>
+        <div className="flex items-center justify-center gap-2 py-2">
+          <p className="text-3xl japanese-text font-bold text-foreground">{exercise.promptJp}</p>
+          <button onClick={() => speakJapanese(exercise.promptJp!)} className="p-1.5 rounded-sm text-muted-foreground hover:text-primary transition-colors" title="Listen">
+            <Volume2 className="w-5 h-5" />
+          </button>
+        </div>
       )}
       <div className="grid grid-cols-1 gap-2">
         {exercise.options.map((opt, i) => (
@@ -111,7 +117,12 @@ export function TypeAnswerCard({
     <div className="space-y-4">
       <p className="text-lg font-medium text-foreground serif-jp">{exercise.prompt}</p>
       {exercise.promptJp && (
-        <p className="text-3xl japanese-text text-center font-bold text-foreground py-2">{exercise.promptJp}</p>
+        <div className="flex items-center justify-center gap-2 py-2">
+          <p className="text-3xl japanese-text font-bold text-foreground">{exercise.promptJp}</p>
+          <button onClick={() => speakJapanese(exercise.promptJp!)} className="p-1.5 rounded-sm text-muted-foreground hover:text-primary transition-colors" title="Listen">
+            <Volume2 className="w-5 h-5" />
+          </button>
+        </div>
       )}
       {exercise.hint && <p className="text-xs text-muted-foreground">Hint: {exercise.hint}</p>}
       <input
@@ -434,7 +445,12 @@ export function ReadingComprehensionCard({
 
       {/* Reading text */}
       <div className="p-4 rounded-sm bg-muted/20 border-2 border-border">
-        <p className="text-base japanese-text leading-relaxed text-foreground whitespace-pre-line">{exercise.text}</p>
+        <div className="flex items-start justify-between gap-2">
+          <p className="text-base japanese-text leading-relaxed text-foreground whitespace-pre-line">{exercise.text}</p>
+          <button onClick={() => speakJapanese(exercise.text, 0.75)} className="p-1.5 rounded-sm text-muted-foreground hover:text-primary transition-colors shrink-0 mt-0.5" title="Listen to passage">
+            <Volume2 className="w-5 h-5" />
+          </button>
+        </div>
         <button
           onClick={() => setShowTranslation(!showTranslation)}
           className="text-xs text-primary mt-3 hover:underline serif-jp"
