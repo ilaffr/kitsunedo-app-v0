@@ -102,12 +102,14 @@ function LessonRow({
   return (
     <div className={cn("border-2 rounded-sm transition-colors", expanded ? "border-foreground/30" : "border-border")}>
       <button onClick={onToggle} className="w-full p-3 md:p-4 text-left flex items-center gap-3">
-        {/* Number */}
+        {/* Number / Status */}
         <div className={cn(
           "w-9 h-9 rounded-sm flex items-center justify-center font-brush font-bold text-sm border-2 shrink-0",
+          completed ? "bg-success border-success text-success-foreground" :
           available ? "bg-primary border-primary text-primary-foreground" : "bg-muted border-border text-muted-foreground"
         )}>
-          {available ? <Play className="w-3.5 h-3.5" /> : lesson.id}
+          {completed ? <Check className="w-4 h-4" strokeWidth={3} /> :
+           available ? <Play className="w-3.5 h-3.5" /> : lesson.id}
         </div>
 
         {/* Info */}
