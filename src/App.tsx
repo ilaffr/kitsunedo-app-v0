@@ -17,6 +17,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Lessons from "./pages/Lessons";
 import Flashcards from "./pages/Flashcards";
 import Stats from "./pages/Stats";
+import Bestiary from "./pages/Bestiary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
