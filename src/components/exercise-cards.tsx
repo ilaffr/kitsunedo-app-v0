@@ -7,6 +7,7 @@ import type {
   MatchPairsExercise,
   SentenceBuilderExercise,
   TranslateComposeExercise,
+  ReadingComprehensionExercise,
 } from "@/lib/exercise-engine";
 
 interface ExerciseResult {
