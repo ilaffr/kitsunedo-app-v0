@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Check, X, ArrowRight } from "lucide-react";
+import { Check, X, ArrowRight, Volume2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { speakJapanese } from "@/lib/japanese-tts";
 import type {
   MultipleChoiceExercise,
   TypeAnswerExercise,
