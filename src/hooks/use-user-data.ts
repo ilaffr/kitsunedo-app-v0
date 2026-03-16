@@ -102,6 +102,40 @@ export function useLessonProgress(lessonId: string) {
   return { progress, saveProgress };
 }
 
+// ── All lessons progress ────────────────────────────────────────────────────
+
+export interface LessonProgressSummary {
+  lessonId: string;
+  completed: boolean;
+  bestScore: number | null;
+}
+
+export function useAllLessonProgress() {
+  const { user } = useAuth();
+  const [lessons, setLessons] = useState<LessonProgressSummary[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetch = useCallback(async () => {
+    if (!user) { setLoading(false); return; }
+    const { data } = await supabase
+      .from("lesson_progress")
+      .select("lesson_id, completed, best_score")
+      .eq("user_id", user.id);
+    setLessons(
+      (data ?? []).map((d) => ({
+        lessonId: d.lesson_id,
+        completed: d.completed,
+        bestScore: d.best_score,
+      }))
+    );
+    setLoading(false);
+  }, [user]);
+
+  useEffect(() => { fetch(); }, [fetch]);
+
+  return { lessons, loading, refresh: fetch };
+}
+
 // ── Practice sessions ──────────────────────────────────────────────────────
 
 interface SavePracticeParams {
