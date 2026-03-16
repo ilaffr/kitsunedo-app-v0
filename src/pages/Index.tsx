@@ -10,7 +10,7 @@ import { StatsCard } from "@/components/stats-card";
 import { LessonCard } from "@/components/lesson-card";
 import { HeroBanner } from "@/components/hero-banner";
 import { AchievementsPanel } from "@/components/achievements-panel";
-import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP } from "@/hooks/use-user-data";
+import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP, useOverallStats } from "@/hooks/use-user-data";
 import { minnaLessons } from "@/data/minna-lessons";
 import { WeeklyXPMini } from "@/components/weekly-xp-chart";
 
