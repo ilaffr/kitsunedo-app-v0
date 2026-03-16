@@ -65,7 +65,7 @@ export default function Lessons() {
               lesson={lesson}
               expanded={expandedId === lesson.id}
               onToggle={() => setExpandedId(expandedId === lesson.id ? null : lesson.id)}
-              onStart={() => lesson.id === 1 ? navigate("/lesson/1") : undefined}
+              onStart={() => lesson.id <= 5 ? navigate(`/lesson/${lesson.id}`) : undefined}
             />
           ))}
         </div>
