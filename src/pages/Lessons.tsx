@@ -62,15 +62,20 @@ export default function Lessons() {
 
         {/* Lesson list */}
         <div className="space-y-2">
-          {filtered.map((lesson) => (
-            <LessonRow
-              key={lesson.id}
-              lesson={lesson}
-              expanded={expandedId === lesson.id}
-              onToggle={() => setExpandedId(expandedId === lesson.id ? null : lesson.id)}
-              onStart={() => lesson.id <= 5 ? navigate(`/lesson/${lesson.id}`) : undefined}
-            />
-          ))}
+          {filtered.map((lesson) => {
+            const prog = progressMap.get(`lesson_${lesson.id}`);
+            return (
+              <LessonRow
+                key={lesson.id}
+                lesson={lesson}
+                completed={prog?.completed ?? false}
+                bestScore={prog?.bestScore ?? null}
+                expanded={expandedId === lesson.id}
+                onToggle={() => setExpandedId(expandedId === lesson.id ? null : lesson.id)}
+                onStart={() => lesson.id <= 5 ? navigate(`/lesson/${lesson.id}`) : undefined}
+              />
+            );
+          })}
         </div>
       </main>
     </div>
