@@ -4,8 +4,7 @@ import { ArrowLeft, BookmarkPlus, BookmarkCheck, Heart, Zap } from "lucide-react
 import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
 import { useFlashcards } from "@/hooks/use-flashcards";
-import { usePracticeSession } from "@/hooks/use-user-data";
-import { useStreak } from "@/hooks/use-user-data";
+import { usePracticeSession, useStreak, useLessonProgress } from "@/hooks/use-user-data";
 import {
   MultipleChoiceCard,
   TypeAnswerCard,
