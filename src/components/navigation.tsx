@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 import { BookOpen, GraduationCap, Home, Trophy, BarChart3 } from "lucide-react";
 
 interface NavigationProps {
@@ -15,6 +16,16 @@ const navItems = [
 ];
 
 export function Navigation({ activeTab, onTabChange }: NavigationProps) {
+  const navigate = useNavigate();
+  
+  const handleTabChange = (id: string) => {
+    if (id === "stats") {
+      navigate("/stats");
+      return;
+    }
+    onTabChange(id);
+  };
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/98 backdrop-blur-sm border-t-2 border-border md:relative md:border-t-0 md:border-r-2 md:h-screen md:w-20">
       <div className="flex md:flex-col items-center justify-around md:justify-start md:pt-6 md:gap-1 h-14 md:h-auto">
@@ -25,7 +36,7 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
           return (
             <button
               key={item.id}
-              onClick={() => onTabChange(item.id)}
+              onClick={() => handleTabChange(item.id)}
               className={cn(
                 "flex flex-col items-center justify-center gap-0.5 p-2 rounded-sm transition-all duration-200 min-w-[52px] md:w-14 md:h-14",
                 isActive 

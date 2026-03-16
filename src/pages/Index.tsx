@@ -12,7 +12,7 @@ import { HeroBanner } from "@/components/hero-banner";
 import { AchievementsPanel } from "@/components/achievements-panel";
 import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP } from "@/hooks/use-user-data";
 import { minnaLessons } from "@/data/minna-lessons";
-import { WeeklyXPChart } from "@/components/weekly-xp-chart";
+import { WeeklyXPMini } from "@/components/weekly-xp-chart";
 
 const studyCategories = [
   {
@@ -160,9 +160,9 @@ export default function Index() {
               <QuickReviewCard itemsToReview={23} />
             </section>
 
-            {/* Weekly XP Chart */}
+            {/* Weekly XP Mini */}
             <section className="mb-6 md:mb-8">
-              <WeeklyXPChart days={days} weekTotal={weekTotal} />
+              <WeeklyXPMini days={days} weekTotal={weekTotal} onViewDetails={() => navigate("/stats")} />
             </section>
 
             <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
