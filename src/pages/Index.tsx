@@ -173,7 +173,7 @@ export default function Index() {
               {/* Daily Goal */}
               <section>
               <DailyGoalCard
-                  currentXP={65}
+                  currentXP={todayXP}
                   goalXP={100}
                   streak={streak.currentStreak}
                   studyTime={15}
