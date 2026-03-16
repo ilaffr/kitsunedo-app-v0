@@ -22,6 +22,8 @@ export default function Lessons() {
   const navigate = useNavigate();
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [filter, setFilter] = useState<"all" | "beginner" | "elementary" | "intermediate">("all");
+  const { lessons: progressList } = useAllLessonProgress();
+  const progressMap = new Map(progressList.map((p) => [p.lessonId, p]));
 
   const filtered = filter === "all" ? minnaLessons : minnaLessons.filter(l => l.difficulty === filter);
 
