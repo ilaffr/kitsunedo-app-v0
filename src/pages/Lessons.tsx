@@ -97,7 +97,7 @@ function LessonRow({
   onToggle: () => void;
   onStart: () => void;
 }) {
-  const available = lesson.id <= 5;
+  const available = lesson.id <= 10;
 
   return (
     <div className={cn("border-2 rounded-sm transition-colors", expanded ? "border-foreground/30" : "border-border")}>
