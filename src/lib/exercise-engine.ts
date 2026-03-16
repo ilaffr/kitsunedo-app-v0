@@ -45,12 +45,24 @@ export interface TranslateComposeExercise {
   hint?: string;
 }
 
+export interface ReadingComprehensionExercise {
+  type: "reading_comprehension";
+  title: string;
+  titleJp: string;
+  text: string;
+  translation: string;
+  question: string;
+  options: string[];
+  correctIndex: number;
+}
+
 export type Exercise =
   | MultipleChoiceExercise
   | TypeAnswerExercise
   | MatchPairsExercise
   | SentenceBuilderExercise
-  | TranslateComposeExercise;
+  | TranslateComposeExercise
+  | ReadingComprehensionExercise;
 
 // ── Lesson step (mixed progression) ────────────────────────────────────────
 
