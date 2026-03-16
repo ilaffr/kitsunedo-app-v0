@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      flashcards: {
+        Row: {
+          created_at: string
+          ease_factor: number
+          id: string
+          interval_days: number
+          japanese: string
+          last_reviewed_at: string | null
+          lesson_id: string
+          meaning: string
+          next_review_at: string
+          reading: string
+          repetitions: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          ease_factor?: number
+          id?: string
+          interval_days?: number
+          japanese: string
+          last_reviewed_at?: string | null
+          lesson_id: string
+          meaning: string
+          next_review_at?: string
+          reading: string
+          repetitions?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          ease_factor?: number
+          id?: string
+          interval_days?: number
+          japanese?: string
+          last_reviewed_at?: string | null
+          lesson_id?: string
+          meaning?: string
+          next_review_at?: string
+          reading?: string
+          repetitions?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       lesson_progress: {
         Row: {
           best_score: number | null

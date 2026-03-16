@@ -53,6 +53,7 @@ const studyCategories = [
     totalLessons: 30,
     completedLessons: 12,
     variant: "vocabulary" as const,
+    href: "/flashcards",
   },
   {
     title: "Grammar",

@@ -1,6 +1,6 @@
-import LessonPage from "@/components/lesson-page";
+import InteractiveLesson from "@/components/interactive-lesson";
 import { lesson2Data } from "@/data/lesson2-data";
 
 export default function Lesson2() {
-  return <LessonPage lesson={lesson2Data} />;
+  return <InteractiveLesson lesson={lesson2Data} />;
 }

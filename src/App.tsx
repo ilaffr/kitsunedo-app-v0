@@ -15,6 +15,7 @@ import KanjiWritingPractice from "./pages/KanjiWritingPractice";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import Lessons from "./pages/Lessons";
+import Flashcards from "./pages/Flashcards";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -86,6 +87,7 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+            <Route path="/flashcards" element={<ProtectedRoute><Flashcards /></ProtectedRoute>} />
             <Route path="/reset-password" element={<ResetPassword />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
