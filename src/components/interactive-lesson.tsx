@@ -71,6 +71,7 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
 
   const handleFinish = async () => {
     setFinished(true);
+    const pctScore = exerciseCount > 0 ? Math.round((correctCount / exerciseCount) * 100) : 0;
     await savePractice({
       practiceType: `lesson_${lesson.number}`,
       perfect: correctCount,
@@ -78,6 +79,7 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
       missed: exerciseCount - correctCount,
       total: exerciseCount,
     });
+    await saveProgress({ completed: true, bestScore: pctScore });
     await recordStudy();
   };
 
