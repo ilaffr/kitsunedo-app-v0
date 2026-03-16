@@ -28,10 +28,12 @@ interface PracticeState {
 
 export default function KanjiWritingPractice() {
   const navigate = useNavigate();
+  const { savePractice } = usePracticeSession();
   const practiceSet = useMemo(() => shuffleArray(kanjiEntries).slice(0, 10), []);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [states, setStates] = useState<Record<number, PracticeState>>({});
   const [finished, setFinished] = useState(false);
+  const [xpEarned, setXpEarned] = useState<number | null>(null);
 
   const current = practiceSet[currentIndex];
   const state = states[currentIndex] ?? { showGuide: true, showAnswer: false, showStrokeOrder: false, selfGrade: null };
@@ -47,6 +49,18 @@ export default function KanjiWritingPractice() {
     Object.values(states).filter((s) => s.selfGrade === grade).length;
 
   const allGraded = Object.keys(states).filter((k) => states[Number(k)]?.selfGrade).length === practiceSet.length;
+
+  const handleFinish = async () => {
+    setFinished(true);
+    const xp = await savePractice({
+      practiceType: "kanji_writing",
+      perfect: gradeCount("perfect"),
+      close: gradeCount("okay"),
+      missed: gradeCount("missed"),
+      total: practiceSet.length,
+    });
+    setXpEarned(xp);
+  };
 
   return (
     <div className="min-h-screen bg-background">
