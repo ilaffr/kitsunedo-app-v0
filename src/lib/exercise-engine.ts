@@ -95,31 +95,34 @@ export function generateLessonSteps(
 ): LessonStep[] {
   const steps: LessonStep[] = [];
   const CHUNK = 4;
+
+  // ── Phase 1: Learn all vocabulary ────────────────────────────────────
+  for (let i = 0; i < vocabulary.length; i += CHUNK) {
+    steps.push({ type: "vocab_intro", words: vocabulary.slice(i, i + CHUNK) });
+  }
+
+  // ── Phase 2: Learn all grammar ───────────────────────────────────────
+  for (const point of grammarPoints) {
+    steps.push({ type: "grammar_intro", point });
+  }
+
+  // ── Phase 3: Practice exercises (vocab → grammar → reading) ─────────
   const vocabChunks: VocabItem[][] = [];
-  
   for (let i = 0; i < vocabulary.length; i += CHUNK) {
     vocabChunks.push(vocabulary.slice(i, i + CHUNK));
   }
 
-  // For each chunk: intro words → mini exercises → then grammar + exercises
-  vocabChunks.forEach((chunk, chunkIdx) => {
-    // Introduce words
-    steps.push({ type: "vocab_intro", words: chunk });
-
-    // Mini quiz on just-learned words
+  for (const chunk of vocabChunks) {
     const exercises = generateVocabExercises(chunk, vocabulary);
     exercises.forEach((ex) => steps.push({ type: "exercise", exercise: ex, xpReward: 5 }));
+  }
 
-    // Interleave grammar points
-    const gpIdx = chunkIdx % grammarPoints.length;
-    if (chunkIdx < grammarPoints.length) {
-      steps.push({ type: "grammar_intro", point: grammarPoints[gpIdx] });
-      const gExercises = generateGrammarExercises(grammarPoints[gpIdx], vocabulary);
-      gExercises.forEach((ex) => steps.push({ type: "exercise", exercise: ex, xpReward: 10 }));
-    }
-  });
+  for (const point of grammarPoints) {
+    const gExercises = generateGrammarExercises(point, vocabulary);
+    gExercises.forEach((ex) => steps.push({ type: "exercise", exercise: ex, xpReward: 10 }));
+  }
 
-  // Add reading comprehension exercises at the end
+  // Reading comprehension at the end
   if (readingPassages && readingPassages.length > 0) {
     for (const passage of readingPassages) {
       for (const q of passage.questions) {
