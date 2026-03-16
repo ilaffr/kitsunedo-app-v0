@@ -12,7 +12,7 @@ import { HeroBanner } from "@/components/hero-banner";
 import { AchievementsPanel } from "@/components/achievements-panel";
 import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP } from "@/hooks/use-user-data";
 import { minnaLessons } from "@/data/minna-lessons";
-import { WeeklyXPChart } from "@/components/weekly-xp-chart";
+import { WeeklyXPMini } from "@/components/weekly-xp-chart";
 
 const studyCategories = [
   {
