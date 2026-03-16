@@ -116,6 +116,42 @@ export type Database = {
         }
         Relationships: []
       }
+      practice_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          practice_type: string
+          score_close: number
+          score_missed: number
+          score_perfect: number
+          total_items: number
+          user_id: string
+          xp_earned: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          practice_type?: string
+          score_close?: number
+          score_missed?: number
+          score_perfect?: number
+          total_items?: number
+          user_id: string
+          xp_earned?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          practice_type?: string
+          score_close?: number
+          score_missed?: number
+          score_perfect?: number
+          total_items?: number
+          user_id?: string
+          xp_earned?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
