@@ -36,7 +36,7 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
           return (
             <button
               key={item.id}
-              onClick={() => onTabChange(item.id)}
+              onClick={() => handleTabChange(item.id)}
               className={cn(
                 "flex flex-col items-center justify-center gap-0.5 p-2 rounded-sm transition-all duration-200 min-w-[52px] md:w-14 md:h-14",
                 isActive 
