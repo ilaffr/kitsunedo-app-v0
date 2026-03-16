@@ -84,11 +84,15 @@ export default function Lessons() {
 
 function LessonRow({
   lesson,
+  completed,
+  bestScore,
   expanded,
   onToggle,
   onStart,
 }: {
   lesson: MinnaLesson;
+  completed: boolean;
+  bestScore: number | null;
   expanded: boolean;
   onToggle: () => void;
   onStart: () => void;
