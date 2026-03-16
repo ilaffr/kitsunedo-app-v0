@@ -1,7 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, BookmarkPlus, BookmarkCheck, Heart, Zap } from "lucide-react";
+import { ArrowLeft, BookmarkPlus, BookmarkCheck, Heart, Zap, Volume2 } from "lucide-react";
 import { Header } from "@/components/header";
+import { speakJapanese } from "@/lib/japanese-tts";
 import { cn } from "@/lib/utils";
 import { useFlashcards } from "@/hooks/use-flashcards";
 import { usePracticeSession, useStreak, useLessonProgress } from "@/hooks/use-user-data";
