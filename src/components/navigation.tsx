@@ -23,6 +23,10 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
       navigate("/stats");
       return;
     }
+    if (id === "achievements") {
+      navigate("/bestiary");
+      return;
+    }
     onTabChange(id);
   };
 
