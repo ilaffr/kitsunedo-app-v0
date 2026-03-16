@@ -9,7 +9,7 @@ import { QuickReviewCard } from "@/components/quick-review-card";
 import { StatsCard } from "@/components/stats-card";
 import { LessonCard } from "@/components/lesson-card";
 import { HeroBanner } from "@/components/hero-banner";
-import { AchievementsPanel } from "@/components/achievements-panel";
+import { RecentSpiritsPreview } from "@/components/recent-spirits-preview";
 import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP, useOverallStats } from "@/hooks/use-user-data";
 import { minnaLessons } from "@/data/minna-lessons";
 import { WeeklyXPMini } from "@/components/weekly-xp-chart";
