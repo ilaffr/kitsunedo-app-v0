@@ -185,8 +185,8 @@ export default function Index() {
                   </div>
                   
                   <div className="space-y-2 md:space-y-3">
-                    {recentLessons.map((lesson, index) => (
-                      <LessonCard key={index} {...lesson} onClick={() => navigate("/lesson/1")} />
+                    {continueLessons.map((lesson, index) => (
+                      <LessonCard key={index} {...lesson} onClick={() => navigate(`/lesson/${lesson.lessonNumber}`)} />
                     ))}
                   </div>
                 </div>
