@@ -5,6 +5,7 @@ import { Header } from "@/components/header";
 import { KanjiCanvas } from "@/components/kanji-canvas";
 import { StrokeOrderDiagram } from "@/components/stroke-order-diagram";
 import { kanjiEntries, type KanjiEntry } from "@/data/daily-practice-data";
+import { usePracticeSession } from "@/hooks/use-user-data";
 import { cn } from "@/lib/utils";
 
 function shuffleArray<T>(arr: T[]): T[] {
