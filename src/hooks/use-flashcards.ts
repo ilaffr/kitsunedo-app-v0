@@ -12,6 +12,7 @@ interface Flashcard {
   interval_days: number;
   repetitions: number;
   next_review_at: string;
+  image_url: string | null;
 }
 
 type SRSGrade = "again" | "hard" | "good" | "easy";
@@ -77,7 +78,7 @@ export function useFlashcards() {
   const addCard = useCallback(
     async (word: { japanese: string; reading: string; meaning: string; lessonId: string }) => {
       if (!user) return;
-      await supabase.from("flashcards").upsert(
+      const { data } = await supabase.from("flashcards").upsert(
         {
           user_id: user.id,
           lesson_id: word.lessonId,
@@ -86,8 +87,20 @@ export function useFlashcards() {
           meaning: word.meaning,
         },
         { onConflict: "user_id,japanese" }
-      );
+      ).select("id").single();
       setSavedSet((prev) => new Set(prev).add(word.japanese));
+
+      // Generate cartoon image in background
+      if (data?.id) {
+        supabase.functions.invoke("generate-flashcard-image", {
+          body: {
+            flashcard_id: data.id,
+            user_id: user.id,
+            japanese: word.japanese,
+            meaning: word.meaning,
+          },
+        }).catch((err) => console.error("Image generation failed:", err));
+      }
     },
     [user]
   );

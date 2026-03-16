@@ -117,17 +117,31 @@ export default function FlashcardsPage() {
             <button
               onClick={() => setFlipped((f) => !f)}
               className={cn(
-                "w-full min-h-[240px] card-paper border-2 p-8 flex flex-col items-center justify-center transition-all",
+                "w-full min-h-[280px] card-paper border-2 p-8 flex flex-col items-center justify-center transition-all",
                 flipped ? "border-primary/40 bg-primary/5" : "border-border hover:border-foreground/30"
               )}
             >
               {!flipped ? (
                 <>
+                  {current.image_url && (
+                    <img
+                      src={current.image_url}
+                      alt={current.meaning}
+                      className="w-24 h-24 object-contain rounded-lg mb-4"
+                    />
+                  )}
                   <span className="text-4xl japanese-text font-bold text-foreground mb-2">{current.japanese}</span>
                   <span className="text-xs text-muted-foreground">tap to flip</span>
                 </>
               ) : (
                 <>
+                  {current.image_url && (
+                    <img
+                      src={current.image_url}
+                      alt={current.meaning}
+                      className="w-20 h-20 object-contain rounded-lg mb-3 opacity-80"
+                    />
+                  )}
                   <span className="text-sm text-muted-foreground mb-2">{current.reading}</span>
                   <span className="text-2xl font-bold text-foreground mb-1">{current.meaning}</span>
                   <span className="text-lg japanese-text text-primary">{current.japanese}</span>

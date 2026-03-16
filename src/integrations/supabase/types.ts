@@ -19,6 +19,7 @@ export type Database = {
           created_at: string
           ease_factor: number
           id: string
+          image_url: string | null
           interval_days: number
           japanese: string
           last_reviewed_at: string | null
@@ -33,6 +34,7 @@ export type Database = {
           created_at?: string
           ease_factor?: number
           id?: string
+          image_url?: string | null
           interval_days?: number
           japanese: string
           last_reviewed_at?: string | null
@@ -47,6 +49,7 @@ export type Database = {
           created_at?: string
           ease_factor?: number
           id?: string
+          image_url?: string | null
           interval_days?: number
           japanese?: string
           last_reviewed_at?: string | null
