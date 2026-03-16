@@ -255,7 +255,7 @@ export default function KanjiWritingPractice() {
                 </button>
               ) : (
                 <button
-                  onClick={() => setFinished(true)}
+                  onClick={handleFinish}
                   disabled={!allGraded}
                   className={cn(
                     "px-6 py-2 text-sm border-2 rounded-sm font-bold serif-jp transition-colors",
