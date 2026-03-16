@@ -161,6 +161,48 @@ export type Database = {
         }
         Relationships: []
       }
+      placement_results: {
+        Row: {
+          created_at: string
+          grammar_score: number
+          id: string
+          level: string
+          listening_score: number
+          reading_score: number
+          score: number
+          total_questions: number
+          unlocked_up_to: number
+          user_id: string
+          vocab_score: number
+        }
+        Insert: {
+          created_at?: string
+          grammar_score?: number
+          id?: string
+          level?: string
+          listening_score?: number
+          reading_score?: number
+          score?: number
+          total_questions?: number
+          unlocked_up_to?: number
+          user_id: string
+          vocab_score?: number
+        }
+        Update: {
+          created_at?: string
+          grammar_score?: number
+          id?: string
+          level?: string
+          listening_score?: number
+          reading_score?: number
+          score?: number
+          total_questions?: number
+          unlocked_up_to?: number
+          user_id?: string
+          vocab_score?: number
+        }
+        Relationships: []
+      }
       practice_sessions: {
         Row: {
           created_at: string
