@@ -138,21 +138,21 @@ export default function Index() {
               <StatsCard
                 icon={Star}
                 label="Spirit"
-                value="2,450"
-                sublabel="points earned"
+                value={totalXP.toLocaleString()}
+                sublabel="total XP"
                 variant="ink"
               />
               <StatsCard
                 icon={BookOpen}
                 label="Scrolls"
-                value={45}
+                value={completedLessons}
                 sublabel="completed"
               />
               <StatsCard
                 icon={Clock}
-                label="Training"
-                value="24時"
-                sublabel="this moon"
+                label="Sessions"
+                value={sessionsCount}
+                sublabel="practices"
               />
             </section>
 
