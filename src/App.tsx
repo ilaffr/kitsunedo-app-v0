@@ -70,6 +70,11 @@ const App = () => (
             <Route path="/lesson/3" element={<ProtectedRoute><Lesson3 /></ProtectedRoute>} />
             <Route path="/lesson/4" element={<ProtectedRoute><Lesson4 /></ProtectedRoute>} />
             <Route path="/lesson/5" element={<ProtectedRoute><Lesson5 /></ProtectedRoute>} />
+            <Route path="/lesson/6" element={<ProtectedRoute><Lesson6 /></ProtectedRoute>} />
+            <Route path="/lesson/7" element={<ProtectedRoute><Lesson7 /></ProtectedRoute>} />
+            <Route path="/lesson/8" element={<ProtectedRoute><Lesson8 /></ProtectedRoute>} />
+            <Route path="/lesson/9" element={<ProtectedRoute><Lesson9 /></ProtectedRoute>} />
+            <Route path="/lesson/10" element={<ProtectedRoute><Lesson10 /></ProtectedRoute>} />
             <Route
               path="/daily-practice"
               element={
