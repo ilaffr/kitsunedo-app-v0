@@ -15,6 +15,7 @@ import KanjiWritingPractice from "./pages/KanjiWritingPractice";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import Lessons from "./pages/Lessons";
+import Flashcards from "./pages/Flashcards";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
