@@ -119,7 +119,10 @@ function LessonRow({
               第{lesson.id}課 — {lesson.title}
             </h3>
           </div>
-          <p className="text-xs text-muted-foreground serif-jp truncate">{lesson.titleJp} · {lesson.theme}</p>
+          <p className="text-xs text-muted-foreground serif-jp truncate">
+            {lesson.titleJp} · {lesson.theme}
+            {completed && bestScore != null && ` · ${bestScore}%`}
+          </p>
         </div>
 
         {/* Badge + chevron */}
