@@ -119,6 +119,28 @@ export function generateLessonSteps(
     }
   });
 
+  // Add reading comprehension exercises at the end
+  if (readingPassages && readingPassages.length > 0) {
+    for (const passage of readingPassages) {
+      for (const q of passage.questions) {
+        steps.push({
+          type: "exercise",
+          exercise: {
+            type: "reading_comprehension",
+            title: passage.title,
+            titleJp: passage.titleJp,
+            text: passage.text,
+            translation: passage.translation,
+            question: q.question,
+            options: q.options,
+            correctIndex: q.correct,
+          },
+          xpReward: 15,
+        });
+      }
+    }
+  }
+
   return steps;
 }
 

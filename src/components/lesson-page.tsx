@@ -33,6 +33,14 @@ export interface QuestionWordMap {
   meaning: string;
 }
 
+export interface ReadingPassage {
+  title: string;
+  titleJp: string;
+  text: string;          // Japanese text with furigana markers
+  translation: string;   // English translation
+  questions: { question: string; options: string[]; correct: number }[];
+}
+
 export interface LessonData {
   id: string;
   number: number;
@@ -43,6 +51,7 @@ export interface LessonData {
   grammarPoints: GrammarPoint[];
   practiceQuestions: QuizQuestion[];
   questionWordMap: QuestionWordMap[];
+  readingPassages?: ReadingPassage[];
 }
 
 type Section = "vocabulary" | "grammar" | "practice";
