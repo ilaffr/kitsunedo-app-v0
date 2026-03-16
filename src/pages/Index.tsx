@@ -95,7 +95,7 @@ export default function Index() {
       const prog = progressMap.get(`lesson_${l.id}`);
       const completed = prog?.completed ?? false;
       // Find the first non-completed lesson to mark as in-progress
-      const firstIncomplete = first5.find(
+      const firstIncomplete = first10.find(
         (x) => !(progressMap.get(`lesson_${x.id}`)?.completed)
       );
       let status: "completed" | "in-progress" | "available" | "locked";
