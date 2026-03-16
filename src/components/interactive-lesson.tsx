@@ -186,6 +186,10 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
             />
           )}
 
+          {step.type === "phase_label" && (
+            <PhaseLabelView title={step.title} subtitle={step.subtitle} emoji={step.emoji} onContinue={advanceStep} />
+          )}
+
           {step.type === "grammar_intro" && (
             <GrammarIntroView point={step.point} onContinue={advanceStep} />
           )}
@@ -377,6 +381,36 @@ function GrammarIntroView({
         className="w-full py-3 rounded-sm border-2 border-foreground font-bold serif-jp text-sm btn-ink text-background transition-colors"
       >
         Got it — Continue
+      </button>
+    </div>
+  );
+}
+
+// ── Phase Label (transition screen) ────────────────────────────────────────
+
+function PhaseLabelView({
+  title,
+  subtitle,
+  emoji,
+  onContinue,
+}: {
+  title: string;
+  subtitle: string;
+  emoji: string;
+  onContinue: () => void;
+}) {
+  return (
+    <div className="space-y-4">
+      <div className="card-paper border-2 p-8 text-center space-y-3">
+        <span className="text-5xl block">{emoji}</span>
+        <h2 className="text-2xl font-bold serif-jp text-foreground">{title}</h2>
+        <p className="text-sm text-muted-foreground">{subtitle}</p>
+      </div>
+      <button
+        onClick={onContinue}
+        className="w-full py-3 rounded-sm border-2 border-foreground font-bold serif-jp text-sm btn-ink text-background transition-colors"
+      >
+        Let's go — 始めよう
       </button>
     </div>
   );
