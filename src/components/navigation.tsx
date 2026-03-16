@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 import { BookOpen, GraduationCap, Home, Trophy, BarChart3 } from "lucide-react";
 
 interface NavigationProps {
