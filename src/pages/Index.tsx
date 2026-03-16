@@ -123,6 +123,25 @@ export default function Index() {
         
         <main className="flex-1 pb-20 md:pb-8">
           <div className="container max-w-6xl px-4 py-4 md:py-6">
+            {/* Placement Test CTA */}
+            <section className="mb-6 md:mb-8">
+              <button
+                onClick={() => navigate("/placement-test")}
+                className="w-full card-paper border-2 border-primary/30 p-4 md:p-5 flex items-center gap-4 hover:border-primary/60 transition-colors group"
+              >
+                <span className="text-3xl">⛩️</span>
+                <div className="text-left flex-1">
+                  <h3 className="font-bold serif-jp text-foreground group-hover:text-primary transition-colors">
+                    Placement Test
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Already know some Japanese? Test your level and skip ahead.
+                  </p>
+                </div>
+                <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              </button>
+            </section>
+
             {/* Hero Banner */}
             <HeroBanner />
 
