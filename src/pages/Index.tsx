@@ -160,7 +160,11 @@ export default function Index() {
               <QuickReviewCard itemsToReview={23} />
             </section>
 
-            {/* Main Grid */}
+            {/* Weekly XP Chart */}
+            <section className="mb-6 md:mb-8">
+              <WeeklyXPChart days={days} weekTotal={weekTotal} />
+            </section>
+
             <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
               {/* Daily Goal */}
               <section>
