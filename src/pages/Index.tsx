@@ -76,7 +76,7 @@ export default function Index() {
   const { streak } = useStreak();
   const { getTodayXP } = usePracticeSession();
   const { lessons: progressList } = useAllLessonProgress();
-  const [todayXP, setTodayXP] = useState(0);
+  const { days, weekTotal } = useWeeklyXP();
 
   useEffect(() => {
     getTodayXP().then(setTodayXP);
