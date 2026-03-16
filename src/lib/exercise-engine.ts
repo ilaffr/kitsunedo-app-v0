@@ -91,6 +91,7 @@ export type LessonStep = VocabIntroStep | GrammarIntroStep | ExerciseStep;
 export function generateLessonSteps(
   vocabulary: VocabItem[],
   grammarPoints: GrammarPoint[],
+  readingPassages?: ReadingPassage[],
 ): LessonStep[] {
   const steps: LessonStep[] = [];
   const CHUNK = 4;
