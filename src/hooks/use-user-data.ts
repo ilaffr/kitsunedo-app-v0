@@ -102,6 +102,63 @@ export function useLessonProgress(lessonId: string) {
   return { progress, saveProgress };
 }
 
+// ── Weekly XP ──────────────────────────────────────────────────────────────
+
+export function useWeeklyXP() {
+  const { user } = useAuth();
+  const [days, setDays] = useState<{ label: string; xp: number; isToday: boolean }[]>([]);
+  const [weekTotal, setWeekTotal] = useState(0);
+
+  const fetch = useCallback(async () => {
+    // Build last 7 days
+    const today = new Date();
+    const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 6);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+
+    if (!user) {
+      const empty = Array.from({ length: 7 }, (_, i) => {
+        const d = new Date(sevenDaysAgo);
+        d.setDate(sevenDaysAgo.getDate() + i);
+        return { label: dayLabels[d.getDay()], xp: 0, isToday: d.toDateString() === today.toDateString() };
+      });
+      setDays(empty);
+      return;
+    }
+
+    const { data } = await supabase
+      .from("practice_sessions")
+      .select("xp_earned, created_at")
+      .eq("user_id", user.id)
+      .gte("created_at", sevenDaysAgo.toISOString());
+
+    // Bucket by date
+    const buckets: Record<string, number> = {};
+    for (const row of data ?? []) {
+      const key = new Date(row.created_at).toDateString();
+      buckets[key] = (buckets[key] ?? 0) + (row.xp_earned ?? 0);
+    }
+
+    let total = 0;
+    const result = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(sevenDaysAgo);
+      d.setDate(sevenDaysAgo.getDate() + i);
+      const key = d.toDateString();
+      const xp = buckets[key] ?? 0;
+      total += xp;
+      return { label: dayLabels[d.getDay()], xp, isToday: key === today.toDateString() };
+    });
+
+    setDays(result);
+    setWeekTotal(total);
+  }, [user]);
+
+  useEffect(() => { fetch(); }, [fetch]);
+
+  return { days, weekTotal };
+}
+
 // ── All lessons progress ────────────────────────────────────────────────────
 
 export interface LessonProgressSummary {
