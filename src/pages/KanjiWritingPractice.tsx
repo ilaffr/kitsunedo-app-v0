@@ -315,6 +315,9 @@ export default function KanjiWritingPractice() {
                 <span className="text-warning font-medium">~ {gradeCount("okay")} close</span>
                 <span className="text-destructive font-medium">✗ {gradeCount("missed")} missed</span>
               </div>
+              {xpEarned !== null && (
+                <p className="mt-3 text-sm font-bold text-primary serif-jp">+{xpEarned} XP earned ✦</p>
+              )}
             </div>
 
             {/* Review cards */}
