@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookOpen, Languages, PenTool, BookText, MessageSquare, Flame, Star, Clock } from "lucide-react";
 import { Header } from "@/components/header";
@@ -10,7 +10,7 @@ import { StatsCard } from "@/components/stats-card";
 import { LessonCard } from "@/components/lesson-card";
 import { HeroBanner } from "@/components/hero-banner";
 import { AchievementsPanel } from "@/components/achievements-panel";
-import { useStreak } from "@/hooks/use-user-data";
+import { useStreak, usePracticeSession } from "@/hooks/use-user-data";
 
 const studyCategories = [
   {
@@ -114,6 +114,12 @@ export default function Index() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("home");
   const { streak } = useStreak();
+  const { getTodayXP } = usePracticeSession();
+  const [todayXP, setTodayXP] = useState(0);
+
+  useEffect(() => {
+    getTodayXP().then(setTodayXP);
+  }, [getTodayXP]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -167,7 +173,7 @@ export default function Index() {
               {/* Daily Goal */}
               <section>
               <DailyGoalCard
-                  currentXP={65}
+                  currentXP={todayXP}
                   goalXP={100}
                   streak={streak.currentStreak}
                   studyTime={15}

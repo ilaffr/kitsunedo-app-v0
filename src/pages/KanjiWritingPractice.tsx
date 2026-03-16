@@ -5,6 +5,7 @@ import { Header } from "@/components/header";
 import { KanjiCanvas } from "@/components/kanji-canvas";
 import { StrokeOrderDiagram } from "@/components/stroke-order-diagram";
 import { kanjiEntries, type KanjiEntry } from "@/data/daily-practice-data";
+import { usePracticeSession } from "@/hooks/use-user-data";
 import { cn } from "@/lib/utils";
 
 function shuffleArray<T>(arr: T[]): T[] {
@@ -27,10 +28,12 @@ interface PracticeState {
 
 export default function KanjiWritingPractice() {
   const navigate = useNavigate();
+  const { savePractice } = usePracticeSession();
   const practiceSet = useMemo(() => shuffleArray(kanjiEntries).slice(0, 10), []);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [states, setStates] = useState<Record<number, PracticeState>>({});
   const [finished, setFinished] = useState(false);
+  const [xpEarned, setXpEarned] = useState<number | null>(null);
 
   const current = practiceSet[currentIndex];
   const state = states[currentIndex] ?? { showGuide: true, showAnswer: false, showStrokeOrder: false, selfGrade: null };
@@ -46,6 +49,18 @@ export default function KanjiWritingPractice() {
     Object.values(states).filter((s) => s.selfGrade === grade).length;
 
   const allGraded = Object.keys(states).filter((k) => states[Number(k)]?.selfGrade).length === practiceSet.length;
+
+  const handleFinish = async () => {
+    setFinished(true);
+    const xp = await savePractice({
+      practiceType: "kanji_writing",
+      perfect: gradeCount("perfect"),
+      close: gradeCount("okay"),
+      missed: gradeCount("missed"),
+      total: practiceSet.length,
+    });
+    setXpEarned(xp);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -240,7 +255,7 @@ export default function KanjiWritingPractice() {
                 </button>
               ) : (
                 <button
-                  onClick={() => setFinished(true)}
+                  onClick={handleFinish}
                   disabled={!allGraded}
                   className={cn(
                     "px-6 py-2 text-sm border-2 rounded-sm font-bold serif-jp transition-colors",
@@ -300,6 +315,9 @@ export default function KanjiWritingPractice() {
                 <span className="text-warning font-medium">~ {gradeCount("okay")} close</span>
                 <span className="text-destructive font-medium">✗ {gradeCount("missed")} missed</span>
               </div>
+              {xpEarned !== null && (
+                <p className="mt-3 text-sm font-bold text-primary serif-jp">+{xpEarned} XP earned ✦</p>
+              )}
             </div>
 
             {/* Review cards */}
