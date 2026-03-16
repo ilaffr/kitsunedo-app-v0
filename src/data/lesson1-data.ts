@@ -1,0 +1,97 @@
+import type { LessonData } from "@/components/lesson-page";
+
+export const lesson1Data: LessonData = {
+  id: "lesson_1",
+  number: 1,
+  titleJp: "わたしは がくせいです",
+  titleEn: "I am a student",
+  subtitle: "Minna no Nihongo · Self-introduction & basic identity sentences",
+  vocabulary: [
+    { japanese: "わたし", reading: "watashi", meaning: "I, me" },
+    { japanese: "あなた", reading: "anata", meaning: "you" },
+    { japanese: "あの ひと", reading: "ano hito", meaning: "that person, he/she" },
+    { japanese: "せんせい", reading: "sensei", meaning: "teacher, instructor" },
+    { japanese: "がくせい", reading: "gakusei", meaning: "student" },
+    { japanese: "かいしゃいん", reading: "kaishain", meaning: "company employee" },
+    { japanese: "いしゃ", reading: "isha", meaning: "doctor" },
+    { japanese: "エンジニア", reading: "enjinia", meaning: "engineer" },
+    { japanese: "だいがく", reading: "daigaku", meaning: "university" },
+    { japanese: "びょういん", reading: "byōin", meaning: "hospital" },
+    { japanese: "でんき", reading: "denki", meaning: "electricity, light" },
+    { japanese: "にほん", reading: "nihon", meaning: "Japan" },
+    { japanese: "アメリカ", reading: "amerika", meaning: "America" },
+    { japanese: "～さい", reading: "~sai", meaning: "~ years old" },
+    { japanese: "はい", reading: "hai", meaning: "yes" },
+    { japanese: "いいえ", reading: "iie", meaning: "no" },
+    { japanese: "はじめまして", reading: "hajimemashite", meaning: "How do you do (first meeting)" },
+    { japanese: "どうぞ よろしく", reading: "dōzo yoroshiku", meaning: "Pleased to meet you" },
+  ],
+  grammarPoints: [
+    {
+      title: "〜は　〜です",
+      rule: "Topic は + Noun/Adjective + です",
+      explanation: "The foundation of Japanese sentences. は (wa) is the topic-marking particle — it tells us what the sentence is about. です (desu) is the polite copula meaning 'is / am / are'.",
+      tip: "Think of は as saying \"as for [topic]…\" — it sets the stage for everything that follows.",
+      examples: [
+        { jp: "わたしは がくせいです。", en: "I am a student." },
+        { jp: "マリアさんは エンジニアです。", en: "Maria is an engineer." },
+      ],
+    },
+    {
+      title: "〜は　〜じゃ ありません",
+      rule: "Topic は + Noun + じゃ ありません",
+      explanation: "The negative form of です. じゃ ありません means 'is not'. It is the polite spoken contraction of では ありません.",
+      tip: "じゃ is a casual contraction of では. Both are correct — じゃ for conversation, では for formal writing.",
+      examples: [
+        { jp: "わたしは せんせいじゃ ありません。", en: "I am not a teacher." },
+        { jp: "サントスさんは がくせいじゃ ありません。", en: "Santos is not a student." },
+      ],
+    },
+    {
+      title: "〜は　〜ですか",
+      rule: "Topic は + Noun + ですか？",
+      explanation: "Adding か at the end of a です sentence turns it into a yes/no question. Japanese does NOT change word order — just append か.",
+      tip: "か at the end always signals a question. The rising intonation of your voice is optional but natural.",
+      examples: [
+        { jp: "ミラーさんは アメリカじんですか。", en: "Is Miller American?" },
+        { jp: "はい、アメリカじんです。", en: "Yes, (he) is American." },
+      ],
+    },
+    {
+      title: "〜も",
+      rule: "Topic も + Predicate (replaces は)",
+      explanation: "も means 'also / too'. It replaces は entirely — never use は and も together on the same noun.",
+      tip: "も replaces は. Never say 「わたしはも」— drop the は completely when adding も.",
+      examples: [
+        { jp: "ミラーさんは かいしゃいんです。", en: "Miller is a company employee." },
+        { jp: "グプタさんも かいしゃいんです。", en: "Gupta is also a company employee." },
+      ],
+    },
+    {
+      title: "Noun の Noun",
+      rule: "Noun₁ の Noun₂ → Noun₂ of/belonging to Noun₁",
+      explanation: "の connects two nouns. The first noun modifies the second — like English 's or 'of'. It shows possession, affiliation, or categorization.",
+      tip: "の links two nouns — the first always describes or owns the second. The order is reversed from English.",
+      examples: [
+        { jp: "わたしは にほんごの がくせいです。", en: "I am a student of Japanese." },
+        { jp: "ミラーさんは IMCの しゃいんです。", en: "Miller is an employee of IMC." },
+      ],
+    },
+  ],
+  practiceQuestions: [
+    { question: "「わたし ＿ がくせいです」— Fill in the particle.", options: ["は", "が", "を", "に"], correct: 0 },
+    { question: "How do you say 'I am not a teacher' politely?", options: ["わたしは せんせいです。", "わたしは せんせいじゃ ありません。", "わたしは せんせいか。", "わたしも せんせいです。"], correct: 1 },
+    { question: "「マリアさん ＿ エンジニアです」— Maria is ALSO an engineer. Which particle?", options: ["は", "の", "も", "が"], correct: 2 },
+    { question: "How do you form a question from 「がくせいです」?", options: ["がくせいですよ", "がくせいですか", "がくせいですね", "がくせいですの"], correct: 1 },
+    { question: "「IMC ＿ しゃいん」— An employee OF IMC. Which particle?", options: ["は", "も", "が", "の"], correct: 3 },
+    { question: "What does 「はじめまして」mean?", options: ["Goodbye", "Thank you", "How do you do (first meeting)", "Excuse me"], correct: 2 },
+  ],
+  questionWordMap: [
+    { word: "は", meaning: "topic-marking particle (wa)" },
+    { word: "じゃ ありません", meaning: "is not (negative copula)" },
+    { word: "も", meaning: "also/too particle" },
+    { word: "ですか", meaning: "question-forming particle" },
+    { word: "の", meaning: "possessive/descriptive particle" },
+    { word: "はじめまして", meaning: "How do you do (first meeting)" },
+  ],
+};

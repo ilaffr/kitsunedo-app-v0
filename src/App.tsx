@@ -6,6 +6,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import Index from "./pages/Index";
 import Lesson1 from "./pages/Lesson1";
+import Lesson2 from "./pages/Lesson2";
+import Lesson3 from "./pages/Lesson3";
+import Lesson4 from "./pages/Lesson4";
+import Lesson5 from "./pages/Lesson5";
 import DailyPractice from "./pages/DailyPractice";
 import KanjiWritingPractice from "./pages/KanjiWritingPractice";
 import Auth from "./pages/Auth";
@@ -53,14 +57,11 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/lesson/1"
-              element={
-                <ProtectedRoute>
-                  <Lesson1 />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/lesson/1" element={<ProtectedRoute><Lesson1 /></ProtectedRoute>} />
+            <Route path="/lesson/2" element={<ProtectedRoute><Lesson2 /></ProtectedRoute>} />
+            <Route path="/lesson/3" element={<ProtectedRoute><Lesson3 /></ProtectedRoute>} />
+            <Route path="/lesson/4" element={<ProtectedRoute><Lesson4 /></ProtectedRoute>} />
+            <Route path="/lesson/5" element={<ProtectedRoute><Lesson5 /></ProtectedRoute>} />
             <Route
               path="/daily-practice"
               element={
