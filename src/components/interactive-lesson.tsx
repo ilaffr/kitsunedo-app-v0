@@ -303,6 +303,14 @@ function VocabIntroView({
                   </>
                 )}
               </button>
+              {/* Audio button */}
+              <button
+                onClick={(e) => { e.stopPropagation(); speakJapanese(word.japanese); }}
+                className="absolute top-2 left-2 p-1.5 rounded-sm text-muted-foreground/40 hover:text-primary transition-colors"
+                title="Listen to pronunciation"
+              >
+                <Volume2 className="w-4 h-4" />
+              </button>
               {/* Bookmark button */}
               <button
                 onClick={(e) => { e.stopPropagation(); onToggle(word); }}
