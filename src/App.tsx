@@ -57,14 +57,11 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/lesson/1"
-              element={
-                <ProtectedRoute>
-                  <Lesson1 />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/lesson/1" element={<ProtectedRoute><Lesson1 /></ProtectedRoute>} />
+            <Route path="/lesson/2" element={<ProtectedRoute><Lesson2 /></ProtectedRoute>} />
+            <Route path="/lesson/3" element={<ProtectedRoute><Lesson3 /></ProtectedRoute>} />
+            <Route path="/lesson/4" element={<ProtectedRoute><Lesson4 /></ProtectedRoute>} />
+            <Route path="/lesson/5" element={<ProtectedRoute><Lesson5 /></ProtectedRoute>} />
             <Route
               path="/daily-practice"
               element={
