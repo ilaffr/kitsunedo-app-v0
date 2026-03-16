@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookOpen, Languages, PenTool, BookText, MessageSquare, Flame, Star, Clock } from "lucide-react";
 import { Header } from "@/components/header";
@@ -10,7 +10,8 @@ import { StatsCard } from "@/components/stats-card";
 import { LessonCard } from "@/components/lesson-card";
 import { HeroBanner } from "@/components/hero-banner";
 import { AchievementsPanel } from "@/components/achievements-panel";
-import { useStreak, usePracticeSession } from "@/hooks/use-user-data";
+import { useStreak, usePracticeSession, useAllLessonProgress } from "@/hooks/use-user-data";
+import { minnaLessons } from "@/data/minna-lessons";
 
 const studyCategories = [
   {
