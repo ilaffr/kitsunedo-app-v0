@@ -213,13 +213,9 @@ export default function Index() {
               </div>
             </section>
 
-            {/* Spirit Bestiary — Achievements */}
+            {/* Spirit Bestiary Preview */}
             <section className="mt-6 md:mt-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-1 h-6 bg-primary rounded-full" />
-                <h3 className="text-xl font-brush font-bold text-foreground">Spirit Bestiary</h3>
-              </div>
-              <AchievementsPanel />
+              <RecentSpiritsPreview />
             </section>
           </div>
         </main>
