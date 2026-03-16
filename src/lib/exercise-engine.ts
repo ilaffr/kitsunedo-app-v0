@@ -1,4 +1,4 @@
-import type { VocabItem, GrammarPoint } from "@/components/lesson-page";
+import type { VocabItem, GrammarPoint, ReadingPassage } from "@/components/lesson-page";
 
 // ── Exercise types ─────────────────────────────────────────────────────────
 
@@ -7,7 +7,8 @@ export type ExerciseType =
   | "type_answer"
   | "match_pairs"
   | "sentence_builder"
-  | "translate_compose";
+  | "translate_compose"
+  | "reading_comprehension";
 
 export interface MultipleChoiceExercise {
   type: "multiple_choice";
