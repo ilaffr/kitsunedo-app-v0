@@ -114,6 +114,12 @@ export default function Index() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("home");
   const { streak } = useStreak();
+  const { getTodayXP } = usePracticeSession();
+  const [todayXP, setTodayXP] = useState(0);
+
+  useEffect(() => {
+    getTodayXP().then(setTodayXP);
+  }, [getTodayXP]);
 
   return (
     <div className="min-h-screen bg-background">
