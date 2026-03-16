@@ -9,7 +9,7 @@ import { QuickReviewCard } from "@/components/quick-review-card";
 import { StatsCard } from "@/components/stats-card";
 import { LessonCard } from "@/components/lesson-card";
 import { HeroBanner } from "@/components/hero-banner";
-import { AchievementsPanel } from "@/components/achievements-panel";
+import { RecentSpiritsPreview } from "@/components/recent-spirits-preview";
 import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP, useOverallStats } from "@/hooks/use-user-data";
 import { minnaLessons } from "@/data/minna-lessons";
 import { WeeklyXPMini } from "@/components/weekly-xp-chart";
@@ -213,13 +213,9 @@ export default function Index() {
               </div>
             </section>
 
-            {/* Spirit Bestiary — Achievements */}
+            {/* Spirit Bestiary Preview */}
             <section className="mt-6 md:mt-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-1 h-6 bg-primary rounded-full" />
-                <h3 className="text-xl font-brush font-bold text-foreground">Spirit Bestiary</h3>
-              </div>
-              <AchievementsPanel />
+              <RecentSpiritsPreview />
             </section>
           </div>
         </main>
