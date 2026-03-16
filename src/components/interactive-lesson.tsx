@@ -11,6 +11,7 @@ import {
   MatchPairsCard,
   SentenceBuilderCard,
   TranslateComposeCard,
+  ReadingComprehensionCard,
 } from "@/components/exercise-cards";
 import { generateLessonSteps, type LessonStep } from "@/lib/exercise-engine";
 import type { LessonData, VocabItem } from "@/components/lesson-page";
