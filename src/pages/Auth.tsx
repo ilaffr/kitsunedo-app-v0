@@ -15,6 +15,24 @@ export default function Auth() {
   const [info, setInfo] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const [forgotMode, setForgotMode] = useState(false);
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setInfo(null);
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) {
+      setError(error.message);
+    } else {
+      setInfo("Check your email for a password reset link.");
+    }
+    setLoading(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -80,58 +98,112 @@ export default function Auth() {
           ))}
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 serif-jp">
-              Email
-            </label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2.5 rounded-sm border-2 border-border bg-background text-foreground text-sm focus:outline-none focus:border-foreground transition-colors"
-              placeholder="your@email.com"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 serif-jp">
-              Password
-            </label>
-            <input
-              type="password"
-              required
-              minLength={6}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2.5 rounded-sm border-2 border-border bg-background text-foreground text-sm focus:outline-none focus:border-foreground transition-colors"
-              placeholder="••••••••"
-            />
-          </div>
+        {forgotMode ? (
+          <form onSubmit={handleForgotPassword} className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 serif-jp">
+                Email
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-sm border-2 border-border bg-background text-foreground text-sm focus:outline-none focus:border-foreground transition-colors"
+                placeholder="your@email.com"
+              />
+            </div>
 
-          {error && (
-            <p className="text-sm text-destructive border border-destructive/30 bg-destructive/10 rounded-sm px-3 py-2 serif-jp">
-              {error}
-            </p>
-          )}
-          {info && (
-            <p className="text-sm text-success border border-success/30 bg-success/10 rounded-sm px-3 py-2 serif-jp">
-              {info}
-            </p>
-          )}
+            {error && (
+              <p className="text-sm text-destructive border border-destructive/30 bg-destructive/10 rounded-sm px-3 py-2 serif-jp">
+                {error}
+              </p>
+            )}
+            {info && (
+              <p className="text-sm text-success border border-success/30 bg-success/10 rounded-sm px-3 py-2 serif-jp">
+                {info}
+              </p>
+            )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 rounded-sm border-2 font-bold serif-jp text-sm btn-ink text-background border-foreground mt-2 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
-          >
-            {loading
-              ? "..."
-              : mode === "signin"
-              ? "入門 — Enter the Dojo"
-              : "入学 — Begin Your Path"}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 rounded-sm border-2 font-bold serif-jp text-sm btn-ink text-background border-foreground mt-2 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+            >
+              {loading ? "..." : "送信 — Send Reset Link"}
+            </button>
+            <button
+              type="button"
+              onClick={() => { setForgotMode(false); setError(null); setInfo(null); }}
+              className="w-full text-xs text-muted-foreground hover:text-foreground serif-jp transition-colors"
+            >
+              ← Back to Sign In
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 serif-jp">
+                Email
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-sm border-2 border-border bg-background text-foreground text-sm focus:outline-none focus:border-foreground transition-colors"
+                placeholder="your@email.com"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 serif-jp">
+                Password
+              </label>
+              <input
+                type="password"
+                required
+                minLength={6}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-sm border-2 border-border bg-background text-foreground text-sm focus:outline-none focus:border-foreground transition-colors"
+                placeholder="••••••••"
+              />
+            </div>
+
+            {mode === "signin" && (
+              <button
+                type="button"
+                onClick={() => { setForgotMode(true); setError(null); setInfo(null); }}
+                className="text-xs text-muted-foreground hover:text-foreground serif-jp transition-colors"
+              >
+                Forgot password?
+              </button>
+            )}
+
+            {error && (
+              <p className="text-sm text-destructive border border-destructive/30 bg-destructive/10 rounded-sm px-3 py-2 serif-jp">
+                {error}
+              </p>
+            )}
+            {info && (
+              <p className="text-sm text-success border border-success/30 bg-success/10 rounded-sm px-3 py-2 serif-jp">
+                {info}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 rounded-sm border-2 font-bold serif-jp text-sm btn-ink text-background border-foreground mt-2 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+            >
+              {loading
+                ? "..."
+                : mode === "signin"
+                ? "入門 — Enter the Dojo"
+                : "入学 — Begin Your Path"}
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );
