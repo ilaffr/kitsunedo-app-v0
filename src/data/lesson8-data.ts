@@ -1,0 +1,102 @@
+import type { LessonData } from "@/components/lesson-page";
+
+export const lesson8Data: LessonData = {
+  id: "lesson_8",
+  number: 8,
+  titleJp: "きれいな まちです",
+  titleEn: "It's a beautiful town",
+  subtitle: "Na-adjectives, i-adjectives & descriptions",
+  vocabulary: [
+    { japanese: "きれい（な）", reading: "kirei (na)", meaning: "beautiful, clean" },
+    { japanese: "しずか（な）", reading: "shizuka (na)", meaning: "quiet" },
+    { japanese: "にぎやか（な）", reading: "nigiyaka (na)", meaning: "lively, bustling" },
+    { japanese: "ゆうめい（な）", reading: "yūmei (na)", meaning: "famous" },
+    { japanese: "げんき（な）", reading: "genki (na)", meaning: "healthy, energetic" },
+    { japanese: "ひま（な）", reading: "hima (na)", meaning: "free (not busy)" },
+    { japanese: "おおきい", reading: "ōkii", meaning: "big" },
+    { japanese: "ちいさい", reading: "chiisai", meaning: "small" },
+    { japanese: "あたらしい", reading: "atarashii", meaning: "new" },
+    { japanese: "ふるい", reading: "furui", meaning: "old (things)" },
+    { japanese: "いい", reading: "ii", meaning: "good" },
+    { japanese: "わるい", reading: "warui", meaning: "bad" },
+    { japanese: "たかい", reading: "takai", meaning: "expensive, tall" },
+    { japanese: "やすい", reading: "yasui", meaning: "cheap, inexpensive" },
+    { japanese: "おいしい", reading: "oishii", meaning: "delicious" },
+    { japanese: "まずい", reading: "mazui", meaning: "bad-tasting" },
+    { japanese: "あつい", reading: "atsui", meaning: "hot (weather)" },
+    { japanese: "さむい", reading: "samui", meaning: "cold (weather)" },
+    { japanese: "まち", reading: "machi", meaning: "town, city" },
+    { japanese: "とても", reading: "totemo", meaning: "very" },
+    { japanese: "あまり", reading: "amari", meaning: "not very (+ negative)" },
+  ],
+  grammarPoints: [
+    {
+      title: "な-adjective + です",
+      rule: "な-adj + です / な-adj + じゃ ありません",
+      explanation: "Na-adjectives work like nouns — add です for affirmative, じゃ ありません for negative. When modifying a noun, add な before the noun.",
+      tip: "Na-adjectives need な when placed before a noun: きれいな まち (beautiful town), but きれいです (it's beautiful).",
+      examples: [
+        { jp: "この まちは きれいです。", en: "This town is beautiful." },
+        { jp: "きれいな まちです。", en: "It's a beautiful town." },
+      ],
+    },
+    {
+      title: "い-adjective + です",
+      rule: "い-adj + です / い → くない + です",
+      explanation: "I-adjectives already contain the 'is' meaning in their い ending. For polite speech, add です. For negative, change い to くない.",
+      tip: "Negative: drop い, add くないです. Exception: いい → よくないです (irregular!).",
+      examples: [
+        { jp: "この レストランは おいしいです。", en: "This restaurant is delicious." },
+        { jp: "この ほんは たかくないです。", en: "This book is not expensive." },
+      ],
+    },
+    {
+      title: "とても / あまり",
+      rule: "とても + affirmative / あまり + negative",
+      explanation: "とても intensifies (very). あまり softens a negative (not very). あまり must always be used with a negative verb/adjective form.",
+      tip: "とても = very (with positive). あまり = not very (always with negative). Never say あまり + affirmative.",
+      examples: [
+        { jp: "とても しずかです。", en: "It's very quiet." },
+        { jp: "あまり おおきくないです。", en: "It's not very big." },
+      ],
+    },
+    {
+      title: "〜は どうですか",
+      rule: "Topic は どうですか (How is…?)",
+      explanation: "Used to ask someone's opinion or impression about something. どう means 'how' in this context.",
+      tip: "どうですか asks for impressions/opinions. どんな asks what kind of thing it is — they're different!",
+      examples: [
+        { jp: "にほんの せいかつは どうですか。", en: "How is life in Japan?" },
+        { jp: "たのしいです。", en: "It's fun." },
+      ],
+    },
+  ],
+  practiceQuestions: [
+    { question: "How do you say 'quiet town'?", options: ["しずかの まち", "しずかな まち", "しずかい まち", "しずくな まち"], correct: 1 },
+    { question: "Negative of 「おおきい」?", options: ["おおきない", "おおきくない", "おおくない", "おおきじゃない"], correct: 1 },
+    { question: "「あまり ＿」— not very delicious.", options: ["おいしいです", "おいしくないです", "おいしいじゃないです", "おいしです"], correct: 1 },
+    { question: "Negative of 「いい」?", options: ["いくない", "よくない", "いいじゃない", "いない"], correct: 1 },
+    { question: "Which is a な-adjective?", options: ["おおきい", "あたらしい", "げんき", "たかい"], correct: 2 },
+    { question: "「にほんは ＿ですか」— How is Japan?", options: ["なに", "どう", "どこ", "だれ"], correct: 1 },
+  ],
+  questionWordMap: [
+    { word: "しずかな", meaning: "quiet (na-adj + na)" },
+    { word: "おおきくない", meaning: "not big (i-adj negative)" },
+    { word: "あまり", meaning: "not very (+ negative)" },
+    { word: "よくない", meaning: "not good (irregular)" },
+    { word: "げんき", meaning: "healthy/energetic (na-adj)" },
+    { word: "どう", meaning: "how (asking opinion)" },
+  ],
+  readingPassages: [
+    {
+      title: "My Town",
+      titleJp: "わたしの まち",
+      text: "わたしの まちは ちいさいです。でも、とても きれいです。\nふるい おてらが あります。ゆうめいな おてらです。\nまちは あまり にぎやかじゃ ありません。とても しずかです。\nレストランは おおきくないです。でも、おいしいです。\nわたしは この まちが すきです。",
+      translation: "My town is small. But it's very beautiful.\nThere is an old temple. It's a famous temple.\nThe town is not very lively. It's very quiet.\nThe restaurant is not big. But it's delicious.\nI like this town.",
+      questions: [
+        { question: "How is the town described?", options: ["Big and lively", "Small and beautiful", "New and famous", "Big and quiet"], correct: 1 },
+        { question: "How is the restaurant?", options: ["Big and cheap", "Small but delicious", "Famous but expensive", "New and quiet"], correct: 1 },
+      ],
+    },
+  ],
+};
