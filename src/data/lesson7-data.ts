@@ -1,0 +1,91 @@
+import type { LessonData } from "@/components/lesson-page";
+
+export const lesson7Data: LessonData = {
+  id: "lesson_7",
+  number: 7,
+  titleJp: "はさみで きります",
+  titleEn: "Cut with scissors",
+  subtitle: "Tools, giving & receiving, completion",
+  vocabulary: [
+    { japanese: "きります", reading: "kirimasu", meaning: "to cut" },
+    { japanese: "おくります", reading: "okurimasu", meaning: "to send" },
+    { japanese: "あげます", reading: "agemasu", meaning: "to give" },
+    { japanese: "もらいます", reading: "moraimasu", meaning: "to receive" },
+    { japanese: "かします", reading: "kashimasu", meaning: "to lend" },
+    { japanese: "かります", reading: "karimasu", meaning: "to borrow" },
+    { japanese: "おしえます", reading: "oshiemasu", meaning: "to teach, to tell" },
+    { japanese: "ならいます", reading: "naraimasu", meaning: "to learn" },
+    { japanese: "はさみ", reading: "hasami", meaning: "scissors" },
+    { japanese: "ナイフ", reading: "naifu", meaning: "knife" },
+    { japanese: "フォーク", reading: "fōku", meaning: "fork" },
+    { japanese: "スプーン", reading: "supūn", meaning: "spoon" },
+    { japanese: "はし", reading: "hashi", meaning: "chopsticks" },
+    { japanese: "てがみ", reading: "tegami", meaning: "letter" },
+    { japanese: "メール", reading: "mēru", meaning: "email" },
+    { japanese: "プレゼント", reading: "purezento", meaning: "present, gift" },
+    { japanese: "はな", reading: "hana", meaning: "flower" },
+    { japanese: "チョコレート", reading: "chokorēto", meaning: "chocolate" },
+    { japanese: "もう", reading: "mō", meaning: "already, yet" },
+    { japanese: "まだ", reading: "mada", meaning: "not yet, still" },
+  ],
+  grammarPoints: [
+    {
+      title: "〜で (tool/means)",
+      rule: "Tool/Means で + Verb",
+      explanation: "で marks the tool, instrument, or means used to perform an action. This is a different usage from the 'place' で you learned before.",
+      tip: "Same particle で, different meaning. Context makes it clear: a tool/instrument → 'with/using', a place → 'at/in'.",
+      examples: [
+        { jp: "はさみで かみを きります。", en: "I cut paper with scissors." },
+        { jp: "はしで たべます。", en: "I eat with chopsticks." },
+      ],
+    },
+    {
+      title: "〜に あげます / もらいます",
+      rule: "Person に あげます (give to) / Person に もらいます (receive from)",
+      explanation: "に marks the recipient when giving and the source when receiving. あげます = give (away from speaker), もらいます = receive (toward speaker).",
+      tip: "あげます ↑ (outward), もらいます ↓ (inward). The direction relative to the speaker determines which verb to use.",
+      examples: [
+        { jp: "ともだちに プレゼントを あげます。", en: "I give a present to my friend." },
+        { jp: "せんせいに ほんを もらいます。", en: "I receive a book from the teacher." },
+      ],
+    },
+    {
+      title: "もう / まだ",
+      rule: "もう + past affirmative / まだ + negative",
+      explanation: "もう means 'already' or 'yet' (in questions). まだ means 'not yet'. They're often paired: もう〜ましたか → まだです。",
+      tip: "もう〜ましたか？ = 'Have you already…?' / まだです = 'Not yet.' A very common daily conversation pair.",
+      examples: [
+        { jp: "もう ごはんを たべましたか。", en: "Have you eaten already?" },
+        { jp: "いいえ、まだです。", en: "No, not yet." },
+      ],
+    },
+  ],
+  practiceQuestions: [
+    { question: "「はさみ＿ きります」— Cut WITH scissors.", options: ["を", "に", "で", "は"], correct: 2 },
+    { question: "「ともだち＿ プレゼントを あげます」— Give TO a friend.", options: ["で", "を", "に", "は"], correct: 2 },
+    { question: "What does 「もらいます」mean?", options: ["to give", "to receive", "to lend", "to borrow"], correct: 1 },
+    { question: "How do you answer 'Not yet' to 「もう たべましたか」?", options: ["はい、たべました。", "まだです。", "もうです。", "たべません。"], correct: 1 },
+    { question: "Which is 'chopsticks'?", options: ["フォーク", "スプーン", "ナイフ", "はし"], correct: 3 },
+    { question: "「メールを ＿」— I send an email.", options: ["きります", "おくります", "かいます", "ならいます"], correct: 1 },
+  ],
+  questionWordMap: [
+    { word: "で", meaning: "tool/means particle (with/using)" },
+    { word: "に", meaning: "direction particle (to/from)" },
+    { word: "もらいます", meaning: "to receive" },
+    { word: "まだ", meaning: "not yet" },
+    { word: "はし", meaning: "chopsticks" },
+    { word: "おくります", meaning: "to send" },
+  ],
+  readingPassages: [
+    {
+      title: "Birthday Present",
+      titleJp: "たんじょうびの プレゼント",
+      text: "きょうは すずきさんの たんじょうびです。\nたなかさんは すずきさんに はなを あげます。\nやまださんは チョコレートを あげます。\nすずきさんは 「ありがとうございます！」と いいます。\nすずきさんは たなかさんに てがみを もらいました。\nとても うれしいです。",
+      translation: "Today is Suzuki's birthday.\nTanaka gives flowers to Suzuki.\nYamada gives chocolate.\nSuzuki says 'Thank you very much!'\nSuzuki received a letter from Tanaka.\nShe is very happy.",
+      questions: [
+        { question: "What did Tanaka give Suzuki?", options: ["Chocolate", "A letter", "Flowers", "A book"], correct: 2 },
+        { question: "How does Suzuki feel?", options: ["Sad", "Angry", "Tired", "Happy"], correct: 3 },
+      ],
+    },
+  ],
+};

@@ -7,6 +7,7 @@ import type {
   MatchPairsExercise,
   SentenceBuilderExercise,
   TranslateComposeExercise,
+  ReadingComprehensionExercise,
 } from "@/lib/exercise-engine";
 
 interface ExerciseResult {
@@ -401,6 +402,92 @@ export function TranslateComposeCard({
             {!isCorrect && <p className="text-xs mt-1 japanese-text">Answer: {exercise.acceptedAnswers[0]}</p>}
           </div>
           <button onClick={() => onComplete({ correct: isCorrect })} className="flex items-center gap-1 text-sm font-bold hover:underline shrink-0">
+            Continue <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Reading Comprehension ──────────────────────────────────────────────────
+
+export function ReadingComprehensionCard({
+  exercise,
+  onComplete,
+}: {
+  exercise: ReadingComprehensionExercise;
+  onComplete: (r: ExerciseResult) => void;
+}) {
+  const [selected, setSelected] = useState<number | null>(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [showTranslation, setShowTranslation] = useState(false);
+
+  const isCorrect = selected === exercise.correctIndex;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground serif-jp">Reading 読解</p>
+        <span className="text-xs text-muted-foreground">{exercise.title}</span>
+      </div>
+
+      {/* Reading text */}
+      <div className="p-4 rounded-sm bg-muted/20 border-2 border-border">
+        <p className="text-base japanese-text leading-relaxed text-foreground whitespace-pre-line">{exercise.text}</p>
+        <button
+          onClick={() => setShowTranslation(!showTranslation)}
+          className="text-xs text-primary mt-3 hover:underline serif-jp"
+        >
+          {showTranslation ? "Hide translation ▲" : "Show translation ▼"}
+        </button>
+        {showTranslation && (
+          <p className="text-sm text-muted-foreground mt-2 italic leading-relaxed">{exercise.translation}</p>
+        )}
+      </div>
+
+      {/* Question */}
+      <p className="text-sm font-medium text-foreground serif-jp">{exercise.question}</p>
+
+      <div className="grid grid-cols-1 gap-2">
+        {exercise.options.map((opt, i) => (
+          <button
+            key={i}
+            onClick={() => !submitted && setSelected(i)}
+            className={cn(
+              "w-full text-left px-4 py-3 rounded-sm border-2 text-sm transition-all",
+              !submitted && selected === i && "border-foreground bg-foreground/5 scale-[1.01]",
+              !submitted && selected !== i && "border-border hover:border-foreground/30",
+              submitted && i === exercise.correctIndex && "border-success bg-success/10",
+              submitted && selected === i && i !== exercise.correctIndex && "border-destructive bg-destructive/10"
+            )}
+          >
+            <div className="flex items-center justify-between">
+              <span>{opt}</span>
+              {submitted && i === exercise.correctIndex && <Check className="w-4 h-4 text-success" />}
+              {submitted && selected === i && i !== exercise.correctIndex && <X className="w-4 h-4 text-destructive" />}
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {!submitted ? (
+        <button
+          onClick={() => setSubmitted(true)}
+          disabled={selected === null}
+          className={cn(
+            "w-full py-3 rounded-sm border-2 font-bold serif-jp text-sm transition-colors",
+            selected === null
+              ? "border-border text-muted-foreground bg-muted/30 cursor-not-allowed"
+              : "btn-ink text-background border-foreground"
+          )}
+        >
+          Check
+        </button>
+      ) : (
+        <div className={cn("p-3 rounded-sm border-2 flex items-center justify-between", isCorrect ? "border-success bg-success/10" : "border-destructive bg-destructive/10")}>
+          <span className="text-sm font-medium">{isCorrect ? "Correct! ✨" : `Answer: ${exercise.options[exercise.correctIndex]}`}</span>
+          <button onClick={() => onComplete({ correct: isCorrect })} className="flex items-center gap-1 text-sm font-bold hover:underline">
             Continue <ArrowRight className="w-4 h-4" />
           </button>
         </div>

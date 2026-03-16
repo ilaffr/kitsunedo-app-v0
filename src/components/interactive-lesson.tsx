@@ -11,6 +11,7 @@ import {
   MatchPairsCard,
   SentenceBuilderCard,
   TranslateComposeCard,
+  ReadingComprehensionCard,
 } from "@/components/exercise-cards";
 import { generateLessonSteps, type LessonStep } from "@/lib/exercise-engine";
 import type { LessonData, VocabItem } from "@/components/lesson-page";
@@ -27,7 +28,7 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
   const { saveProgress } = useLessonProgress(`lesson_${lesson.number}`);
 
   const steps = useMemo(
-    () => generateLessonSteps(lesson.vocabulary, lesson.grammarPoints),
+    () => generateLessonSteps(lesson.vocabulary, lesson.grammarPoints, lesson.readingPassages),
     [lesson]
   );
 
@@ -222,6 +223,12 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
               )}
               {step.exercise.type === "translate_compose" && (
                 <TranslateComposeCard
+                  exercise={step.exercise}
+                  onComplete={(r) => handleExerciseComplete(r.correct, step.xpReward)}
+                />
+              )}
+              {step.exercise.type === "reading_comprehension" && (
+                <ReadingComprehensionCard
                   exercise={step.exercise}
                   onComplete={(r) => handleExerciseComplete(r.correct, step.xpReward)}
                 />

@@ -1,4 +1,4 @@
-import type { VocabItem, GrammarPoint } from "@/components/lesson-page";
+import type { VocabItem, GrammarPoint, ReadingPassage } from "@/components/lesson-page";
 
 // ── Exercise types ─────────────────────────────────────────────────────────
 
@@ -7,7 +7,8 @@ export type ExerciseType =
   | "type_answer"
   | "match_pairs"
   | "sentence_builder"
-  | "translate_compose";
+  | "translate_compose"
+  | "reading_comprehension";
 
 export interface MultipleChoiceExercise {
   type: "multiple_choice";
@@ -44,12 +45,24 @@ export interface TranslateComposeExercise {
   hint?: string;
 }
 
+export interface ReadingComprehensionExercise {
+  type: "reading_comprehension";
+  title: string;
+  titleJp: string;
+  text: string;
+  translation: string;
+  question: string;
+  options: string[];
+  correctIndex: number;
+}
+
 export type Exercise =
   | MultipleChoiceExercise
   | TypeAnswerExercise
   | MatchPairsExercise
   | SentenceBuilderExercise
-  | TranslateComposeExercise;
+  | TranslateComposeExercise
+  | ReadingComprehensionExercise;
 
 // ── Lesson step (mixed progression) ────────────────────────────────────────
 
@@ -78,6 +91,7 @@ export type LessonStep = VocabIntroStep | GrammarIntroStep | ExerciseStep;
 export function generateLessonSteps(
   vocabulary: VocabItem[],
   grammarPoints: GrammarPoint[],
+  readingPassages?: ReadingPassage[],
 ): LessonStep[] {
   const steps: LessonStep[] = [];
   const CHUNK = 4;
@@ -104,6 +118,28 @@ export function generateLessonSteps(
       gExercises.forEach((ex) => steps.push({ type: "exercise", exercise: ex, xpReward: 10 }));
     }
   });
+
+  // Add reading comprehension exercises at the end
+  if (readingPassages && readingPassages.length > 0) {
+    for (const passage of readingPassages) {
+      for (const q of passage.questions) {
+        steps.push({
+          type: "exercise",
+          exercise: {
+            type: "reading_comprehension",
+            title: passage.title,
+            titleJp: passage.titleJp,
+            text: passage.text,
+            translation: passage.translation,
+            question: q.question,
+            options: q.options,
+            correctIndex: q.correct,
+          },
+          xpReward: 15,
+        });
+      }
+    }
+  }
 
   return steps;
 }

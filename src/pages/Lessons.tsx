@@ -72,7 +72,7 @@ export default function Lessons() {
                 bestScore={prog?.bestScore ?? null}
                 expanded={expandedId === lesson.id}
                 onToggle={() => setExpandedId(expandedId === lesson.id ? null : lesson.id)}
-                onStart={() => lesson.id <= 5 ? navigate(`/lesson/${lesson.id}`) : undefined}
+                onStart={() => lesson.id <= 10 ? navigate(`/lesson/${lesson.id}`) : undefined}
               />
             );
           })}
@@ -97,7 +97,7 @@ function LessonRow({
   onToggle: () => void;
   onStart: () => void;
 }) {
-  const available = lesson.id <= 5;
+  const available = lesson.id <= 10;
 
   return (
     <div className={cn("border-2 rounded-sm transition-colors", expanded ? "border-foreground/30" : "border-border")}>

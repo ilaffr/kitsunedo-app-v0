@@ -90,12 +90,12 @@ export default function Index() {
   );
 
   const continueLessons = useMemo(() => {
-    const first5 = minnaLessons.slice(0, 5);
-    return first5.map((l) => {
+    const first10 = minnaLessons.slice(0, 10);
+    return first10.map((l) => {
       const prog = progressMap.get(`lesson_${l.id}`);
       const completed = prog?.completed ?? false;
       // Find the first non-completed lesson to mark as in-progress
-      const firstIncomplete = first5.find(
+      const firstIncomplete = first10.find(
         (x) => !(progressMap.get(`lesson_${x.id}`)?.completed)
       );
       let status: "completed" | "in-progress" | "available" | "locked";

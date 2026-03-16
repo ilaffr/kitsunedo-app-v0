@@ -1,0 +1,103 @@
+import type { LessonData } from "@/components/lesson-page";
+
+export const lesson6Data: LessonData = {
+  id: "lesson_6",
+  number: 6,
+  titleJp: "いっしょに たべませんか",
+  titleEn: "Let's eat together",
+  subtitle: "Transitive verbs, invitations & suggestions",
+  vocabulary: [
+    { japanese: "たべます", reading: "tabemasu", meaning: "to eat" },
+    { japanese: "のみます", reading: "nomimasu", meaning: "to drink" },
+    { japanese: "かいます", reading: "kaimasu", meaning: "to buy" },
+    { japanese: "よみます", reading: "yomimasu", meaning: "to read" },
+    { japanese: "ききます", reading: "kikimasu", meaning: "to listen, to ask" },
+    { japanese: "みます", reading: "mimasu", meaning: "to see, to watch" },
+    { japanese: "します", reading: "shimasu", meaning: "to do" },
+    { japanese: "ごはん", reading: "gohan", meaning: "rice, meal" },
+    { japanese: "パン", reading: "pan", meaning: "bread" },
+    { japanese: "たまご", reading: "tamago", meaning: "egg" },
+    { japanese: "にく", reading: "niku", meaning: "meat" },
+    { japanese: "さかな", reading: "sakana", meaning: "fish" },
+    { japanese: "やさい", reading: "yasai", meaning: "vegetable" },
+    { japanese: "くだもの", reading: "kudamono", meaning: "fruit" },
+    { japanese: "みず", reading: "mizu", meaning: "water" },
+    { japanese: "おちゃ", reading: "ocha", meaning: "tea (green)" },
+    { japanese: "コーヒー", reading: "kōhī", meaning: "coffee" },
+    { japanese: "ジュース", reading: "jūsu", meaning: "juice" },
+    { japanese: "しんぶん", reading: "shinbun", meaning: "newspaper" },
+    { japanese: "ざっし", reading: "zasshi", meaning: "magazine" },
+    { japanese: "レストラン", reading: "resutoran", meaning: "restaurant" },
+    { japanese: "いっしょに", reading: "issho ni", meaning: "together" },
+  ],
+  grammarPoints: [
+    {
+      title: "〜を + Verb",
+      rule: "Object を + Verb (transitive)",
+      explanation: "を (o) is the object-marking particle. It marks what receives the action of the verb. In Japanese, the object comes before the verb.",
+      tip: "を is always pronounced 'o', never 'wo' in modern Japanese. It only appears as a particle.",
+      examples: [
+        { jp: "パンを たべます。", en: "I eat bread." },
+        { jp: "みずを のみます。", en: "I drink water." },
+      ],
+    },
+    {
+      title: "〜で (place of action)",
+      rule: "Place で + Action Verb",
+      explanation: "で marks the location where an action takes place. Don't confuse with に which marks destination or existence.",
+      tip: "Think of で as 'at' or 'in' — but only for where actions happen, not where things simply exist.",
+      examples: [
+        { jp: "レストランで たべます。", en: "I eat at a restaurant." },
+        { jp: "うちで しんぶんを よみます。", en: "I read the newspaper at home." },
+      ],
+    },
+    {
+      title: "〜ませんか (invitation)",
+      rule: "Verb-stem + ませんか？",
+      explanation: "The negative question form ませんか is used to politely invite someone to do something. It literally means 'Won't you…?' but functions as a warm invitation.",
+      tip: "ませんか is softer than English 'Won't you…?' — it's the standard polite way to suggest doing something together.",
+      examples: [
+        { jp: "いっしょに コーヒーを のみませんか。", en: "Would you like to have coffee together?" },
+        { jp: "えいがを みませんか。", en: "Would you like to watch a movie?" },
+      ],
+    },
+    {
+      title: "〜ましょう (suggestion)",
+      rule: "Verb-stem + ましょう",
+      explanation: "ましょう means 'Let's…' — it's used when you assume the other person will agree. It's more assertive than ませんか.",
+      tip: "ませんか = 'Shall we?' (asking), ましょう = 'Let's!' (suggesting/deciding). ましょう is more proactive.",
+      examples: [
+        { jp: "いっしょに たべましょう。", en: "Let's eat together." },
+        { jp: "ちょっと やすみましょう。", en: "Let's take a little break." },
+      ],
+    },
+  ],
+  practiceQuestions: [
+    { question: "「パン＿ たべます」— Fill in the particle.", options: ["は", "を", "に", "で"], correct: 1 },
+    { question: "How do you politely invite someone to drink tea?", options: ["おちゃを のみましょう。", "おちゃを のみませんか。", "おちゃを のみます。", "おちゃは のみません。"], correct: 1 },
+    { question: "「レストラン＿ たべます」— We eat AT the restaurant.", options: ["を", "に", "で", "は"], correct: 2 },
+    { question: "What does 「いっしょに たべましょう」mean?", options: ["I eat alone.", "Let's eat together.", "Won't you eat?", "I won't eat."], correct: 1 },
+    { question: "Which means 'to buy'?", options: ["のみます", "よみます", "かいます", "ききます"], correct: 2 },
+    { question: "「＿を よみます」— I read a newspaper.", options: ["ざっし", "しんぶん", "さかな", "みず"], correct: 1 },
+  ],
+  questionWordMap: [
+    { word: "を", meaning: "object-marking particle" },
+    { word: "ませんか", meaning: "invitation form (won't you...?)" },
+    { word: "で", meaning: "place of action particle" },
+    { word: "ましょう", meaning: "let's (suggestion)" },
+    { word: "かいます", meaning: "to buy" },
+    { word: "しんぶん", meaning: "newspaper" },
+  ],
+  readingPassages: [
+    {
+      title: "Lunch Break",
+      titleJp: "ひるごはん",
+      text: "きょうは 12じです。おひるごはんの じかんです。\nたなかさんは レストランで さかなを たべます。\nやまださんも いっしょに たべます。\nやまださんは にくを たべます。\nたなかさんは おちゃを のみます。やまださんは コーヒーを のみます。\n「おいしいですね！」\n「ええ、とても おいしいです。」",
+      translation: "It's 12 o'clock today. It's lunchtime.\nTanaka eats fish at a restaurant.\nYamada also eats together.\nYamada eats meat.\nTanaka drinks tea. Yamada drinks coffee.\n\"It's delicious, isn't it!\"\n\"Yes, it's very delicious.\"",
+      questions: [
+        { question: "Where does Tanaka eat?", options: ["At home", "At a restaurant", "At the office", "At a café"], correct: 1 },
+        { question: "What does Yamada drink?", options: ["Tea", "Juice", "Water", "Coffee"], correct: 3 },
+      ],
+    },
+  ],
+};

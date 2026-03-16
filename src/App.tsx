@@ -10,6 +10,11 @@ import Lesson2 from "./pages/Lesson2";
 import Lesson3 from "./pages/Lesson3";
 import Lesson4 from "./pages/Lesson4";
 import Lesson5 from "./pages/Lesson5";
+import Lesson6 from "./pages/Lesson6";
+import Lesson7 from "./pages/Lesson7";
+import Lesson8 from "./pages/Lesson8";
+import Lesson9 from "./pages/Lesson9";
+import Lesson10 from "./pages/Lesson10";
 import DailyPractice from "./pages/DailyPractice";
 import KanjiWritingPractice from "./pages/KanjiWritingPractice";
 import Auth from "./pages/Auth";
@@ -65,6 +70,11 @@ const App = () => (
             <Route path="/lesson/3" element={<ProtectedRoute><Lesson3 /></ProtectedRoute>} />
             <Route path="/lesson/4" element={<ProtectedRoute><Lesson4 /></ProtectedRoute>} />
             <Route path="/lesson/5" element={<ProtectedRoute><Lesson5 /></ProtectedRoute>} />
+            <Route path="/lesson/6" element={<ProtectedRoute><Lesson6 /></ProtectedRoute>} />
+            <Route path="/lesson/7" element={<ProtectedRoute><Lesson7 /></ProtectedRoute>} />
+            <Route path="/lesson/8" element={<ProtectedRoute><Lesson8 /></ProtectedRoute>} />
+            <Route path="/lesson/9" element={<ProtectedRoute><Lesson9 /></ProtectedRoute>} />
+            <Route path="/lesson/10" element={<ProtectedRoute><Lesson10 /></ProtectedRoute>} />
             <Route
               path="/daily-practice"
               element={
