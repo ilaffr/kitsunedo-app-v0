@@ -160,9 +160,9 @@ export default function Index() {
               <QuickReviewCard itemsToReview={23} />
             </section>
 
-            {/* Weekly XP Chart */}
+            {/* Weekly XP Mini */}
             <section className="mb-6 md:mb-8">
-              <WeeklyXPChart days={days} weekTotal={weekTotal} />
+              <WeeklyXPMini days={days} weekTotal={weekTotal} onViewDetails={() => navigate("/stats")} />
             </section>
 
             <div className="grid lg:grid-cols-2 gap-6 md:gap-8">
