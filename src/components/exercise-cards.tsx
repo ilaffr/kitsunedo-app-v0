@@ -117,7 +117,12 @@ export function TypeAnswerCard({
     <div className="space-y-4">
       <p className="text-lg font-medium text-foreground serif-jp">{exercise.prompt}</p>
       {exercise.promptJp && (
-        <p className="text-3xl japanese-text text-center font-bold text-foreground py-2">{exercise.promptJp}</p>
+        <div className="flex items-center justify-center gap-2 py-2">
+          <p className="text-3xl japanese-text font-bold text-foreground">{exercise.promptJp}</p>
+          <button onClick={() => speakJapanese(exercise.promptJp!)} className="p-1.5 rounded-sm text-muted-foreground hover:text-primary transition-colors" title="Listen">
+            <Volume2 className="w-5 h-5" />
+          </button>
+        </div>
       )}
       {exercise.hint && <p className="text-xs text-muted-foreground">Hint: {exercise.hint}</p>}
       <input
