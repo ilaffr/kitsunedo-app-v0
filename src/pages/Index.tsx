@@ -77,6 +77,7 @@ export default function Index() {
   const { getTodayXP } = usePracticeSession();
   const { lessons: progressList } = useAllLessonProgress();
   const { days, weekTotal } = useWeeklyXP();
+  const { totalXP, sessionsCount, completedLessons } = useOverallStats();
   const [todayXP, setTodayXP] = useState(0);
 
   useEffect(() => {
