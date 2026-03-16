@@ -445,7 +445,12 @@ export function ReadingComprehensionCard({
 
       {/* Reading text */}
       <div className="p-4 rounded-sm bg-muted/20 border-2 border-border">
-        <p className="text-base japanese-text leading-relaxed text-foreground whitespace-pre-line">{exercise.text}</p>
+        <div className="flex items-start justify-between gap-2">
+          <p className="text-base japanese-text leading-relaxed text-foreground whitespace-pre-line">{exercise.text}</p>
+          <button onClick={() => speakJapanese(exercise.text, 0.75)} className="p-1.5 rounded-sm text-muted-foreground hover:text-primary transition-colors shrink-0 mt-0.5" title="Listen to passage">
+            <Volume2 className="w-5 h-5" />
+          </button>
+        </div>
         <button
           onClick={() => setShowTranslation(!showTranslation)}
           className="text-xs text-primary mt-3 hover:underline serif-jp"
