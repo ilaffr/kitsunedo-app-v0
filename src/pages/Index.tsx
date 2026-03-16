@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BookOpen, Languages, PenTool, BookText, MessageSquare, Flame, Star, Clock } from "lucide-react";
 import { Header } from "@/components/header";
