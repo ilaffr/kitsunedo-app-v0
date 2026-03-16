@@ -227,6 +227,12 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
                   onComplete={(r) => handleExerciseComplete(r.correct, step.xpReward)}
                 />
               )}
+              {step.exercise.type === "reading_comprehension" && (
+                <ReadingComprehensionCard
+                  exercise={step.exercise}
+                  onComplete={(r) => handleExerciseComplete(r.correct, step.xpReward)}
+                />
+              )}
             </div>
           )}
         </div>
