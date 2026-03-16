@@ -10,7 +10,7 @@ import { StatsCard } from "@/components/stats-card";
 import { LessonCard } from "@/components/lesson-card";
 import { HeroBanner } from "@/components/hero-banner";
 import { AchievementsPanel } from "@/components/achievements-panel";
-import { useStreak } from "@/hooks/use-user-data";
+import { useStreak, usePracticeSession } from "@/hooks/use-user-data";
 
 const studyCategories = [
   {
