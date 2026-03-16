@@ -101,3 +101,52 @@ export function useLessonProgress(lessonId: string) {
 
   return { progress, saveProgress };
 }
+
+// ── Practice sessions ──────────────────────────────────────────────────────
+
+interface SavePracticeParams {
+  practiceType: string;
+  perfect: number;
+  close: number;
+  missed: number;
+  total: number;
+}
+
+export function usePracticeSession() {
+  const { user } = useAuth();
+  const { recordStudy } = useStreak();
+
+  const savePractice = useCallback(
+    async (params: SavePracticeParams) => {
+      if (!user) return 0;
+      // XP: 10 per perfect, 5 per close, 1 per missed
+      const xp = params.perfect * 10 + params.close * 5 + params.missed * 1;
+      await supabase.from("practice_sessions").insert({
+        user_id: user.id,
+        practice_type: params.practiceType,
+        score_perfect: params.perfect,
+        score_close: params.close,
+        score_missed: params.missed,
+        total_items: params.total,
+        xp_earned: xp,
+      });
+      // Record study for streak
+      await recordStudy();
+      return xp;
+    },
+    [user, recordStudy]
+  );
+
+  const getTodayXP = useCallback(async () => {
+    if (!user) return 0;
+    const today = new Date().toISOString().split("T")[0];
+    const { data } = await supabase
+      .from("practice_sessions")
+      .select("xp_earned")
+      .eq("user_id", user.id)
+      .gte("created_at", `${today}T00:00:00Z`);
+    return (data ?? []).reduce((sum, r) => sum + (r.xp_earned ?? 0), 0);
+  }, [user]);
+
+  return { savePractice, getTodayXP };
+}
