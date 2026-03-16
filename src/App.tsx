@@ -9,6 +9,7 @@ import Lesson1 from "./pages/Lesson1";
 import DailyPractice from "./pages/DailyPractice";
 import KanjiWritingPractice from "./pages/KanjiWritingPractice";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
