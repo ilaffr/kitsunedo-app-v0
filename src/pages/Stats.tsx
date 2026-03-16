@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Flame, Star, BookOpen, Clock } from "lucide-react";
+import { ArrowLeft, Flame, Star, BookOpen, Clock, Target, Zap } from "lucide-react";
 import { Header } from "@/components/header";
 import { StatsCard } from "@/components/stats-card";
 import { WeeklyXPChart } from "@/components/weekly-xp-chart";
-import { useStreak, usePracticeSession, useWeeklyXP } from "@/hooks/use-user-data";
+import { useStreak, usePracticeSession, useWeeklyXP, useOverallStats, useAllLessonProgress } from "@/hooks/use-user-data";
 import { useState, useEffect } from "react";
 
 export default function Stats() {
@@ -11,11 +11,17 @@ export default function Stats() {
   const { streak } = useStreak();
   const { getTodayXP } = usePracticeSession();
   const { days, weekTotal } = useWeeklyXP();
+  const { totalXP, sessionsCount, completedLessons } = useOverallStats();
+  const { lessons: progressList } = useAllLessonProgress();
   const [todayXP, setTodayXP] = useState(0);
 
   useEffect(() => {
     getTodayXP().then(setTodayXP);
   }, [getTodayXP]);
+
+  const avgScore = progressList.length > 0
+    ? Math.round(progressList.reduce((s, l) => s + (l.bestScore ?? 0), 0) / progressList.length)
+    : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -34,10 +40,24 @@ export default function Stats() {
 
         {/* Stats grid */}
         <section className="grid grid-cols-2 gap-3 mb-6">
-          <StatsCard icon={Flame} label="Streak" value={`${streak.currentStreak}日`} sublabel="days of honor" variant="vermillion" />
-          <StatsCard icon={Star} label="Today" value={`${todayXP} XP`} sublabel="earned today" variant="ink" />
-          <StatsCard icon={BookOpen} label="Best" value={`${streak.longestStreak}日`} sublabel="longest streak" />
+          <StatsCard icon={Flame} label="Streak" value={`${streak.currentStreak}日`} sublabel="current streak" variant="vermillion" />
+          <StatsCard icon={Star} label="Total XP" value={totalXP.toLocaleString()} sublabel="all time" variant="ink" />
+          <StatsCard icon={Zap} label="Today" value={`${todayXP} XP`} sublabel="earned today" />
           <StatsCard icon={Clock} label="Week" value={`${weekTotal} XP`} sublabel="this week" />
+          <StatsCard icon={BookOpen} label="Lessons" value={completedLessons} sublabel="completed" />
+          <StatsCard icon={Target} label="Sessions" value={sessionsCount} sublabel="total practices" />
+        </section>
+
+        {/* Extra stats */}
+        <section className="grid grid-cols-2 gap-3 mb-6">
+          <div className="card-paper p-4 border-2">
+            <p className="text-xs text-muted-foreground uppercase tracking-wider serif-jp mb-1">Longest Streak</p>
+            <p className="text-2xl font-brush font-bold text-foreground">{streak.longestStreak}日</p>
+          </div>
+          <div className="card-paper p-4 border-2">
+            <p className="text-xs text-muted-foreground uppercase tracking-wider serif-jp mb-1">Avg Score</p>
+            <p className="text-2xl font-brush font-bold text-foreground">{avgScore}%</p>
+          </div>
         </section>
 
         {/* Full weekly chart */}

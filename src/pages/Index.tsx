@@ -10,7 +10,7 @@ import { StatsCard } from "@/components/stats-card";
 import { LessonCard } from "@/components/lesson-card";
 import { HeroBanner } from "@/components/hero-banner";
 import { AchievementsPanel } from "@/components/achievements-panel";
-import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP } from "@/hooks/use-user-data";
+import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP, useOverallStats } from "@/hooks/use-user-data";
 import { minnaLessons } from "@/data/minna-lessons";
 import { WeeklyXPMini } from "@/components/weekly-xp-chart";
 
@@ -77,6 +77,7 @@ export default function Index() {
   const { getTodayXP } = usePracticeSession();
   const { lessons: progressList } = useAllLessonProgress();
   const { days, weekTotal } = useWeeklyXP();
+  const { totalXP, sessionsCount, completedLessons } = useOverallStats();
   const [todayXP, setTodayXP] = useState(0);
 
   useEffect(() => {
@@ -137,21 +138,21 @@ export default function Index() {
               <StatsCard
                 icon={Star}
                 label="Spirit"
-                value="2,450"
-                sublabel="points earned"
+                value={totalXP.toLocaleString()}
+                sublabel="total XP"
                 variant="ink"
               />
               <StatsCard
                 icon={BookOpen}
                 label="Scrolls"
-                value={45}
+                value={completedLessons}
                 sublabel="completed"
               />
               <StatsCard
                 icon={Clock}
-                label="Training"
-                value="24時"
-                sublabel="this moon"
+                label="Sessions"
+                value={sessionsCount}
+                sublabel="practices"
               />
             </section>
 

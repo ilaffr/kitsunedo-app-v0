@@ -241,3 +241,37 @@ export function usePracticeSession() {
 
   return { savePractice, getTodayXP };
 }
+
+// ── Overall stats ──────────────────────────────────────────────────────────
+
+export function useOverallStats() {
+  const { user } = useAuth();
+  const [totalXP, setTotalXP] = useState(0);
+  const [sessionsCount, setSessionsCount] = useState(0);
+  const [completedLessons, setCompletedLessons] = useState(0);
+
+  const fetch = useCallback(async () => {
+    if (!user) return;
+
+    const [xpRes, lessonsRes] = await Promise.all([
+      supabase
+        .from("practice_sessions")
+        .select("xp_earned, id")
+        .eq("user_id", user.id),
+      supabase
+        .from("lesson_progress")
+        .select("lesson_id")
+        .eq("user_id", user.id)
+        .eq("completed", true),
+    ]);
+
+    const sessions = xpRes.data ?? [];
+    setTotalXP(sessions.reduce((sum, r) => sum + (r.xp_earned ?? 0), 0));
+    setSessionsCount(sessions.length);
+    setCompletedLessons((lessonsRes.data ?? []).length);
+  }, [user]);
+
+  useEffect(() => { fetch(); }, [fetch]);
+
+  return { totalXP, sessionsCount, completedLessons };
+}
