@@ -24,6 +24,7 @@ import Flashcards from "./pages/Flashcards";
 import Stats from "./pages/Stats";
 import Bestiary from "./pages/Bestiary";
 import PlacementTest from "./pages/PlacementTest";
+import Practice from "./pages/Practice";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -104,6 +105,7 @@ const App = () => (
             <Route path="/stats" element={<ProtectedRoute><Stats /></ProtectedRoute>} />
             <Route path="/bestiary" element={<ProtectedRoute><Bestiary /></ProtectedRoute>} />
             <Route path="/placement-test" element={<ProtectedRoute><PlacementTest /></ProtectedRoute>} />
+            <Route path="/practice" element={<ProtectedRoute><Practice /></ProtectedRoute>} />
             <Route path="/reset-password" element={<ResetPassword />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
