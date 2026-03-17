@@ -24,6 +24,7 @@ import Flashcards from "./pages/Flashcards";
 import Stats from "./pages/Stats";
 import Bestiary from "./pages/Bestiary";
 import PlacementTest from "./pages/PlacementTest";
+import Practice from "./pages/Practice";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

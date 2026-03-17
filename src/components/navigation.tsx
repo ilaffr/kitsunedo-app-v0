@@ -27,6 +27,10 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
       navigate("/bestiary");
       return;
     }
+    if (id === "practice") {
+      navigate("/practice");
+      return;
+    }
     onTabChange(id);
   };
 
