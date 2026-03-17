@@ -13,6 +13,8 @@ import { RecentSpiritsPreview } from "@/components/recent-spirits-preview";
 import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP, useOverallStats } from "@/hooks/use-user-data";
 import { minnaLessons } from "@/data/minna-lessons";
 import { WeeklyXPMini } from "@/components/weekly-xp-chart";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthContext";
 
 const studyCategories = [
   {
@@ -72,6 +74,7 @@ const studyCategories = [
 
 export default function Index() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("home");
   const { streak } = useStreak();
   const { getTodayXP } = usePracticeSession();
@@ -79,10 +82,21 @@ export default function Index() {
   const { days, weekTotal } = useWeeklyXP();
   const { totalXP, sessionsCount, completedLessons } = useOverallStats();
   const [todayXP, setTodayXP] = useState(0);
+  const [hasPlacementResult, setHasPlacementResult] = useState(true); // default true to avoid flash
 
   useEffect(() => {
     getTodayXP().then(setTodayXP);
   }, [getTodayXP]);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from("placement_results")
+      .select("id")
+      .eq("user_id", user.id)
+      .limit(1)
+      .then(({ data }) => setHasPlacementResult((data?.length ?? 0) > 0));
+  }, [user]);
 
   const progressMap = useMemo(
     () => new Map(progressList.map((p) => [p.lessonId, p])),
@@ -123,24 +137,26 @@ export default function Index() {
         
         <main className="flex-1 pb-20 md:pb-8">
           <div className="container max-w-6xl px-4 py-4 md:py-6">
-            {/* Placement Test CTA */}
-            <section className="mb-6 md:mb-8">
-              <button
-                onClick={() => navigate("/placement-test")}
-                className="w-full card-paper border-2 border-primary/30 p-4 md:p-5 flex items-center gap-4 hover:border-primary/60 transition-colors group"
-              >
-                <span className="text-3xl">⛩️</span>
-                <div className="text-left flex-1">
-                  <h3 className="font-bold serif-jp text-foreground group-hover:text-primary transition-colors">
-                    Placement Test
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    Already know some Japanese? Test your level and skip ahead.
-                  </p>
-                </div>
-                <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-              </button>
-            </section>
+            {/* Placement Test CTA — hidden once completed */}
+            {!hasPlacementResult && (
+              <section className="mb-6 md:mb-8">
+                <button
+                  onClick={() => navigate("/placement-test")}
+                  className="w-full card-paper border-2 border-primary/30 p-4 md:p-5 flex items-center gap-4 hover:border-primary/60 transition-colors group"
+                >
+                  <span className="text-3xl">⛩️</span>
+                  <div className="text-left flex-1">
+                    <h3 className="font-bold serif-jp text-foreground group-hover:text-primary transition-colors">
+                      Placement Test
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      Already know some Japanese? Test your level and skip ahead.
+                    </p>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                </button>
+              </section>
+            )}
 
             {/* Hero Banner */}
             <HeroBanner />
