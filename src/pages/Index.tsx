@@ -13,6 +13,8 @@ import { RecentSpiritsPreview } from "@/components/recent-spirits-preview";
 import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP, useOverallStats } from "@/hooks/use-user-data";
 import { minnaLessons } from "@/data/minna-lessons";
 import { WeeklyXPMini } from "@/components/weekly-xp-chart";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthContext";
 
 const studyCategories = [
   {
