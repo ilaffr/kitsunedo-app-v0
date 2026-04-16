@@ -19,10 +19,6 @@ export function HeroBanner() {
         <span className="kanji-watermark text-7xl tracking-[0.4em]">羊蹄</span>
       </div>
 
-      {/* Vermillion ginkgo seal — top-left accent */}
-      <div className="absolute top-5 left-5 md:top-6 md:left-6 ginkgo-seal w-9 h-9 text-base">
-        学
-      </div>
 
       <div className="relative z-10 h-full flex flex-col justify-end p-5 md:p-8 max-w-xl">
         <p className="text-[10px] text-muted-foreground uppercase tracking-[0.4em] mb-3">
