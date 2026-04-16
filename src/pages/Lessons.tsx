@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, BookOpen, Lock, Check, Play, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, BookOpen, Lock, Check, Play, ChevronDown, ChevronUp, Mountain } from "lucide-react";
 import { Header } from "@/components/header";
 import { minnaLessons, type MinnaLesson } from "@/data/minna-lessons";
 import { useAllLessonProgress } from "@/hooks/use-user-data";
