@@ -250,10 +250,12 @@ export default function JlptPractice() {
               onClick={startSession}
               className="btn-vermillion w-full py-4 text-sm tracking-[0.3em]"
             >
-              Begin · 始める
+              {mode === "news" ? "Read News · 読む" : "Begin · 始める"}
             </button>
             <p className="text-center text-[10px] text-muted-foreground mt-3 tracking-wide">
-              15 questions · earn 5 XP per correct answer
+              {mode === "news"
+                ? "Real NHK articles, matched to your level"
+                : "15 questions · earn 5 XP per correct answer"}
             </p>
           </>
         )}
@@ -291,6 +293,8 @@ export default function JlptPractice() {
             onRestart={restart}
           />
         )}
+
+        {phase === "news" && <NhkNewsReader level={level} />}
       </main>
     </div>
   );
