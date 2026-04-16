@@ -221,18 +221,18 @@ export default function Index() {
 
               {/* Continue Learning */}
               <section>
-                <div className="card-paper p-5 md:p-6 border-2">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-brush font-bold text-foreground">Continue Path</h3>
+                <div className="washi-card p-5 md:p-6">
+                  <div className="flex items-center justify-between mb-5">
+                    <h3 className="yotei-title">Continue Path</h3>
                     <button
-                      className="text-sm text-primary font-brush hover:underline"
+                      className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => navigate("/lessons")}
                     >
-                      View all
+                      View all →
                     </button>
                   </div>
-                  
-                  <div className="space-y-2 md:space-y-3">
+
+                  <div>
                     {continueLessons.map((lesson, index) => (
                       <LessonCard key={index} {...lesson} onClick={() => navigate(`/lesson/${lesson.lessonNumber}`)} />
                     ))}
@@ -242,12 +242,11 @@ export default function Index() {
             </div>
 
             {/* Study Categories */}
-            <section className="mt-6 md:mt-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-1 h-6 bg-primary rounded-full" />
-                <h3 className="text-xl font-brush font-bold text-foreground">Training Grounds</h3>
+            <section className="mt-8 md:mt-10">
+              <div className="flex items-center gap-4 mb-5">
+                <h3 className="yotei-title">Training Grounds</h3>
               </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                 {studyCategories.map((category, index) => (
                   <StudyCategoryCard key={index} {...category} onClick={() => navigate((category as any).href ?? "/lesson/1")} />
                 ))}
