@@ -2,33 +2,39 @@ import heroBrush from "@/assets/hero-brush.jpg";
 
 export function HeroBanner() {
   return (
-    <div className="relative w-full h-44 md:h-56 rounded-sm overflow-hidden mb-6 md:mb-8 border-2 border-border">
-      <img 
-        src={heroBrush} 
-        alt="Ink wash landscape" 
-        className="w-full h-full object-cover"
+    <div className="relative w-full h-52 md:h-72 overflow-hidden mb-8 md:mb-10">
+      {/* Sumi-e backdrop */}
+      <img
+        src={heroBrush}
+        alt="Ink wash mountain landscape"
+        className="absolute inset-0 w-full h-full object-cover opacity-90"
       />
-      
-      {/* Gradient overlays for readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-r from-background/70 to-transparent" />
-      
-      <div className="absolute bottom-0 left-0 p-4 md:p-6">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-1 h-6 bg-primary rounded-full" />
-          <p className="text-xs text-primary font-brush uppercase tracking-widest">Path of the Fox</p>
-        </div>
-        <h2 className="text-2xl md:text-3xl font-brush font-bold text-foreground tracking-wide">
-          <span className="brush-underline">狐道</span>
-        </h2>
-        <p className="text-sm text-muted-foreground mt-2 max-w-sm">
-          Let the kitsune spirit guide your brush through the way of Japanese
-        </p>
+
+      {/* Atmospheric mist overlays — pale washi feel */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/30 to-transparent" />
+
+      {/* Vertical kanji watermark, like the Yōtei map */}
+      <div className="absolute right-6 top-6 bottom-6 hidden md:flex items-start">
+        <span className="kanji-watermark text-7xl tracking-[0.4em]">羊蹄</span>
       </div>
 
-      {/* Decorative hanko stamp */}
-      <div className="absolute top-4 right-4 md:top-6 md:right-6 hanko-badge text-xs opacity-80">
+      {/* Vermillion ginkgo seal — top-left accent */}
+      <div className="absolute top-5 left-5 md:top-6 md:left-6 ginkgo-seal w-9 h-9 text-base">
         学
+      </div>
+
+      <div className="relative z-10 h-full flex flex-col justify-end p-5 md:p-8 max-w-xl">
+        <p className="text-[10px] text-muted-foreground uppercase tracking-[0.4em] mb-3">
+          The Path of the Fox
+        </p>
+        <h2 className="text-3xl md:text-5xl serif-jp font-medium text-foreground tracking-[0.08em] leading-tight">
+          狐道
+        </h2>
+        <div className="mt-3 h-px w-24 bg-foreground/40" />
+        <p className="text-sm text-foreground/70 mt-3 max-w-md tracking-wide italic">
+          Let the kitsune spirit guide your brush through the way of Japanese.
+        </p>
       </div>
     </div>
   );
