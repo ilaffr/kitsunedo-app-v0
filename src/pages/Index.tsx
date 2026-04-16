@@ -11,6 +11,7 @@ import { LessonCard } from "@/components/lesson-card";
 import { HeroBanner } from "@/components/hero-banner";
 import { RecentSpiritsPreview } from "@/components/recent-spirits-preview";
 import { DailyKitsuneTale } from "@/components/daily-kitsune-tale";
+import { NhkHeadlineTeaser } from "@/components/nhk-headline-teaser";
 import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP, useOverallStats } from "@/hooks/use-user-data";
 import { minnaLessons } from "@/data/minna-lessons";
 import { WeeklyXPMini } from "@/components/weekly-xp-chart";
