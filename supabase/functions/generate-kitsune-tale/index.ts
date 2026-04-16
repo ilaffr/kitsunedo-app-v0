@@ -122,7 +122,7 @@ Requirements:
                 type: "object",
                 properties: {
                   story_jp: { type: "string", description: "3 Japanese sentences." },
-                  story_furigana: { type: "string", description: "Same story with furigana in parentheses after each kanji word." },
+                  story_furigana: { type: "string", description: "Same story with furigana annotation: each kanji/compound followed by hiragana reading in curly braces, e.g. 狐{きつね}は森{もり}を歩{ある}いた。" },
                   translation: { type: "string", description: "English translation of all 3 sentences." },
                   question: { type: "string", description: "Comprehension question in English." },
                   options: {
