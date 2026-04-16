@@ -62,6 +62,75 @@ export type Database = {
         }
         Relationships: []
       }
+      jlpt_questions: {
+        Row: {
+          correct_index: number
+          created_at: string
+          explanation: string
+          id: string
+          level: string
+          options: Json
+          passage_jp: string | null
+          question_jp: string
+          section: string
+        }
+        Insert: {
+          correct_index: number
+          created_at?: string
+          explanation: string
+          id?: string
+          level: string
+          options: Json
+          passage_jp?: string | null
+          question_jp: string
+          section: string
+        }
+        Update: {
+          correct_index?: number
+          created_at?: string
+          explanation?: string
+          id?: string
+          level?: string
+          options?: Json
+          passage_jp?: string | null
+          question_jp?: string
+          section?: string
+        }
+        Relationships: []
+      }
+      jlpt_sessions: {
+        Row: {
+          correct_count: number
+          created_at: string
+          id: string
+          level: string
+          mode: string
+          total_questions: number
+          user_id: string
+          xp_earned: number
+        }
+        Insert: {
+          correct_count?: number
+          created_at?: string
+          id?: string
+          level: string
+          mode: string
+          total_questions?: number
+          user_id: string
+          xp_earned?: number
+        }
+        Update: {
+          correct_count?: number
+          created_at?: string
+          id?: string
+          level?: string
+          mode?: string
+          total_questions?: number
+          user_id?: string
+          xp_earned?: number
+        }
+        Relationships: []
+      }
       kitsune_tales: {
         Row: {
           completed: boolean
