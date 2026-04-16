@@ -69,9 +69,7 @@ async function fetchEasyList(): Promise<EasyItem[]> {
 async function fetchEasyArticleHtml(newsId: string): Promise<string | null> {
   try {
     const url = `https://www3.nhk.or.jp/news/easy/${newsId}/${newsId}.html`;
-    const r = await fetch(url, {
-      headers: { "User-Agent": "Mozilla/5.0 KitsuneDo/1.0" },
-    });
+    const r = await fetch(url, { headers: NHK_HEADERS });
     if (!r.ok) return null;
     const html = await r.text();
     // Extract body div
