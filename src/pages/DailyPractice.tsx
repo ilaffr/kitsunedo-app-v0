@@ -124,16 +124,14 @@ export default function DailyPractice() {
         </button>
 
         {/* Title */}
-        <div className="card-paper p-6 border-2 mb-6">
-          <div className="flex items-start gap-4">
-            <div className="hanko-badge text-lg">修行</div>
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-foreground serif-jp">Daily Practice</h1>
-              <p className="text-muted-foreground mt-1">Mixed training — kanji, vocabulary & grammar</p>
-            </div>
+        <div className="mb-8 relative">
+          <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground mb-2">Daily Training</p>
+          <div className="flex items-baseline gap-4">
+            <h1 className="text-3xl md:text-4xl serif-jp font-medium text-foreground tracking-wide">修行</h1>
+            <span className="text-sm text-muted-foreground italic">Mixed training</span>
           </div>
-          <div className="ink-divider mt-5" />
-          <div className="flex items-center gap-6 mt-4 text-sm text-muted-foreground">
+          <div className="mt-3 h-px w-20 bg-foreground/40" />
+          <div className="flex items-center gap-6 mt-4 text-xs text-muted-foreground tracking-wide">
             <span>{exercises.length} exercises</span>
             <span>
               {exercises.filter((e) => e.type.startsWith("kanji")).length} kanji ·{" "}

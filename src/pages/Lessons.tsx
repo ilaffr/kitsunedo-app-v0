@@ -32,38 +32,38 @@ export default function Lessons() {
       <Header />
       <main className="container max-w-2xl px-4 py-6 pb-24">
         {/* Top bar */}
-        <div className="flex items-center gap-3 mb-5">
-          <button onClick={() => navigate("/")} className="p-2 rounded-sm hover:bg-muted transition-colors">
-            <ArrowLeft className="w-5 h-5 text-foreground" />
+        <div className="flex items-center gap-3 mb-8">
+          <button onClick={() => navigate("/")} className="p-2 rounded-sm hover:bg-foreground/5 transition-colors">
+            <ArrowLeft className="w-5 h-5 text-foreground" strokeWidth={1.5} />
           </button>
           <div className="flex-1 min-w-0">
-            <h1 className="text-xl font-brush font-bold text-foreground">みんなの日本語</h1>
-            <p className="text-xs text-muted-foreground serif-jp">Minna no Nihongo — 50 Lessons</p>
+            <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">Minna no Nihongo</p>
+            <h1 className="text-2xl serif-jp font-medium text-foreground tracking-wide truncate">みんなの日本語</h1>
           </div>
           <button
             onClick={() => navigate("/journey")}
-            className="text-xs px-3 py-1.5 border-2 border-primary/50 text-primary rounded-sm hover:bg-primary/5 transition-colors flex items-center gap-1.5"
+            className="text-[10px] uppercase tracking-[0.2em] px-3 py-2 text-foreground/70 hover:text-foreground border-b border-foreground/30 hover:border-foreground transition-colors flex items-center gap-1.5"
             title="Yokai Journey map"
           >
-            <Mountain className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Journey map</span>
+            <Mountain className="w-3.5 h-3.5" strokeWidth={1.5} />
+            <span className="hidden sm:inline">Journey</span>
           </button>
         </div>
 
         {/* Filter chips */}
-        <div className="flex gap-2 mb-5 overflow-x-auto pb-1">
+        <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
           {(["all", "beginner", "elementary", "intermediate"] as const).map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
               className={cn(
-                "px-3 py-1.5 rounded-sm border-2 text-xs font-bold serif-jp whitespace-nowrap transition-colors",
+                "px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] whitespace-nowrap transition-colors border-b",
                 filter === f
-                  ? "bg-foreground text-background border-foreground"
-                  : "bg-background text-muted-foreground border-border hover:border-foreground/30"
+                  ? "text-foreground border-foreground"
+                  : "text-muted-foreground border-transparent hover:text-foreground hover:border-foreground/30"
               )}
             >
-              {f === "all" ? "全部 All" : `${difficultyLabelsJp[f]} ${f.charAt(0).toUpperCase() + f.slice(1)}`}
+              {f === "all" ? "All" : `${difficultyLabelsJp[f]} · ${f}`}
             </button>
           ))}
         </div>

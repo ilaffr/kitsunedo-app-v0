@@ -56,9 +56,8 @@ export default function FlashcardsPage() {
             <ArrowLeft className="w-5 h-5 text-foreground" />
           </button>
           <div>
-            <h1 className="text-xl font-brush font-bold text-foreground">Flashcards</h1>
-            <p className="text-xs text-muted-foreground serif-jp">
-              <Layers className="w-3 h-3 inline mr-1" />
+            <p className="text-xs text-muted-foreground tracking-wide mt-1">
+              <Layers className="w-3 h-3 inline mr-1" strokeWidth={1.5} />
               {cards.length} cards · {dueCards.length} due for review
             </p>
           </div>

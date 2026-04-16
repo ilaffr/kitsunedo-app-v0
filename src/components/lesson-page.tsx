@@ -147,38 +147,43 @@ export default function LessonPage({ lesson }: { lesson: LessonData }) {
         </button>
 
         {/* Lesson header */}
-        <div className="card-paper p-6 md:p-8 border-2 mb-6">
-          <div className="flex items-start gap-4">
-            <div className="hanko-badge text-lg">第{kanjiNum[lesson.number - 1] ?? lesson.number}課</div>
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-foreground serif-jp">
-                Lesson {lesson.number} — {lesson.titleJp}
-              </h1>
-              <p className="text-muted-foreground mt-1">{lesson.subtitle}</p>
-            </div>
+        <div className="mb-8 relative">
+          <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground mb-2">
+            Lesson {lesson.number}
+          </p>
+          <div className="flex items-baseline gap-4 flex-wrap">
+            <h1 className="text-3xl md:text-4xl serif-jp font-medium text-foreground tracking-wide">
+              第{kanjiNum[lesson.number - 1] ?? lesson.number}課
+            </h1>
+            <span className="text-base md:text-lg serif-jp text-muted-foreground tracking-wide">
+              {lesson.titleJp}
+            </span>
           </div>
-          <div className="ink-divider mt-5" />
-          <div className="flex items-center gap-6 mt-4 text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground mt-3 italic max-w-2xl">{lesson.subtitle}</p>
+          <div className="mt-4 h-px w-20 bg-foreground/40" />
+          <div className="flex items-center gap-5 mt-4 text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
             <span>{lesson.vocabulary.length} words</span>
-            <span>{lesson.grammarPoints.length} grammar points</span>
+            <span>·</span>
+            <span>{lesson.grammarPoints.length} grammar</span>
+            <span>·</span>
             <span>{lesson.practiceQuestions.length} questions</span>
           </div>
         </div>
 
         {/* Section tabs */}
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-1 mb-6 border-b border-foreground/10">
           {sections.map((s) => (
             <button
               key={s.key}
               onClick={() => setActiveSection(s.key)}
               className={cn(
-                "flex items-center gap-2 px-4 py-2.5 rounded-sm border-2 text-sm font-medium transition-colors",
+                "flex items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.22em] transition-colors border-b-2 -mb-px",
                 activeSection === s.key
-                  ? "bg-foreground text-background border-foreground"
-                  : "bg-card text-muted-foreground border-border hover:border-foreground/30"
+                  ? "text-foreground border-foreground"
+                  : "text-muted-foreground border-transparent hover:text-foreground"
               )}
             >
-              <s.icon className="w-4 h-4" />
+              <s.icon className="w-3.5 h-3.5" strokeWidth={1.5} />
               <span className="hidden sm:inline">{s.label}</span>
               <span className="japanese-text text-xs">{s.kanji}</span>
             </button>

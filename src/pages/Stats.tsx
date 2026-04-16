@@ -28,13 +28,13 @@ export default function Stats() {
       <Header />
       <main className="container max-w-2xl px-4 py-6 pb-24">
         {/* Top bar */}
-        <div className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate("/")} className="p-2 rounded-sm hover:bg-muted transition-colors">
-            <ArrowLeft className="w-5 h-5 text-foreground" />
+        <div className="flex items-center gap-3 mb-8">
+          <button onClick={() => navigate("/")} className="p-2 rounded-sm hover:bg-foreground/5 transition-colors">
+            <ArrowLeft className="w-5 h-5 text-foreground" strokeWidth={1.5} />
           </button>
           <div>
-            <h1 className="text-xl font-brush font-bold text-foreground">修行の記録</h1>
-            <p className="text-xs text-muted-foreground serif-jp">Training Statistics</p>
+            <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">Training Statistics</p>
+            <h1 className="text-2xl serif-jp font-medium text-foreground tracking-wide">修行の記録</h1>
           </div>
         </div>
 
@@ -50,13 +50,13 @@ export default function Stats() {
 
         {/* Extra stats */}
         <section className="grid grid-cols-2 gap-3 mb-6">
-          <div className="card-paper p-4 border-2">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider serif-jp mb-1">Longest Streak</p>
-            <p className="text-2xl font-brush font-bold text-foreground">{streak.longestStreak}日</p>
+          <div className="washi-card p-5">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-[0.25em] mb-1.5">Longest Streak</p>
+            <p className="text-2xl serif-jp font-medium text-foreground">{streak.longestStreak}日</p>
           </div>
-          <div className="card-paper p-4 border-2">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider serif-jp mb-1">Avg Score</p>
-            <p className="text-2xl font-brush font-bold text-foreground">{avgScore}%</p>
+          <div className="washi-card p-5">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-[0.25em] mb-1.5">Avg Score</p>
+            <p className="text-2xl serif-jp font-medium text-foreground">{avgScore}%</p>
           </div>
         </section>
 

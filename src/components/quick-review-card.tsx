@@ -10,30 +10,23 @@ export function QuickReviewCard({ itemsToReview, onStartReview }: QuickReviewCar
   if (itemsToReview === 0) return null;
 
   return (
-    <div className="card-paper p-4 md:p-5 border-2 border-foreground/20 relative overflow-hidden">
-      {/* Brush stroke accent */}
-      <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent" />
-      
+    <div className="washi-card p-5 md:p-6 relative overflow-hidden">
       <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3 md:gap-4">
-          <div className="w-11 h-11 rounded-sm bg-foreground/5 flex items-center justify-center border-2 border-foreground/20">
-            <Scroll className="w-5 h-5 text-foreground" />
-          </div>
+        <div className="flex items-center gap-4">
+          <Scroll className="w-5 h-5 text-foreground/70" strokeWidth={1.5} />
           <div>
-            <h3 className="font-brush font-bold text-foreground">Review Scrolls</h3>
-            <p className="text-sm text-muted-foreground">
-              {itemsToReview} memories await
-            </p>
+            <p className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground mb-0.5">Review Scrolls</p>
+            <h3 className="serif-jp font-medium text-foreground tracking-wide">{itemsToReview} memories await</h3>
           </div>
         </div>
-        
-        <Button 
+
+        <Button
           onClick={onStartReview}
-          variant="outline"
-          className="rounded-sm border-2 border-foreground/20 hover:bg-foreground/5 hover:border-foreground/40 font-brush"
+          variant="ghost"
+          className="text-[10px] uppercase tracking-[0.25em] hover:bg-foreground/5 rounded-sm"
         >
           Begin
-          <ArrowRight className="w-4 h-4 ml-2" />
+          <ArrowRight className="w-3.5 h-3.5 ml-2" strokeWidth={1.5} />
         </Button>
       </div>
     </div>
