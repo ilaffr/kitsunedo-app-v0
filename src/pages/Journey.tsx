@@ -15,6 +15,7 @@ export default function Journey() {
   const { lessons: progressList } = useAllLessonProgress();
   const [activeRegion, setActiveRegion] = useState<JourneyRegion | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [bossRegion, setBossRegion] = useState<JourneyRegion | null>(null);
 
   const progressMap = useMemo(
     () => new Map(progressList.map((p) => [p.lessonId, p])),
