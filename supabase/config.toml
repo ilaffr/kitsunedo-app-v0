@@ -4,4 +4,4 @@ project_id = "hrxcnmgrtbzenqdgzieq"
 verify_jwt = false
 
 [functions.generate-kitsune-tale]
-verify_jwt = true
+verify_jwt = false
