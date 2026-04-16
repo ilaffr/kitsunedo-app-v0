@@ -26,6 +26,16 @@ const CACHE_TTL_MS = 60 * 60 * 1000; // 1h
 const EASY_LIST_URL = "https://www3.nhk.or.jp/news/easy/news-list.json";
 const REGULAR_RSS_URL = "https://www.nhk.or.jp/rss/news/cat0.xml";
 
+// NHK blocks generic UAs with 401. Use a realistic browser fingerprint.
+const NHK_HEADERS: HeadersInit = {
+  "User-Agent":
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Accept":
+    "text/html,application/xhtml+xml,application/xml;q=0.9,application/json;q=0.9,*/*;q=0.8",
+  "Accept-Language": "ja,en;q=0.9",
+  "Referer": "https://www3.nhk.or.jp/news/easy/",
+};
+
 function levelToSourceKind(level: Level): SourceKind {
   if (level === "N5" || level === "N4" || level === "N3") return "easy";
   return "regular";
