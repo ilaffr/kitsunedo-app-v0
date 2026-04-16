@@ -10,6 +10,7 @@ import { StatsCard } from "@/components/stats-card";
 import { LessonCard } from "@/components/lesson-card";
 import { HeroBanner } from "@/components/hero-banner";
 import { RecentSpiritsPreview } from "@/components/recent-spirits-preview";
+import { DailyKitsuneTale } from "@/components/daily-kitsune-tale";
 import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP, useOverallStats } from "@/hooks/use-user-data";
 import { minnaLessons } from "@/data/minna-lessons";
 import { WeeklyXPMini } from "@/components/weekly-xp-chart";
@@ -189,6 +190,11 @@ export default function Index() {
                 value={sessionsCount}
                 sublabel="practices"
               />
+            </section>
+
+            {/* Daily Kitsune Tale */}
+            <section className="mb-6 md:mb-8">
+              <DailyKitsuneTale />
             </section>
 
             {/* Quick Review */}
