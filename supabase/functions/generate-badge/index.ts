@@ -187,7 +187,7 @@ Keep it lighthearted and motivating, never mocking. Higher tiers should be progr
           messages: [
             {
               role: "user",
-              content: `Create a minimalist Japanese sumi-e ink brush illustration on a clean white background. Subject: "${badgeText.title}" — a small yokai or spirit representing someone who struggles with the Japanese word "${word}". Style: black ink wash, simple brush strokes, slight humor, traditional Japanese art feel. No text in the image. The spirit should look ${tier === 1 ? "gentle and mischievous" : tier === 2 ? "dramatic and theatrical" : "legendary and absurdly powerful"}.`,
+              content: imagePrompt,
             },
           ],
           modalities: ["image", "text"],
@@ -238,7 +238,7 @@ Keep it lighthearted and motivating, never mocking. Higher tiers should be progr
         description: badgeText.description,
         myth: badgeText.myth,
         image_url: imageUrl,
-        rarity: tierConf.rarity,
+        rarity,
       })
       .select()
       .single();
