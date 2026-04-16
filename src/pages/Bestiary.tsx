@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Header } from "@/components/header";
 import { AchievementsPanel } from "@/components/achievements-panel";
+import { JlptSpiritStrip } from "@/components/jlpt-spirit-strip";
 
 export default function Bestiary() {
   const navigate = useNavigate();
@@ -35,7 +36,11 @@ export default function Bestiary() {
           </p>
         </div>
 
-        <AchievementsPanel />
+        <JlptSpiritStrip />
+
+        <div id="personal-badges">
+          <AchievementsPanel />
+        </div>
       </main>
     </div>
   );
