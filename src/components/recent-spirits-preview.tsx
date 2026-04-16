@@ -21,6 +21,7 @@ const rarityBorderClass: Record<string, string> = {
   uncommon: "border-success/60",
   rare: "border-primary/70",
   legendary: "border-warning",
+  mythic: "border-primary",
 };
 
 const rarityGlowClass: Record<string, string> = {
@@ -28,6 +29,7 @@ const rarityGlowClass: Record<string, string> = {
   uncommon: "shadow-[0_0_8px_hsl(var(--success)/0.15)]",
   rare: "shadow-[0_0_10px_hsl(var(--primary)/0.2)]",
   legendary: "shadow-[0_0_14px_hsl(var(--warning)/0.25)]",
+  mythic: "shadow-[0_0_18px_hsl(var(--primary)/0.45)]",
 };
 
 interface RecentSpirit {
