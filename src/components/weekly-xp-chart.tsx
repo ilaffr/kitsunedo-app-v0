@@ -19,16 +19,13 @@ export function WeeklyXPMini({ days, weekTotal, onViewDetails }: WeeklyXPMiniPro
   return (
     <button
       onClick={onViewDetails}
-      className="card-interactive w-full p-3 md:p-4 border-2 text-left"
+      className="washi-card w-full p-4 md:p-5 text-left transition-all hover:shadow-md"
     >
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-1.5">
-          <Flame className="w-3.5 h-3.5 text-primary" />
-          <span className="text-xs font-brush font-bold text-foreground">Weekly</span>
-        </div>
-        <div className="flex items-center gap-1 text-xs font-brush text-primary">
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">Weekly</span>
+        <div className="flex items-center gap-1 text-xs serif-jp text-foreground tracking-wide">
           <span>{weekTotal} XP</span>
-          <ChevronRight className="w-3 h-3" />
+          <ChevronRight className="w-3 h-3" strokeWidth={1.5} />
         </div>
       </div>
 
