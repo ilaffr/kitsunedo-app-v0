@@ -133,12 +133,20 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+    /* Layered washi atmosphere — ink-wash mountains + paper grain */
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(ellipse at 50% -10%, hsl(30 8% 10% / 0.07), transparent 55%),
+      radial-gradient(ellipse at 90% 100%, hsl(30 8% 10% / 0.05), transparent 50%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: cover, cover, 400px 400px;
   }
 
-  /* Brush stroke titles */
+  /* Cinematic serif titles — Ghost of Yōtei feel */
   h1, h2, h3 {
     font-family: 'Noto Serif JP', serif;
-    @apply font-semibold tracking-wide;
+    @apply font-medium tracking-wide;
   }
 
   h4, h5, h6 {
