@@ -109,10 +109,10 @@ export function NhkNewsReader({ level }: Props) {
       const audio = new Audio(article.audio_url);
       audio.play().catch(() => {
         // Fallback to TTS
-        speakJapanese(rubyStripBase(article.body_html ?? article.title), { slow: true });
+        speakJapanese(rubyStripBase(article.body_html ?? article.title), 0.7);
       });
     } else {
-      speakJapanese(rubyStripBase(article.body_html ?? article.title), { slow: true });
+      speakJapanese(rubyStripBase(article.body_html ?? article.title), 0.7);
     }
   };
 
