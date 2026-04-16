@@ -59,11 +59,11 @@ export function WeeklyXPChart({ days, weekTotal }: WeeklyXPChartProps) {
   const maxXP = Math.max(...days.map((d) => d.xp), 1);
 
   return (
-    <div className="card-paper p-5 md:p-6 border-2">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-brush font-bold text-foreground">Weekly Training</h3>
-        <div className="flex items-center gap-1.5 text-sm font-brush text-primary">
-          <Flame className="w-4 h-4" />
+    <div className="washi-card p-6 md:p-7">
+      <div className="flex items-center justify-between mb-5">
+        <h3 className="yotei-title">Weekly Training</h3>
+        <div className="flex items-center gap-1.5 text-sm serif-jp text-foreground tracking-wide">
+          <Flame className="w-3.5 h-3.5 text-primary" strokeWidth={1.5} />
           <span>{weekTotal} XP</span>
         </div>
       </div>
