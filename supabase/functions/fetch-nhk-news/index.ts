@@ -53,9 +53,7 @@ interface EasyItem {
 }
 
 async function fetchEasyList(): Promise<EasyItem[]> {
-  const r = await fetch(EASY_LIST_URL, {
-    headers: { "User-Agent": "Mozilla/5.0 KitsuneDo/1.0" },
-  });
+  const r = await fetch(EASY_LIST_URL, { headers: NHK_HEADERS });
   if (!r.ok) throw new Error(`easy list ${r.status}`);
   const json = await r.json();
   // shape: [ { "YYYY-MM-DD": [ {...item} ] } ]
