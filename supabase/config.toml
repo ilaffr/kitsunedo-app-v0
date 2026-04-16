@@ -2,3 +2,6 @@ project_id = "hrxcnmgrtbzenqdgzieq"
 
 [functions.generate-badge]
 verify_jwt = false
+
+[functions.generate-kitsune-tale]
+verify_jwt = true
