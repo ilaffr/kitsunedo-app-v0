@@ -36,7 +36,11 @@ export default function Bestiary() {
           </p>
         </div>
 
-        <AchievementsPanel />
+        <JlptSpiritStrip />
+
+        <div id="personal-badges">
+          <AchievementsPanel />
+        </div>
       </main>
     </div>
   );
