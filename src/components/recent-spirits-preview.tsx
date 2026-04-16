@@ -10,6 +10,11 @@ import tanukiImg from "@/assets/achievement-tanuki.png";
 import tenguImg from "@/assets/achievement-tengu.png";
 import ryujinImg from "@/assets/achievement-ryujin.png";
 import oniImg from "@/assets/achievement-oni.png";
+import bakenekoImg from "@/assets/yokai-bakeneko.png";
+import yokaiTenguImg from "@/assets/yokai-tengu.png";
+import kappaImg from "@/assets/yokai-kappa.png";
+import yukionnaImg from "@/assets/yokai-yukionna.png";
+import kamuyImg from "@/assets/yokai-kamuy.png";
 
 const rarityBorderClass: Record<string, string> = {
   common: "border-border",
@@ -39,6 +44,11 @@ const ACHIEVEMENT_MAP: Record<AchievementId, RecentSpirit> = {
   vocabulary_master: { id: "vocabulary_master", title: "Word Weaver", titleJP: "言葉の織り手", image: tanukiImg, rarity: "uncommon" },
   all_grammar: { id: "all_grammar", title: "Pattern Seeker", titleJP: "型の探求者", image: ryujinImg, rarity: "uncommon" },
   streak_3: { id: "streak_3", title: "Demon's Resolve", titleJP: "鬼の覚悟", image: oniImg, rarity: "legendary" },
+  boss_bakeneko: { id: "boss_bakeneko", title: "Bakeneko Bested", titleJP: "化け猫退治", image: bakenekoImg, rarity: "rare" },
+  boss_tengu: { id: "boss_tengu", title: "Tengu Humbled", titleJP: "天狗服従", image: yokaiTenguImg, rarity: "rare" },
+  boss_kappa: { id: "boss_kappa", title: "Kappa Outwitted", titleJP: "河童の敗北", image: kappaImg, rarity: "rare" },
+  boss_yukionna: { id: "boss_yukionna", title: "Yuki-onna Thawed", titleJP: "雪女融解", image: yukionnaImg, rarity: "legendary" },
+  boss_kamuy: { id: "boss_kamuy", title: "Kamuy's Blessing", titleJP: "カムイの祝福", image: kamuyImg, rarity: "legendary" },
 };
 
 export function RecentSpiritsPreview() {
