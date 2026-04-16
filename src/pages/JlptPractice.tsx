@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Loader2, Check, X as XIcon, RotateCcw } from "lucide-react";
 import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
@@ -49,6 +49,7 @@ type Phase = "select" | "loading" | "quiz" | "results" | "news";
 export default function JlptPractice() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
 
   const [phase, setPhase] = useState<Phase>("select");
   const [level, setLevel] = useState<Level>("N5");
@@ -58,6 +59,20 @@ export default function JlptPractice() {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [answers, setAnswers] = useState<{ correct: boolean; selected: number }[]>([]);
+
+  // Deep-link support: ?level=N5&mode=news jumps straight into the NHK reader
+  useEffect(() => {
+    const lvl = searchParams.get("level");
+    const md = searchParams.get("mode");
+    if (lvl && ["N5", "N4", "N3", "N2", "N1"].includes(lvl)) {
+      setLevel(lvl as Level);
+    }
+    if (md && ["mixed", "vocab", "grammar", "reading", "news"].includes(md)) {
+      setMode(md as Mode);
+      if (md === "news") setPhase("news");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const startSession = async () => {
     if (mode === "news") {
