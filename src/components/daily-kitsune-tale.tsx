@@ -169,24 +169,28 @@ export function DailyKitsuneTale() {
 
       {/* Story */}
       <div className="bg-muted/30 border-l-2 border-primary/40 p-4 mb-3">
-        <p className="serif-jp text-base md:text-lg text-foreground leading-relaxed japanese-text whitespace-pre-line">
-          {showFurigana && tale.story_furigana ? tale.story_furigana : tale.story_jp}
+        <p
+          className="serif-jp text-foreground japanese-text whitespace-pre-line"
+          style={{ fontSize: "1.15rem", lineHeight: showFurigana ? 2.4 : 1.9 }}
+        >
+          <FuriganaText
+            text={tale.story_furigana || tale.story_jp}
+            showFurigana={showFurigana}
+          />
         </p>
       </div>
 
       {/* Toggles */}
       <div className="flex flex-wrap gap-2 mb-4 text-xs">
-        {tale.story_furigana && (
-          <button
-            onClick={() => setShowFurigana((v) => !v)}
-            className={cn(
-              "px-2 py-1 border rounded-sm transition-colors",
-              showFurigana ? "border-primary text-primary bg-primary/5" : "border-border text-muted-foreground hover:border-foreground"
-            )}
-          >
-            ふりがな {showFurigana ? "ON" : "OFF"}
-          </button>
-        )}
+        <button
+          onClick={() => setShowFurigana((v) => !v)}
+          className={cn(
+            "px-2 py-1 border rounded-sm transition-colors",
+            showFurigana ? "border-primary text-primary bg-primary/5" : "border-border text-muted-foreground hover:border-foreground"
+          )}
+        >
+          ふりがな {showFurigana ? "ON" : "OFF"}
+        </button>
         <button
           onClick={() => setShowTranslation((v) => !v)}
           className={cn(
