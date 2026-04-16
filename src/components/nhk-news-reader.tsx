@@ -253,7 +253,7 @@ export function NhkNewsReader({ level }: Props) {
                   />
                   <div className="flex items-center gap-3 mt-2 opacity-60 group-hover:opacity-100 transition-opacity">
                     <button
-                      onClick={() => speakJapanese(plain, { slow: true })}
+                      onClick={() => speakJapanese(plain, 0.7)}
                       className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground flex items-center gap-1"
                     >
                       <Volume2 className="w-3 h-3" /> Play
