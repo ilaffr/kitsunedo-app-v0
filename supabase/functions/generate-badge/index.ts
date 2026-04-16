@@ -22,14 +22,31 @@ const TIER_CONFIG: Record<number, { rarity: string; tone: string }> = {
   },
 };
 
+// JLPT level → yokai archetype + tier mapping
+const JLPT_ARCHETYPE: Record<string, { archetype: string; jp: string; element: string; rarityOverride?: string }> = {
+  N5: { archetype: "Foothill Spirit", jp: "麓の精", element: "moss, pebbles, low cedar mist — humble beginnings" },
+  N4: { archetype: "Bamboo Grove Sprite", jp: "竹林の童", element: "young bamboo, fox tracks, dawn light" },
+  N3: { archetype: "River Sage", jp: "川の賢者", element: "flowing river, wet ink, kappa wisdom" },
+  N2: { archetype: "Cloud Tengu", jp: "雲の天狗", element: "cliff winds, long nose, scarlet robes, pine peaks", rarityOverride: "rare" },
+  N1: { archetype: "Mountain Kami", jp: "山の神", element: "snow-capped summit, ancient torii, divine stillness, golden mist", rarityOverride: "legendary" },
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { user_id, trigger_type, trigger_detail, word, meaning, mistake_count, tier } =
-      await req.json();
+    const body = await req.json();
+    const { user_id, trigger_type, trigger_detail, tier } = body;
+    // Word-struggle params (legacy)
+    const word = body.word;
+    const meaning = body.meaning;
+    const mistake_count = body.mistake_count;
+    // JLPT params
+    const jlpt_level: string | undefined = body.jlpt_level;
+    const jlpt_score_pct: number | undefined = body.jlpt_score_pct;
+    const jlpt_mode: string | undefined = body.jlpt_mode;
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
@@ -38,7 +55,7 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Check if badge already exists
+    // Idempotency check
     const { data: existingBadge } = await supabase
       .from("personal_badges")
       .select("*")
@@ -56,23 +73,29 @@ serve(async (req) => {
 
     const tierConf = TIER_CONFIG[tier] || TIER_CONFIG[1];
 
-    // 1. Generate badge text via AI
-    const textRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          {
-            role: "system",
-            content: `You are a creative writer for a Japanese language learning app themed around sumi-e ink brush art and Japanese mythology. You generate personalized achievement badges.`,
-          },
-          {
-            role: "user",
-            content: `A student has made ${mistake_count} mistakes on the Japanese word/particle "${word}" (meaning: "${meaning}"). This is tier ${tier} of 3.
+    // Build prompt by trigger type
+    let userPrompt: string;
+    let imagePrompt: string;
+    let rarity = tierConf.rarity;
+
+    if (trigger_type === "jlpt_pass" && jlpt_level) {
+      const arch = JLPT_ARCHETYPE[jlpt_level] || JLPT_ARCHETYPE.N5;
+      if (arch.rarityOverride) rarity = arch.rarityOverride;
+      userPrompt = `A student just passed a ${jlpt_level} JLPT-style mock exam (${jlpt_mode || "mixed"} section) with ${jlpt_score_pct}% accuracy. Award them a Bestiary spirit themed as a "${arch.archetype}" (${arch.jp}). Element/setting: ${arch.element}.
+
+Generate a JSON object (no markdown, pure JSON):
+{
+  "title": "evocative English spirit name, must include the level e.g. '${jlpt_level} — ${arch.archetype}' or a poetic variant",
+  "title_jp": "Japanese name 2-6 characters, poetic",
+  "description": "one sentence celebrating the JLPT ${jlpt_level} pass, references the archetype, dignified not silly",
+  "myth": "a 2-3 sentence sumi-e style myth about this spirit honoring scholars who have crossed the ${jlpt_level} threshold"
+}
+
+Tone: reverent, mythic, sumi-e poetic. NOT comedic. This is an honor, not a joke.`;
+      imagePrompt = `Create a minimalist Japanese sumi-e ink brush illustration on a clean white washi paper background. Subject: a ${arch.archetype} (${arch.jp}) — a dignified yokai/kami representing mastery of JLPT ${jlpt_level}. Setting elements: ${arch.element}. Style: traditional sumi-e, black ink wash with subtle vermillion seal accent, confident brush strokes, sense of ancient honor. ${jlpt_level === "N1" ? "Add gold leaf highlights and a divine aura." : jlpt_level === "N2" ? "Add a single vermillion accent." : ""} No text in the image.`;
+    } else {
+      // Legacy word_struggle path
+      userPrompt = `A student has made ${mistake_count} mistakes on the Japanese word/particle "${word}" (meaning: "${meaning}"). This is tier ${tier} of 3.
 
 Tone for this tier: ${tierConf.tone}
 
@@ -88,8 +111,25 @@ Examples of good titles:
 - For "遅い" (slow): Tier 1 "The Patient Snail", Tier 2 "Snail's Sworn Rival", Tier 3 "Eternal Slowness Sage"
 - For "は" (topic particle): Tier 1 "The は Whisperer", Tier 2 "は's Sworn Rival", Tier 3 "Eternal Dance with は"
 
-Keep it lighthearted and motivating, never mocking. Higher tiers should be progressively more absurd and legendary.`,
+Keep it lighthearted and motivating, never mocking. Higher tiers should be progressively more absurd and legendary.`;
+      imagePrompt = `Create a minimalist Japanese sumi-e ink brush illustration on a clean white background. Subject: a small yokai or spirit representing someone who struggles with the Japanese word "${word}". Style: black ink wash, simple brush strokes, slight humor, traditional Japanese art feel. No text in the image. The spirit should look ${tier === 1 ? "gentle and mischievous" : tier === 2 ? "dramatic and theatrical" : "legendary and absurdly powerful"}.`;
+    }
+
+    // 1. Generate badge text via AI
+    const textRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-3-flash-preview",
+        messages: [
+          {
+            role: "system",
+            content: `You are a creative writer for a Japanese language learning app themed around sumi-e ink brush art and Japanese mythology. You generate personalized achievement badges.`,
           },
+          { role: "user", content: userPrompt },
         ],
       }),
     });
@@ -108,20 +148,29 @@ Keep it lighthearted and motivating, never mocking. Higher tiers should be progr
 
     const textData = await textRes.json();
     const rawContent = textData.choices?.[0]?.message?.content || "";
-    
-    // Parse JSON from response (strip markdown fences if present)
+
     let badgeText: { title: string; title_jp: string; description: string; myth: string };
     try {
       const jsonStr = rawContent.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
       badgeText = JSON.parse(jsonStr);
     } catch {
       console.error("Failed to parse badge text:", rawContent);
-      badgeText = {
-        title: `${word} Spirit (Tier ${tier})`,
-        title_jp: "霊",
-        description: `Earned after ${mistake_count} encounters with ${word}.`,
-        myth: "A mysterious spirit appeared from the ink, drawn by the student's persistence.",
-      };
+      if (trigger_type === "jlpt_pass" && jlpt_level) {
+        const arch = JLPT_ARCHETYPE[jlpt_level] || JLPT_ARCHETYPE.N5;
+        badgeText = {
+          title: `${jlpt_level} — ${arch.archetype}`,
+          title_jp: arch.jp,
+          description: `Earned by passing a ${jlpt_level} mock exam with ${jlpt_score_pct}%.`,
+          myth: "A spirit emerged from the mountain mist to honor the scholar's perseverance.",
+        };
+      } else {
+        badgeText = {
+          title: `${word} Spirit (Tier ${tier})`,
+          title_jp: "霊",
+          description: `Earned after ${mistake_count} encounters with ${word}.`,
+          myth: "A mysterious spirit appeared from the ink, drawn by the student's persistence.",
+        };
+      }
     }
 
     // 2. Generate sumi-e badge image via AI
