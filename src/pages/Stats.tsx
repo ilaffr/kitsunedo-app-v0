@@ -3,6 +3,7 @@ import { ArrowLeft, Flame, Star, BookOpen, Clock, Target, Zap } from "lucide-rea
 import { Header } from "@/components/header";
 import { StatsCard } from "@/components/stats-card";
 import { WeeklyXPChart } from "@/components/weekly-xp-chart";
+import { JlptHistoryChart } from "@/components/jlpt-history-chart";
 import { useStreak, usePracticeSession, useWeeklyXP, useOverallStats, useAllLessonProgress } from "@/hooks/use-user-data";
 import { useState, useEffect } from "react";
 
@@ -61,8 +62,13 @@ export default function Stats() {
         </section>
 
         {/* Full weekly chart */}
-        <section>
+        <section className="mb-6">
           <WeeklyXPChart days={days} weekTotal={weekTotal} />
+        </section>
+
+        {/* JLPT history */}
+        <section>
+          <JlptHistoryChart />
         </section>
       </main>
     </div>
