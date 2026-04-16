@@ -59,24 +59,25 @@ export default function Tales() {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="container max-w-3xl px-4 py-6">
-        <div className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate("/")} className="p-2 rounded-sm hover:bg-muted transition-colors">
-            <ArrowLeft className="w-5 h-5 text-foreground" />
+        <div className="flex items-center gap-3 mb-8">
+          <button onClick={() => navigate("/")} className="p-2 rounded-sm hover:bg-foreground/5 transition-colors">
+            <ArrowLeft className="w-5 h-5 text-foreground" strokeWidth={1.5} />
           </button>
-          <div className="min-w-0">
-            <h1 className="text-xl font-brush font-bold text-foreground flex items-center gap-2">
-              <Library className="w-5 h-5 text-primary" />
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground flex items-center gap-1.5">
+              <Library className="w-3 h-3" strokeWidth={1.5} />
               Tale Archive
-            </h1>
-            <p className="text-xs text-muted-foreground serif-jp">
-              昔話の巻物 — {tales.length} {tales.length === 1 ? "tale" : "tales"} woven so far
+            </p>
+            <h1 className="text-2xl serif-jp font-medium text-foreground tracking-wide">昔話の巻物</h1>
+            <p className="text-xs text-muted-foreground mt-0.5 italic">
+              {tales.length} {tales.length === 1 ? "tale" : "tales"} woven so far
             </p>
           </div>
         </div>
 
         {/* Theme filter */}
         {tales.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-5">
+          <div className="flex flex-wrap gap-1 mb-6">
             {THEMES.map((t) => {
               const isActive = filter === t;
               const count = t === "all" ? tales.length : themeCounts[t] ?? 0;
@@ -86,13 +87,13 @@ export default function Tales() {
                   key={t}
                   onClick={() => setFilter(t)}
                   className={cn(
-                    "text-xs px-2.5 py-1 border rounded-sm transition-colors",
+                    "text-[10px] uppercase tracking-[0.2em] px-3 py-1.5 transition-colors border-b",
                     isActive
-                      ? "border-primary text-primary bg-primary/5"
-                      : "border-border text-muted-foreground hover:border-foreground"
+                      ? "text-foreground border-foreground"
+                      : "text-muted-foreground border-transparent hover:text-foreground hover:border-foreground/30"
                   )}
                 >
-                  {t === "all" ? "All" : THEME_LABEL[t]} <span className="opacity-60">· {count}</span>
+                  {t === "all" ? "All" : THEME_LABEL[t]} <span className="opacity-50">· {count}</span>
                 </button>
               );
             })}
