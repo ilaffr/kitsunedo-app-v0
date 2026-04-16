@@ -62,6 +62,54 @@ export type Database = {
         }
         Relationships: []
       }
+      kitsune_tales: {
+        Row: {
+          completed: boolean
+          correct_index: number
+          created_at: string
+          id: string
+          options: Json
+          question: string
+          story_furigana: string | null
+          story_jp: string
+          tale_date: string
+          translation: string
+          user_id: string
+          vocab_used: Json | null
+          xp_awarded: number
+        }
+        Insert: {
+          completed?: boolean
+          correct_index: number
+          created_at?: string
+          id?: string
+          options: Json
+          question: string
+          story_furigana?: string | null
+          story_jp: string
+          tale_date?: string
+          translation: string
+          user_id: string
+          vocab_used?: Json | null
+          xp_awarded?: number
+        }
+        Update: {
+          completed?: boolean
+          correct_index?: number
+          created_at?: string
+          id?: string
+          options?: Json
+          question?: string
+          story_furigana?: string | null
+          story_jp?: string
+          tale_date?: string
+          translation?: string
+          user_id?: string
+          vocab_used?: Json | null
+          xp_awarded?: number
+        }
+        Relationships: []
+      }
       lesson_progress: {
         Row: {
           best_score: number | null
