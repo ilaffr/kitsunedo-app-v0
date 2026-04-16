@@ -105,7 +105,7 @@ ${vocabList}
 Requirements:
 - Exactly 3 sentences in natural Japanese.
 - Use simple grammar suitable for beginners (N5/N4).
-- Add a furigana version with hiragana readings in parentheses after each kanji compound, e.g. 狐(きつね).
+- Add a furigana version using this EXACT format: each kanji (or kanji compound) is immediately followed by its hiragana reading in curly braces. Example: 狐{きつね}は森{もり}を歩{ある}いた。 Do NOT use parentheses. Hiragana and punctuation must NOT be wrapped in braces.
 - Provide an English translation.
 - Write ONE comprehension question in English about the story.
 - Provide 4 plausible English answer options. Mark the correct one with its index (0-3).
@@ -122,7 +122,7 @@ Requirements:
                 type: "object",
                 properties: {
                   story_jp: { type: "string", description: "3 Japanese sentences." },
-                  story_furigana: { type: "string", description: "Same story with furigana in parentheses after each kanji word." },
+                  story_furigana: { type: "string", description: "Same story with furigana annotation: each kanji/compound followed by hiragana reading in curly braces, e.g. 狐{きつね}は森{もり}を歩{ある}いた。" },
                   translation: { type: "string", description: "English translation of all 3 sentences." },
                   question: { type: "string", description: "Comprehension question in English." },
                   options: {
