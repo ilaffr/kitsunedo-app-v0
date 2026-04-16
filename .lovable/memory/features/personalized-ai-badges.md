@@ -16,16 +16,18 @@ Personal badges are AI-generated and stored in `personal_badges` (RLS: own rows)
 - Tone: playful, absurdist, escalates with tier.
 
 ### `jlpt_pass` (reverent)
-- Triggered from `JlptPractice.tsx` when a quiz session ends with `pct >= 80`.
-- `trigger_detail = level` (N5..N1), `tier = 1` (one badge per level — idempotent).
+- Triggered from `JlptPractice.tsx` when a quiz session ends.
+- `trigger_detail = level` (N5..N1).
+- **Tier 1** (base): awarded at `pct >= 80`. Reverent, mythic tone. Rarity from level (uncommon/rare/legendary).
+- **Tier 2** (perfect-score variant): awarded at `pct === 100`. Always rarity `mythic`. Title prefixed/varied as "Ascended {archetype}". Image prompt is more elaborate — gold leaf, aurora, indigo wash, vermillion hanko, layered brush strokes. JP title prepends 真 (e.g. `真山の神`).
 - Level → archetype mapping inside `generate-badge`:
   - N5 → Foothill Spirit (麓の精) · uncommon
   - N4 → Bamboo Grove Sprite (竹林の童) · uncommon
   - N3 → River Sage (川の賢者) · uncommon
   - N2 → Cloud Tengu (雲の天狗) · rare (override)
   - N1 → Mountain Kami (山の神) · legendary (override + gold leaf in image)
-- Tone: dignified, mythic, NOT comedic. Title typically `"{level} — {archetype}"`.
-- Image prompt biases toward setting elements (mist, bamboo, river, cliffs, snow summit) and adds vermillion accent for N2, gold leaf for N1.
+- `mythic` rarity is registered in `personal-badges-section.tsx` (label "Mythic ✨", hanko 真) and `recent-spirits-preview.tsx` (primary border + strong primary glow).
+- The `JlptSpiritStrip` on /bestiary shows a ✨ Sparkles badge over the silhouette when the mythic form is owned, and uses the mythic image as the portrait.
 
 ## Image pipeline
 - Model: `google/gemini-3-pro-image-preview`
