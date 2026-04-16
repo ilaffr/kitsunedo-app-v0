@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Lock } from "lucide-react";
+import { Lock, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
@@ -23,6 +23,7 @@ const LEVEL_SPIRITS: Array<{
 
 interface UnlockedBadge {
   trigger_detail: string;
+  tier: number;
   image_url: string | null;
   title: string;
 }
@@ -30,6 +31,7 @@ interface UnlockedBadge {
 export function JlptSpiritStrip() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  // key = `${level}|${tier}`
   const [unlocked, setUnlocked] = useState<Map<string, UnlockedBadge>>(new Map());
   const [loading, setLoading] = useState(true);
 
@@ -42,12 +44,14 @@ export function JlptSpiritStrip() {
     (async () => {
       const { data } = await supabase
         .from("personal_badges")
-        .select("trigger_detail, image_url, title")
+        .select("trigger_detail, tier, image_url, title")
         .eq("user_id", user.id)
         .eq("trigger_type", "jlpt_pass");
       if (cancelled) return;
       const map = new Map<string, UnlockedBadge>();
-      (data ?? []).forEach((b) => map.set(b.trigger_detail, b as UnlockedBadge));
+      (data ?? []).forEach((b) => {
+        map.set(`${b.trigger_detail}|${b.tier}`, b as UnlockedBadge);
+      });
       setUnlocked(map);
       setLoading(false);
     })();
@@ -56,7 +60,8 @@ export function JlptSpiritStrip() {
     };
   }, [user]);
 
-  const earnedCount = unlocked.size;
+  const earnedTier1 = LEVEL_SPIRITS.filter((s) => unlocked.has(`${s.level}|1`)).length;
+  const earnedMythic = LEVEL_SPIRITS.filter((s) => unlocked.has(`${s.level}|2`)).length;
 
   return (
     <section className="mb-10 md:mb-12">
@@ -66,25 +71,35 @@ export function JlptSpiritStrip() {
             JLPT Spirits · 能試霊
           </p>
           <p className="serif-jp text-sm text-foreground/70">
-            Earn one for each level passed at 80%+
+            Pass at 80%+ to earn the spirit · Score 100% to unlock its mythic form
           </p>
         </div>
-        <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-          {earnedCount} / 5
-        </p>
+        <div className="text-right">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+            {earnedTier1} / 5
+          </p>
+          {earnedMythic > 0 && (
+            <p className="text-[10px] uppercase tracking-[0.3em] text-primary mt-0.5">
+              ✨ {earnedMythic} mythic
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="washi-card p-4 md:p-6">
         <div className="grid grid-cols-5 gap-2 md:gap-4">
           {LEVEL_SPIRITS.map((s) => {
-            const earned = unlocked.get(s.level);
-            const isUnlocked = Boolean(earned);
+            const earnedBase = unlocked.get(`${s.level}|1`);
+            const earnedMyth = unlocked.get(`${s.level}|2`);
+            const isUnlocked = Boolean(earnedBase);
+            const isMythic = Boolean(earnedMyth);
+            // Mythic image takes precedence as the portrait
+            const portrait = earnedMyth ?? earnedBase;
             return (
               <button
                 key={s.level}
                 onClick={() => {
                   if (isUnlocked) {
-                    // Scroll to bestiary list (badges section below)
                     document
                       .getElementById("personal-badges")
                       ?.scrollIntoView({ behavior: "smooth" });
@@ -93,30 +108,31 @@ export function JlptSpiritStrip() {
                   }
                 }}
                 className={cn(
-                  "group relative flex flex-col items-center gap-2 p-3 md:p-4 rounded-sm transition-all",
-                  isUnlocked
-                    ? "hover:bg-foreground/5"
-                    : "hover:bg-foreground/5 cursor-pointer",
+                  "group relative flex flex-col items-center gap-2 p-3 md:p-4 rounded-sm transition-all hover:bg-foreground/5",
                 )}
                 aria-label={
-                  isUnlocked
-                    ? `${s.level} ${s.archetype} — earned`
-                    : `${s.level} ${s.archetype} — locked, take the mock test to unlock`
+                  isMythic
+                    ? `${s.level} ${s.archetype} — mythic perfect-score form earned`
+                    : isUnlocked
+                      ? `${s.level} ${s.archetype} — earned, perfect-score form locked`
+                      : `${s.level} ${s.archetype} — locked, take the mock test to unlock`
                 }
               >
                 {/* Silhouette / portrait */}
                 <div
                   className={cn(
                     "relative w-14 h-14 md:w-20 md:h-20 rounded-full flex items-center justify-center overflow-hidden transition-all",
-                    isUnlocked
-                      ? "bg-gradient-to-br from-background to-muted ring-1 ring-foreground/20"
-                      : "bg-foreground/[0.04] ring-1 ring-dashed ring-foreground/15",
+                    isMythic
+                      ? "bg-gradient-to-br from-primary/10 to-background ring-2 ring-primary/70 shadow-[0_0_20px_-4px_hsl(var(--primary)/0.5)]"
+                      : isUnlocked
+                        ? "bg-gradient-to-br from-background to-muted ring-1 ring-foreground/20"
+                        : "bg-foreground/[0.04] ring-1 ring-dashed ring-foreground/15",
                   )}
                 >
-                  {isUnlocked && earned?.image_url ? (
+                  {isUnlocked && portrait?.image_url ? (
                     <img
-                      src={earned.image_url}
-                      alt={earned.title}
+                      src={portrait.image_url}
+                      alt={portrait.title}
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />
@@ -141,6 +157,15 @@ export function JlptSpiritStrip() {
                       <Lock className="absolute w-3.5 h-3.5 md:w-4 md:h-4 text-muted-foreground/60" />
                     </>
                   )}
+                  {isMythic && (
+                    <span
+                      className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md"
+                      title="Mythic — Perfect Score"
+                      aria-label="Mythic perfect-score form"
+                    >
+                      <Sparkles className="w-3 h-3" />
+                    </span>
+                  )}
                 </div>
 
                 {/* Level label */}
@@ -156,15 +181,19 @@ export function JlptSpiritStrip() {
                   <p
                     className={cn(
                       "serif-jp text-[11px] md:text-xs leading-tight mt-0.5 hidden md:block",
-                      isUnlocked ? "text-foreground/80" : "text-muted-foreground/50",
+                      isMythic
+                        ? "text-primary font-medium"
+                        : isUnlocked
+                          ? "text-foreground/80"
+                          : "text-muted-foreground/50",
                     )}
                   >
-                    {s.jp}
+                    {isMythic ? `真${s.jp}` : s.jp}
                   </p>
                 </div>
 
                 {/* Rarity dot */}
-                {isUnlocked && (
+                {isUnlocked && !isMythic && (
                   <span
                     className={cn(
                       "absolute top-2 right-2 w-1.5 h-1.5 rounded-full",
@@ -182,9 +211,11 @@ export function JlptSpiritStrip() {
           })}
         </div>
 
-        {!loading && earnedCount < 5 && (
+        {!loading && (earnedTier1 < 5 || earnedMythic < 5) && (
           <p className="text-[10px] text-center text-muted-foreground mt-4 italic tracking-wide">
-            Tap a locked spirit to attempt its JLPT trial.
+            {earnedTier1 < 5
+              ? "Tap a locked spirit to attempt its JLPT trial."
+              : "Score 100% on each level to ascend the spirits to their mythic form."}
           </p>
         )}
       </div>

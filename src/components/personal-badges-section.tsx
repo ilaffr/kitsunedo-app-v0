@@ -7,12 +7,14 @@ const rarityHankoChar: Record<string, string> = {
   uncommon: "中",
   rare: "上",
   legendary: "極",
+  mythic: "真",
 };
 
 const rarityLabel: Record<string, string> = {
   uncommon: "Uncommon",
   rare: "Rare",
   legendary: "Legendary",
+  mythic: "Mythic ✨",
 };
 
 const tierLabel: Record<number, string> = {

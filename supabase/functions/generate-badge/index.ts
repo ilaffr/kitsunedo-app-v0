@@ -80,8 +80,26 @@ serve(async (req) => {
 
     if (trigger_type === "jlpt_pass" && jlpt_level) {
       const arch = JLPT_ARCHETYPE[jlpt_level] || JLPT_ARCHETYPE.N5;
-      if (arch.rarityOverride) rarity = arch.rarityOverride;
-      userPrompt = `A student just passed a ${jlpt_level} JLPT-style mock exam (${jlpt_mode || "mixed"} section) with ${jlpt_score_pct}% accuracy. Award them a Bestiary spirit themed as a "${arch.archetype}" (${arch.jp}). Element/setting: ${arch.element}.
+      const isPerfect = tier === 2;
+
+      if (isPerfect) {
+        // Tier 2 — Perfect Score (100%) — overrides to "mythic" rarity always
+        rarity = "mythic";
+        userPrompt = `A student just achieved a PERFECT SCORE (100%) on a ${jlpt_level} JLPT-style mock exam (${jlpt_mode || "mixed"} section). This is the rarest possible accomplishment. Award them an ASCENDED form of the "${arch.archetype}" (${arch.jp}) — a mythic, divine variant. Setting: ${arch.element}, but elevated — celestial, aurora-touched, ancient.
+
+Generate a JSON object (no markdown, pure JSON):
+{
+  "title": "evocative English name, must convey ascension or perfection — e.g. 'Ascended ${arch.archetype}', '${jlpt_level} Perfect — Celestial ${arch.archetype}', or a poetic mythic variant. Include the level.",
+  "title_jp": "Japanese name 3-6 characters, poetic and elevated (e.g. 神, 真, 極, 究 prefix/suffix welcome)",
+  "description": "one sentence honoring a flawless ${jlpt_level} performance — every question answered correctly. Reverent, awe-struck.",
+  "myth": "a 3-4 sentence mythic legend about a scholar so disciplined that the ${arch.archetype} revealed its true divine form to them. Sumi-e poetic, ancient scroll tone."
+}
+
+Tone: deeply reverent, mythic, awe-struck. This is the highest honor in the bestiary.`;
+        imagePrompt = `Create an elaborate, masterwork Japanese sumi-e ink brush illustration on aged washi paper background. Subject: an ASCENDED, mythic divine form of a ${arch.archetype} (${arch.jp}) — representing a PERFECT 100% score on JLPT ${jlpt_level}. Setting elements: ${arch.element}, elevated to celestial scale — aurora, drifting cherry petals, ancient torii gates, swirling spirit energy. Style: traditional sumi-e but more elaborate and detailed than usual — confident layered brush strokes, gold leaf accents throughout, vermillion hanko seal in corner, subtle indigo wash for divinity, sense of overwhelming sacred power. The figure should feel transcendent, more spirit than creature. No text in the image.`;
+      } else {
+        if (arch.rarityOverride) rarity = arch.rarityOverride;
+        userPrompt = `A student just passed a ${jlpt_level} JLPT-style mock exam (${jlpt_mode || "mixed"} section) with ${jlpt_score_pct}% accuracy. Award them a Bestiary spirit themed as a "${arch.archetype}" (${arch.jp}). Element/setting: ${arch.element}.
 
 Generate a JSON object (no markdown, pure JSON):
 {
@@ -92,7 +110,8 @@ Generate a JSON object (no markdown, pure JSON):
 }
 
 Tone: reverent, mythic, sumi-e poetic. NOT comedic. This is an honor, not a joke.`;
-      imagePrompt = `Create a minimalist Japanese sumi-e ink brush illustration on a clean white washi paper background. Subject: a ${arch.archetype} (${arch.jp}) — a dignified yokai/kami representing mastery of JLPT ${jlpt_level}. Setting elements: ${arch.element}. Style: traditional sumi-e, black ink wash with subtle vermillion seal accent, confident brush strokes, sense of ancient honor. ${jlpt_level === "N1" ? "Add gold leaf highlights and a divine aura." : jlpt_level === "N2" ? "Add a single vermillion accent." : ""} No text in the image.`;
+        imagePrompt = `Create a minimalist Japanese sumi-e ink brush illustration on a clean white washi paper background. Subject: a ${arch.archetype} (${arch.jp}) — a dignified yokai/kami representing mastery of JLPT ${jlpt_level}. Setting elements: ${arch.element}. Style: traditional sumi-e, black ink wash with subtle vermillion seal accent, confident brush strokes, sense of ancient honor. ${jlpt_level === "N1" ? "Add gold leaf highlights and a divine aura." : jlpt_level === "N2" ? "Add a single vermillion accent." : ""} No text in the image.`;
+      }
     } else {
       // Legacy word_struggle path
       userPrompt = `A student has made ${mistake_count} mistakes on the Japanese word/particle "${word}" (meaning: "${meaning}"). This is tier ${tier} of 3.
@@ -157,11 +176,18 @@ Keep it lighthearted and motivating, never mocking. Higher tiers should be progr
       console.error("Failed to parse badge text:", rawContent);
       if (trigger_type === "jlpt_pass" && jlpt_level) {
         const arch = JLPT_ARCHETYPE[jlpt_level] || JLPT_ARCHETYPE.N5;
+        const isPerfect = tier === 2;
         badgeText = {
-          title: `${jlpt_level} — ${arch.archetype}`,
-          title_jp: arch.jp,
-          description: `Earned by passing a ${jlpt_level} mock exam with ${jlpt_score_pct}%.`,
-          myth: "A spirit emerged from the mountain mist to honor the scholar's perseverance.",
+          title: isPerfect
+            ? `${jlpt_level} Perfect — Ascended ${arch.archetype}`
+            : `${jlpt_level} — ${arch.archetype}`,
+          title_jp: isPerfect ? `真${arch.jp}` : arch.jp,
+          description: isPerfect
+            ? `A flawless 100% on the ${jlpt_level} trial — the spirit revealed its divine form.`
+            : `Earned by passing a ${jlpt_level} mock exam with ${jlpt_score_pct}%.`,
+          myth: isPerfect
+            ? "Long ago, a scholar answered every question without hesitation. The mountain mist parted, and the kami showed itself in full radiance — a sight granted only to the perfect-hearted."
+            : "A spirit emerged from the mountain mist to honor the scholar's perseverance.",
         };
       } else {
         badgeText = {

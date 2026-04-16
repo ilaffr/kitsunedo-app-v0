@@ -144,15 +144,19 @@ export default function JlptPractice() {
           xp_earned: xpEarned,
         });
 
-        // Bestiary: award JLPT-pass spirit at 80%+ (idempotent — edge function checks dupes)
-        if (pct >= 80) {
+        // Bestiary: award JLPT-pass spirit at 80%+ (tier 1) and a mythic perfect-score variant at 100% (tier 2)
+        const tiersToAward: number[] = [];
+        if (pct >= 80) tiersToAward.push(1);
+        if (pct === 100) tiersToAward.push(2);
+
+        for (const t of tiersToAward) {
           supabase.functions
             .invoke("generate-badge", {
               body: {
                 user_id: user.id,
                 trigger_type: "jlpt_pass",
                 trigger_detail: level,
-                tier: 1,
+                tier: t,
                 jlpt_level: level,
                 jlpt_score_pct: pct,
                 jlpt_mode: mode,
@@ -164,10 +168,15 @@ export default function JlptPractice() {
                 return;
               }
               if (data?.badge?.title) {
-                toast.success(`🎌 New Bestiary spirit: ${data.badge.title}`, {
-                  description: data.badge.description,
-                  duration: 7000,
-                });
+                toast.success(
+                  t === 2
+                    ? `✨ MYTHIC: ${data.badge.title}`
+                    : `🎌 New Bestiary spirit: ${data.badge.title}`,
+                  {
+                    description: data.badge.description,
+                    duration: t === 2 ? 10000 : 7000,
+                  }
+                );
               }
             })
             .catch((e) => console.error("Bestiary badge error:", e));
