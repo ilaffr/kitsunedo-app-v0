@@ -113,9 +113,7 @@ interface RegularItem {
 }
 
 async function fetchRegularRss(): Promise<RegularItem[]> {
-  const r = await fetch(REGULAR_RSS_URL, {
-    headers: { "User-Agent": "Mozilla/5.0 KitsuneDo/1.0" },
-  });
+  const r = await fetch(REGULAR_RSS_URL, { headers: NHK_HEADERS });
   if (!r.ok) throw new Error(`rss ${r.status}`);
   const xml = await r.text();
   const items: RegularItem[] = [];
