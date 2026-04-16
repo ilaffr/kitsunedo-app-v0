@@ -193,6 +193,11 @@ export default function Index() {
               />
             </section>
 
+            {/* NHK Headline Teaser */}
+            <section className="mb-6 md:mb-8">
+              <NhkHeadlineTeaser />
+            </section>
+
             {/* Daily Kitsune Tale */}
             <section className="mb-6 md:mb-8">
               <DailyKitsuneTale />
