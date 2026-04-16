@@ -184,7 +184,7 @@ function ScrollCard({ def, unlocked, onOpen }: ScrollCardProps) {
       {/* Washi paper scroll body */}
       <div
         className={cn(
-          "washi-card relative aspect-[3/4] flex items-center justify-center p-4 transition-all duration-300",
+          "washi-card relative aspect-[3/4] overflow-hidden transition-all duration-300",
           "group-hover:translate-y-[-2px]",
           unlocked ? "" : "grayscale"
         )}
@@ -192,7 +192,7 @@ function ScrollCard({ def, unlocked, onOpen }: ScrollCardProps) {
         {/* Hanko seal — corner ginkgo */}
         <span
           className={cn(
-            "absolute top-2 left-2 inline-flex items-center justify-center w-5 h-5 rounded-[2px] serif-jp text-[10px] font-medium",
+            "absolute top-2 left-2 z-10 inline-flex items-center justify-center w-5 h-5 rounded-[2px] serif-jp text-[10px] font-medium",
             unlocked ? "bg-primary text-primary-foreground" : "bg-foreground/15 text-foreground/40"
           )}
           aria-hidden
@@ -200,21 +200,23 @@ function ScrollCard({ def, unlocked, onOpen }: ScrollCardProps) {
           {rarityHankoChar[def.rarity]}
         </span>
 
-        {/* Spirit illustration */}
+        {/* Spirit illustration — fills the scroll uniformly */}
         {unlocked ? (
           <img
             src={def.image}
             alt={def.title}
-            className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-[1.04]"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
         ) : (
-          <span className="serif-jp text-foreground/15 text-7xl select-none">？</span>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="serif-jp text-foreground/15 text-7xl select-none">？</span>
+          </div>
         )}
 
         {/* Bottom hanko — small signature */}
         <span
           className={cn(
-            "absolute bottom-2 right-2 inline-flex items-center justify-center w-4 h-4 rounded-[1px] serif-jp text-[8px]",
+            "absolute bottom-2 right-2 z-10 inline-flex items-center justify-center w-4 h-4 rounded-[1px] serif-jp text-[8px]",
             unlocked ? "bg-primary/90 text-primary-foreground" : "bg-transparent"
           )}
           aria-hidden

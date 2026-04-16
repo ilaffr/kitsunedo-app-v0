@@ -42,9 +42,9 @@ function ScrollCard({ badge, onOpen }: ScrollCardProps) {
       <div className="mx-auto h-1.5 w-px bg-foreground/30" />
 
       {/* Washi paper scroll body */}
-      <div className="washi-card relative aspect-[3/4] flex items-center justify-center p-4 transition-all duration-300 group-hover:translate-y-[-2px]">
+      <div className="washi-card relative aspect-[3/4] overflow-hidden transition-all duration-300 group-hover:translate-y-[-2px]">
         <span
-          className="absolute top-2 left-2 inline-flex items-center justify-center w-5 h-5 rounded-[2px] serif-jp text-[10px] font-medium bg-primary text-primary-foreground"
+          className="absolute top-2 left-2 z-10 inline-flex items-center justify-center w-5 h-5 rounded-[2px] serif-jp text-[10px] font-medium bg-primary text-primary-foreground"
           aria-hidden
         >
           {hanko}
@@ -54,14 +54,16 @@ function ScrollCard({ badge, onOpen }: ScrollCardProps) {
           <img
             src={badge.image_url}
             alt={badge.title}
-            className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-[1.04]"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
         ) : (
-          <span className="serif-jp text-foreground/20 text-7xl select-none">霊</span>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="serif-jp text-foreground/20 text-7xl select-none">霊</span>
+          </div>
         )}
 
         <span
-          className="absolute bottom-2 right-2 inline-flex items-center justify-center w-4 h-4 rounded-[1px] serif-jp text-[8px] bg-primary/90 text-primary-foreground"
+          className="absolute bottom-2 right-2 z-10 inline-flex items-center justify-center w-4 h-4 rounded-[1px] serif-jp text-[8px] bg-primary/90 text-primary-foreground"
           aria-hidden
         >
           幸
