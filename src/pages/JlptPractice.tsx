@@ -6,9 +6,10 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
+import { NhkNewsReader } from "@/components/nhk-news-reader";
 
 type Level = "N5" | "N4" | "N3" | "N2" | "N1";
-type Mode = "mixed" | "vocab" | "grammar" | "reading";
+type Mode = "mixed" | "vocab" | "grammar" | "reading" | "news";
 
 interface Question {
   id?: string;
@@ -34,6 +35,7 @@ const MODES: { id: Mode; jp: string; label: string; desc: string }[] = [
   { id: "vocab", jp: "語彙", label: "Vocabulary", desc: "Fill the blank — word choice" },
   { id: "grammar", jp: "文法", label: "Grammar", desc: "Particles, conjugations, expressions" },
   { id: "reading", jp: "読解", label: "Reading", desc: "Short passages with comprehension" },
+  { id: "news", jp: "ニュース", label: "NHK News", desc: "Real news matched to your level" },
 ];
 
 const SECTION_LABEL: Record<Question["section"], string> = {
