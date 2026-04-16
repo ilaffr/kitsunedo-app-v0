@@ -276,6 +276,90 @@
     transform: scaleY(0.5) translateY(-50%);
     opacity: 0.8;
   }
+
+  /* ===== Ghost of Yōtei utilities ===== */
+
+  /* Cinematic page title with thin ink underline (like "SETTINGS") */
+  .yotei-title {
+    font-family: 'Noto Serif JP', serif;
+    @apply text-foreground tracking-[0.18em] uppercase font-normal text-base md:text-lg;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+  }
+  .yotei-title::after {
+    content: '';
+    position: absolute;
+    left: 12%;
+    right: 12%;
+    bottom: 0;
+    height: 1px;
+    background: hsl(var(--foreground) / 0.55);
+  }
+
+  /* Bold brush-stroke active indicator (like the swiped "AUDIO" in the screenshot) */
+  .brush-active {
+    position: relative;
+    isolation: isolate;
+  }
+  .brush-active::before {
+    content: '';
+    position: absolute;
+    inset: -8% -18%;
+    background:
+      radial-gradient(ellipse at 30% 50%, hsl(var(--foreground)) 0%, hsl(var(--foreground) / 0.8) 35%, transparent 70%),
+      radial-gradient(ellipse at 80% 55%, hsl(var(--foreground) / 0.6) 0%, transparent 55%);
+    transform: skewX(-8deg);
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(0.4px);
+  }
+
+  /* Black brush-stroke ribbon banner (for tooltip / hint text) */
+  .ink-ribbon {
+    position: relative;
+    background: hsl(30 8% 8%);
+    color: hsl(38 30% 95%);
+    padding: 0.75rem 1.5rem;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.04em;
+    clip-path: polygon(
+      2% 8%, 6% 0%, 96% 4%, 100% 18%, 99% 88%, 94% 100%,
+      4% 96%, 0% 82%
+    );
+  }
+
+  /* Soft washi card — minimal border, leans on shadow & paper grain */
+  .washi-card {
+    @apply bg-card rounded-sm relative;
+    background-image:
+      radial-gradient(ellipse at 0% 0%, hsl(30 8% 10% / 0.04), transparent 50%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    box-shadow: var(--shadow-md), inset 0 0 0 1px hsl(30 12% 82% / 0.6);
+  }
+
+  /* Vermillion ginkgo seal — the signature gold-leaf pin from the map */
+  .ginkgo-seal {
+    @apply inline-flex items-center justify-center;
+    width: 1.6rem;
+    height: 1.6rem;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-radius: 9999px;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 700;
+    box-shadow: 0 2px 6px hsl(var(--primary) / 0.4), inset 0 -2px 4px hsl(0 0% 0% / 0.15);
+  }
+
+  /* Vertical kanji watermark — large, faded, decorative */
+  .kanji-watermark {
+    font-family: 'Noto Serif JP', serif;
+    writing-mode: vertical-rl;
+    color: hsl(var(--foreground) / 0.08);
+    font-weight: 700;
+    pointer-events: none;
+    user-select: none;
+  }
 }
 
 @layer utilities {
