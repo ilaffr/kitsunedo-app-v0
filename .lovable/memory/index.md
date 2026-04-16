@@ -33,3 +33,4 @@ Rule: Daily Kitsune Tales must always be rooted in REAL Japanese culture/lore/hi
 - [Tale Archive & Sentence Mining](mem://features/tale-archive) — /tales archive page + per-word add-to-flashcards on tales
 - [Yokai Journey Map](mem://features/yokai-journey) — Sumi-e SVG map at /journey grouping 50 lessons into 5 region with yokai bosses
 - [Yokai Boss Quiz](mem://features/yokai-boss) — Region-end mixed-review challenge with themed dialogue + bestiary award
+- [JLPT Practice](mem://features/jlpt-practice) — N5–N1 mock exam at /jlpt-practice with mixed/section modes, AI-generated + DB-cached question bank

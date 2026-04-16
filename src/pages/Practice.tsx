@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Layers, PenTool, Shuffle, ChevronRight, BookmarkCheck } from "lucide-react";
+import { ArrowLeft, Layers, PenTool, Shuffle, ChevronRight, BookmarkCheck, ScrollText } from "lucide-react";
 import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
 import { useFlashcards } from "@/hooks/use-flashcards";
@@ -24,6 +24,15 @@ const modes = [
     icon: PenTool,
     emoji: "🖌️",
     route: "/kanji-writing",
+  },
+  {
+    id: "jlpt" as const,
+    title: "JLPT Practice",
+    titleJp: "能力試験",
+    description: "Authentic-style mock test — N5 through N1, mixed or by section",
+    icon: ScrollText,
+    emoji: "📜",
+    route: "/jlpt-practice",
   },
   {
     id: "mixed" as const,
