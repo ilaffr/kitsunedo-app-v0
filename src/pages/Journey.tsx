@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Check, Lock, Trophy, X, List } from "lucide-react";
+import { ArrowLeft, Check, Lock, Trophy, X, List, Swords } from "lucide-react";
 import { Header } from "@/components/header";
 import { journeyRegions, type JourneyRegion } from "@/data/journey-regions";
 import { minnaLessons } from "@/data/minna-lessons";
 import { useAllLessonProgress } from "@/hooks/use-user-data";
 import { cn } from "@/lib/utils";
+import { BossQuiz } from "@/components/boss-quiz";
 
 const AVAILABLE_LESSON_IDS = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
