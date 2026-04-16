@@ -60,7 +60,8 @@ export function NhkNewsReader({ level }: Props) {
   const [articles, setArticles] = useState<NhkArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<NhkArticle | null>(null);
-  const { addCard, savedKeys } = useFlashcards();
+  const { addCard, savedSet } = useFlashcards();
+  const savedKeys = savedSet;
   const [savingWord, setSavingWord] = useState<string | null>(null);
 
   useEffect(() => {
