@@ -44,7 +44,7 @@ const SECTION_LABEL: Record<Question["section"], string> = {
   reading: "Reading",
 };
 
-type Phase = "select" | "loading" | "quiz" | "results";
+type Phase = "select" | "loading" | "quiz" | "results" | "news";
 
 export default function JlptPractice() {
   const navigate = useNavigate();
@@ -60,6 +60,10 @@ export default function JlptPractice() {
   const [answers, setAnswers] = useState<{ correct: boolean; selected: number }[]>([]);
 
   const startSession = async () => {
+    if (mode === "news") {
+      setPhase("news");
+      return;
+    }
     setPhase("loading");
     try {
       const { data, error } = await supabase.functions.invoke(
