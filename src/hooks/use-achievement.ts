@@ -8,14 +8,24 @@ export type AchievementId =
   | "perfect_practice"
   | "vocabulary_master"
   | "streak_3"
-  | "all_grammar";
+  | "all_grammar"
+  | "boss_bakeneko"
+  | "boss_tengu"
+  | "boss_kappa"
+  | "boss_yukionna"
+  | "boss_kamuy";
 
 const TITLES: Record<AchievementId, { title: string; jp: string }> = {
-  first_lesson:       { title: "First Scroll",      jp: "最初の巻物" },
-  perfect_practice:   { title: "Iron Discipline",   jp: "鉄の修行" },
+  first_lesson:       { title: "First Scroll",       jp: "最初の巻物" },
+  perfect_practice:   { title: "Iron Discipline",    jp: "鉄の修行" },
   vocabulary_master:  { title: "Word Weaver",        jp: "言葉の織り手" },
   all_grammar:        { title: "Pattern Seeker",     jp: "型の探求者" },
   streak_3:           { title: "Demon's Resolve",    jp: "鬼の覚悟" },
+  boss_bakeneko:      { title: "Bakeneko Bested",    jp: "化け猫退治" },
+  boss_tengu:         { title: "Tengu Humbled",      jp: "天狗服従" },
+  boss_kappa:         { title: "Kappa Outwitted",    jp: "河童の敗北" },
+  boss_yukionna:      { title: "Yuki-onna Thawed",   jp: "雪女融解" },
+  boss_kamuy:         { title: "Kamuy's Blessing",   jp: "カムイの祝福" },
 };
 
 // ── Persistence helpers ────────────────────────────────────────────────────

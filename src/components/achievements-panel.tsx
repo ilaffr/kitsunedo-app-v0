@@ -9,6 +9,11 @@ import tanukiImg from "@/assets/achievement-tanuki.png";
 import tenguImg from "@/assets/achievement-tengu.png";
 import ryujinImg from "@/assets/achievement-ryujin.png";
 import oniImg from "@/assets/achievement-oni.png";
+import bakenekoImg from "@/assets/yokai-bakeneko.png";
+import yokaiTenguImg from "@/assets/yokai-tengu.png";
+import kappaImg from "@/assets/yokai-kappa.png";
+import yukionnaImg from "@/assets/yokai-yukionna.png";
+import kamuyImg from "@/assets/yokai-kamuy.png";
 
 const rarityLabel: Record<string, string> = {
   common: "Common",
@@ -96,6 +101,61 @@ const ACHIEVEMENTS: AchievementDef[] = [
       "Even the fearsome Oni, driven by endless hunger, knows that true power comes not from single burst of fury but from relentless, daily forging of the spirit.",
     mythSource: "鬼の書 — The Oni Codex",
     image: oniImg,
+    rarity: "legendary",
+  },
+  {
+    id: "boss_bakeneko",
+    title: "Bakeneko Bested",
+    titleJP: "化け猫退治",
+    description: "Defeat the Bakeneko of Edo's lantern district.",
+    myth:
+      "She danced on her hind legs beneath the paper lanterns of Nihonbashi and tested travellers with riddles. You answered each one with steady breath, and she let her second tail fall — for now.",
+    mythSource: "江戸怪談 — Edo Ghost Tales",
+    image: bakenekoImg,
+    rarity: "rare",
+  },
+  {
+    id: "boss_tengu",
+    title: "Tengu Humbled",
+    titleJP: "天狗服従",
+    description: "Defeat the Tengu of Mount Kurama.",
+    myth:
+      "On the misted slopes of Kurama-yama, Sōjōbō tested your verbs with the patience of stone. Pride breaks against his fan, but humble precision makes even a mountain spirit bow.",
+    mythSource: "鞍馬天狗譚 — Kurama Tengu Records",
+    image: yokaiTenguImg,
+    rarity: "rare",
+  },
+  {
+    id: "boss_kappa",
+    title: "Kappa Outwitted",
+    titleJP: "河童の敗北",
+    description: "Defeat the Kappa of the Chikugo River.",
+    myth:
+      "You bowed first, and the river-imp bowed back — its head-dish spilling, its power undone. The cucumbers it offered now sit beside your scrolls, a strange and slimy honour.",
+    mythSource: "九州民話 — Folktales of Kyushu",
+    image: kappaImg,
+    rarity: "rare",
+  },
+  {
+    id: "boss_yukionna",
+    title: "Yuki-onna Thawed",
+    titleJP: "雪女融解",
+    description: "Defeat the Yuki-onna of the Snow Country.",
+    myth:
+      "Her breath was winter itself. You answered with warmth in your verbs and respect in your particles, and her pale lips curved — almost — into a smile before she dissolved into the falling snow.",
+    mythSource: "東北雪伝説 — Tōhoku Snow Legends",
+    image: yukionnaImg,
+    rarity: "legendary",
+  },
+  {
+    id: "boss_kamuy",
+    title: "Kamuy's Blessing",
+    titleJP: "カムイの祝福",
+    description: "Receive the blessing of the Kamuy of Hokkaidō.",
+    myth:
+      "The bear-god of the cedar forests measured every particle you uttered. To pass was not to defeat — it was to be acknowledged as kin. The Ainu say the kamuy never forgets a respectful tongue.",
+    mythSource: "アイヌ・ユーカラ — Ainu Yukar Epics",
+    image: kamuyImg,
     rarity: "legendary",
   },
 ];
