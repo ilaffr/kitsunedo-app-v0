@@ -118,6 +118,7 @@ export default function JlptPractice() {
       // Finish
       const correctCount = answers.filter((a) => a.correct).length;
       const xpEarned = correctCount * 5;
+      const pct = Math.round((correctCount / questions.length) * 100);
       if (user) {
         await supabase.from("jlpt_sessions").insert({
           user_id: user.id,
@@ -127,6 +128,35 @@ export default function JlptPractice() {
           correct_count: correctCount,
           xp_earned: xpEarned,
         });
+
+        // Bestiary: award JLPT-pass spirit at 80%+ (idempotent — edge function checks dupes)
+        if (pct >= 80) {
+          supabase.functions
+            .invoke("generate-badge", {
+              body: {
+                user_id: user.id,
+                trigger_type: "jlpt_pass",
+                trigger_detail: level,
+                tier: 1,
+                jlpt_level: level,
+                jlpt_score_pct: pct,
+                jlpt_mode: mode,
+              },
+            })
+            .then(({ data, error }) => {
+              if (error) {
+                console.error("Bestiary badge failed:", error);
+                return;
+              }
+              if (data?.badge?.title) {
+                toast.success(`🎌 New Bestiary spirit: ${data.badge.title}`, {
+                  description: data.badge.description,
+                  duration: 7000,
+                });
+              }
+            })
+            .catch((e) => console.error("Bestiary badge error:", e));
+        }
       }
       setPhase("results");
     }
