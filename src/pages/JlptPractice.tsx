@@ -149,11 +149,13 @@ export default function JlptPractice() {
       <main className="container max-w-2xl px-4 py-8 md:py-10 pb-24">
         {/* Back */}
         <button
-          onClick={() => (phase === "quiz" ? restart() : navigate("/practice"))}
+          onClick={() => (phase === "quiz" || phase === "news" ? restart() : navigate("/practice"))}
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 text-sm"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span className="serif-jp">{phase === "quiz" ? "Abandon session" : "Back to Practice"}</span>
+          <span className="serif-jp">
+            {phase === "quiz" ? "Abandon session" : phase === "news" ? "Back to selection" : "Back to Practice"}
+          </span>
         </button>
 
         {/* Cinematic title block */}
