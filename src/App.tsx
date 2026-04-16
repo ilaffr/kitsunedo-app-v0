@@ -28,6 +28,7 @@ import Practice from "./pages/Practice";
 import Tales from "./pages/Tales";
 import Journey from "./pages/Journey";
 import NotFound from "./pages/NotFound";
+import { InkWipeTransition } from "@/components/ink-wipe-transition";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          <InkWipeTransition />
           <Routes>
             <Route
               path="/auth"
