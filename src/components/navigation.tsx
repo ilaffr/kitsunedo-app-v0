@@ -53,13 +53,13 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
               <Icon
                 className={cn(
                   "w-5 h-5 transition-all relative z-10",
-                  isActive && "text-background md:text-background scale-105"
+                  isActive ? "text-background md:text-background scale-105" : "group-hover:text-primary"
                 )}
               />
               <span
                 className={cn(
                   "text-[10px] tracking-[0.2em] uppercase relative z-10 hidden md:block transition-colors",
-                  isActive ? "text-background font-medium" : "text-muted-foreground group-hover:text-background"
+                  isActive ? "text-background font-medium" : "text-muted-foreground group-hover:text-primary"
                 )}
               >
                 {item.fullLabel}
@@ -67,7 +67,7 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
               <span
                 className={cn(
                   "text-xs serif-jp md:hidden relative z-10",
-                  isActive ? "text-background font-bold" : "text-muted-foreground group-hover:text-background"
+                  isActive ? "text-background font-bold" : "text-muted-foreground group-hover:text-primary"
                 )}
               >
                 {item.label}
