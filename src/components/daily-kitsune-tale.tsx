@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { speakJapanese } from "@/lib/japanese-tts";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { FuriganaText } from "@/components/furigana-text";
 
 interface KitsuneTale {
   id: string;
