@@ -322,7 +322,7 @@
     filter: blur(0.4px);
   }
 
-  /* Sumi-e brush stroke hover — irregular ink swipe with tapered ends + speckle */
+  /* Sumi-e brush stroke hover — thin tapered ink swipe with dry-brush speckle */
   .brush-hover {
     position: relative;
     isolation: isolate;
@@ -333,36 +333,44 @@
     position: absolute;
     pointer-events: none;
     opacity: 0;
-    transform: skewX(-12deg) scaleX(0.6);
+    transform: skewX(-14deg) scaleX(0.5);
     transform-origin: left center;
-    transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     z-index: -1;
   }
-  /* Main ink swipe — tapered ellipse with soft edges */
+  /* Main thin ink swipe — narrow horizontal band, tapered both ends */
   .brush-hover::before {
-    inset: 18% -14% 18% -14%;
+    left: -8%;
+    right: -12%;
+    top: 50%;
+    height: 22%;
+    margin-top: -11%;
     background:
-      radial-gradient(ellipse 60% 70% at 18% 50%, hsl(var(--foreground) / 0.95) 0%, hsl(var(--foreground) / 0.7) 40%, transparent 75%),
-      radial-gradient(ellipse 45% 55% at 65% 52%, hsl(var(--foreground) / 0.55) 0%, transparent 70%),
-      radial-gradient(ellipse 25% 40% at 92% 50%, hsl(var(--foreground) / 0.35) 0%, transparent 75%);
-    filter: blur(0.6px);
+      radial-gradient(ellipse 50% 100% at 22% 50%, hsl(var(--foreground) / 0.95) 0%, hsl(var(--foreground) / 0.7) 45%, transparent 80%),
+      radial-gradient(ellipse 35% 80% at 60% 50%, hsl(var(--foreground) / 0.55) 0%, transparent 75%),
+      radial-gradient(ellipse 20% 60% at 88% 50%, hsl(var(--foreground) / 0.3) 0%, transparent 80%);
+    filter: blur(0.4px);
     border-radius: 50%;
   }
-  /* Speckle / dry-brush trailing dots */
+  /* Dry-brush trailing speckle */
   .brush-hover::after {
-    inset: 30% -18% 30% -8%;
+    left: 60%;
+    right: -14%;
+    top: 50%;
+    height: 30%;
+    margin-top: -15%;
     background:
-      radial-gradient(circle 1.5px at 88% 40%, hsl(var(--foreground) / 0.7), transparent 70%),
-      radial-gradient(circle 1px at 95% 60%, hsl(var(--foreground) / 0.6), transparent 70%),
-      radial-gradient(circle 2px at 78% 55%, hsl(var(--foreground) / 0.5), transparent 70%),
-      radial-gradient(circle 1px at 100% 48%, hsl(var(--foreground) / 0.4), transparent 70%);
+      radial-gradient(circle 1px at 35% 30%, hsl(var(--foreground) / 0.7), transparent 70%),
+      radial-gradient(circle 1.2px at 60% 70%, hsl(var(--foreground) / 0.6), transparent 70%),
+      radial-gradient(circle 0.8px at 80% 45%, hsl(var(--foreground) / 0.5), transparent 70%),
+      radial-gradient(circle 1px at 95% 60%, hsl(var(--foreground) / 0.4), transparent 70%);
   }
   .brush-hover:hover::before,
   .brush-hover:hover::after,
   .brush-hover:focus-visible::before,
   .brush-hover:focus-visible::after {
     opacity: 1;
-    transform: skewX(-8deg) scaleX(1);
+    transform: skewX(-10deg) scaleX(1);
   }
 
   /* Black brush-stroke ribbon banner (for tooltip / hint text) */
