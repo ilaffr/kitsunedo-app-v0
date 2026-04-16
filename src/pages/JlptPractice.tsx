@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Loader2, Check, X as XIcon, RotateCcw } from "lucide-react";
 import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
