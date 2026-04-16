@@ -245,6 +245,48 @@ export type Database = {
         }
         Relationships: []
       }
+      nhk_news_cache: {
+        Row: {
+          audio_url: string | null
+          body_html: string | null
+          fetched_at: string
+          id: string
+          level: string
+          news_id: string
+          published_at: string | null
+          source: string
+          source_url: string
+          summary: string | null
+          title: string
+        }
+        Insert: {
+          audio_url?: string | null
+          body_html?: string | null
+          fetched_at?: string
+          id?: string
+          level: string
+          news_id: string
+          published_at?: string | null
+          source: string
+          source_url: string
+          summary?: string | null
+          title: string
+        }
+        Update: {
+          audio_url?: string | null
+          body_html?: string | null
+          fetched_at?: string
+          id?: string
+          level?: string
+          news_id?: string
+          published_at?: string | null
+          source?: string
+          source_url?: string
+          summary?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       personal_badges: {
         Row: {
           created_at: string

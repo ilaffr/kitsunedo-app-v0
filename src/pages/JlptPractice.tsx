@@ -6,9 +6,10 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
+import { NhkNewsReader } from "@/components/nhk-news-reader";
 
 type Level = "N5" | "N4" | "N3" | "N2" | "N1";
-type Mode = "mixed" | "vocab" | "grammar" | "reading";
+type Mode = "mixed" | "vocab" | "grammar" | "reading" | "news";
 
 interface Question {
   id?: string;
@@ -34,6 +35,7 @@ const MODES: { id: Mode; jp: string; label: string; desc: string }[] = [
   { id: "vocab", jp: "語彙", label: "Vocabulary", desc: "Fill the blank — word choice" },
   { id: "grammar", jp: "文法", label: "Grammar", desc: "Particles, conjugations, expressions" },
   { id: "reading", jp: "読解", label: "Reading", desc: "Short passages with comprehension" },
+  { id: "news", jp: "ニュース", label: "NHK News", desc: "Real news matched to your level" },
 ];
 
 const SECTION_LABEL: Record<Question["section"], string> = {
@@ -42,7 +44,7 @@ const SECTION_LABEL: Record<Question["section"], string> = {
   reading: "Reading",
 };
 
-type Phase = "select" | "loading" | "quiz" | "results";
+type Phase = "select" | "loading" | "quiz" | "results" | "news";
 
 export default function JlptPractice() {
   const navigate = useNavigate();
@@ -58,6 +60,10 @@ export default function JlptPractice() {
   const [answers, setAnswers] = useState<{ correct: boolean; selected: number }[]>([]);
 
   const startSession = async () => {
+    if (mode === "news") {
+      setPhase("news");
+      return;
+    }
     setPhase("loading");
     try {
       const { data, error } = await supabase.functions.invoke(
@@ -143,11 +149,13 @@ export default function JlptPractice() {
       <main className="container max-w-2xl px-4 py-8 md:py-10 pb-24">
         {/* Back */}
         <button
-          onClick={() => (phase === "quiz" ? restart() : navigate("/practice"))}
+          onClick={() => (phase === "quiz" || phase === "news" ? restart() : navigate("/practice"))}
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 text-sm"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span className="serif-jp">{phase === "quiz" ? "Abandon session" : "Back to Practice"}</span>
+          <span className="serif-jp">
+            {phase === "quiz" ? "Abandon session" : phase === "news" ? "Back to selection" : "Back to Practice"}
+          </span>
         </button>
 
         {/* Cinematic title block */}
@@ -242,10 +250,12 @@ export default function JlptPractice() {
               onClick={startSession}
               className="btn-vermillion w-full py-4 text-sm tracking-[0.3em]"
             >
-              Begin · 始める
+              {mode === "news" ? "Read News · 読む" : "Begin · 始める"}
             </button>
             <p className="text-center text-[10px] text-muted-foreground mt-3 tracking-wide">
-              15 questions · earn 5 XP per correct answer
+              {mode === "news"
+                ? "Real NHK articles, matched to your level"
+                : "15 questions · earn 5 XP per correct answer"}
             </p>
           </>
         )}
@@ -283,6 +293,8 @@ export default function JlptPractice() {
             onRestart={restart}
           />
         )}
+
+        {phase === "news" && <NhkNewsReader level={level} />}
       </main>
     </div>
   );
