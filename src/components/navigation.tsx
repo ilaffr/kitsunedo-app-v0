@@ -8,58 +8,67 @@ interface NavigationProps {
 }
 
 const navItems = [
-  { id: "home", label: "道", fullLabel: "Home", icon: Home },
+  { id: "home", label: "道", fullLabel: "Path", icon: Home },
   { id: "learn", label: "学", fullLabel: "Learn", icon: BookOpen },
   { id: "practice", label: "練", fullLabel: "Practice", icon: GraduationCap },
   { id: "stats", label: "績", fullLabel: "Stats", icon: BarChart3 },
-  { id: "achievements", label: "栄", fullLabel: "Rewards", icon: Trophy },
+  { id: "achievements", label: "栄", fullLabel: "Honors", icon: Trophy },
 ];
 
 export function Navigation({ activeTab, onTabChange }: NavigationProps) {
   const navigate = useNavigate();
-  
+
   const handleTabChange = (id: string) => {
-    if (id === "stats") {
-      navigate("/stats");
-      return;
-    }
-    if (id === "achievements") {
-      navigate("/bestiary");
-      return;
-    }
-    if (id === "practice") {
-      navigate("/practice");
-      return;
-    }
+    if (id === "stats") return navigate("/stats");
+    if (id === "achievements") return navigate("/bestiary");
+    if (id === "practice") return navigate("/practice");
     onTabChange(id);
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/98 backdrop-blur-sm border-t-2 border-border md:relative md:border-t-0 md:border-r-2 md:h-screen md:w-20">
-      <div className="flex md:flex-col items-center justify-around md:justify-start md:pt-6 md:gap-1 h-14 md:h-auto">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md md:relative md:h-screen md:w-24 md:bg-transparent">
+      {/* Hairline divider */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent md:hidden" />
+      <div className="hidden md:block absolute top-0 bottom-0 right-0 w-px bg-gradient-to-b from-transparent via-foreground/15 to-transparent" />
+
+      <div className="flex md:flex-col items-center justify-around md:justify-start md:pt-10 md:gap-2 h-14 md:h-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
-          
+
           return (
             <button
               key={item.id}
               onClick={() => handleTabChange(item.id)}
               className={cn(
-                "flex flex-col items-center justify-center gap-0.5 p-2 rounded-sm transition-all duration-200 min-w-[52px] md:w-14 md:h-14",
-                isActive 
-                  ? "text-primary bg-primary/10 border-l-2 md:border-l-0 md:border-r-2 border-primary" 
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                "group relative flex flex-col items-center justify-center gap-1 px-3 py-2 transition-all duration-300 min-w-[56px] md:w-20 md:py-4",
+                isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <Icon className={cn(
-                "w-5 h-5 transition-transform",
-                isActive && "scale-110"
-              )} />
-              <span className={cn(
-                "text-xs font-japanese md:hidden",
-                isActive ? "font-bold" : "font-normal"
-              )}>
+              {/* Brush-stroke active indicator */}
+              {isActive && (
+                <span className="absolute inset-x-2 top-1/2 -translate-y-1/2 h-8 -z-10 brush-active opacity-100 md:opacity-90" aria-hidden />
+              )}
+              <Icon
+                className={cn(
+                  "w-5 h-5 transition-all relative z-10",
+                  isActive && "text-background md:text-background scale-105"
+                )}
+              />
+              <span
+                className={cn(
+                  "text-[10px] tracking-[0.2em] uppercase relative z-10 hidden md:block transition-colors",
+                  isActive ? "text-background font-medium" : "text-muted-foreground"
+                )}
+              >
+                {item.fullLabel}
+              </span>
+              <span
+                className={cn(
+                  "text-xs serif-jp md:hidden relative z-10",
+                  isActive ? "text-background font-bold" : "text-muted-foreground"
+                )}
+              >
                 {item.label}
               </span>
             </button>

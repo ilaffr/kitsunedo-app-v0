@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Check, Lock, Play, Circle } from "lucide-react";
+import { Check, Lock, Play } from "lucide-react";
 
 interface LessonCardProps {
   title: string;
@@ -11,16 +11,9 @@ interface LessonCardProps {
   onClick?: () => void;
 }
 
-const statusStyles = {
-  locked: "opacity-40 cursor-not-allowed bg-muted/30 border-border",
-  available: "card-interactive bg-card border-border hover:border-foreground/30",
-  "in-progress": "card-interactive bg-primary/5 border-primary/40",
-  completed: "card-interactive bg-success/5 border-success/40",
-};
-
 const difficultyLabels = {
   easy: "初級",
-  medium: "中級", 
+  medium: "中級",
   hard: "上級",
 };
 
@@ -42,40 +35,48 @@ export function LessonCard({
       onClick={onClick}
       disabled={isLocked}
       className={cn(
-        "w-full p-3 md:p-4 rounded-sm border-2 text-left transition-all duration-300",
-        statusStyles[status]
+        "group w-full p-3 md:p-4 text-left transition-all duration-300 relative",
+        "border-b border-foreground/10 last:border-b-0",
+        isLocked && "opacity-40 cursor-not-allowed",
+        !isLocked && "hover:bg-foreground/[0.03]"
       )}
     >
-      <div className="flex items-center gap-3 md:gap-4">
-        {/* Lesson number with brush stroke style */}
-        <div className={cn(
-          "w-10 h-10 md:w-11 md:h-11 rounded-sm flex items-center justify-center font-brush font-bold text-lg border-2",
-          isLocked && "bg-muted border-border text-muted-foreground",
-          isCompleted && "bg-success border-success text-success-foreground",
-          isInProgress && "bg-primary border-primary text-primary-foreground",
-          status === "available" && "bg-card border-foreground/20 text-foreground"
-        )}>
-          {isLocked ? <Lock className="w-4 h-4" /> : 
-           isCompleted ? <Check className="w-5 h-5" strokeWidth={3} /> :
-           isInProgress ? <Play className="w-4 h-4" /> :
-           <span className="font-japanese">{lessonNumber}</span>}
+      {/* Vermillion ginkgo dot for in-progress */}
+      {isInProgress && (
+        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary" />
+      )}
+
+      <div className="flex items-center gap-3 md:gap-4 pl-2">
+        {/* Lesson seal */}
+        <div
+          className={cn(
+            "w-10 h-10 md:w-11 md:h-11 flex items-center justify-center serif-jp font-medium text-lg shrink-0 transition-all",
+            isCompleted && "bg-foreground text-background",
+            isInProgress && "bg-primary text-primary-foreground shadow-[0_2px_8px_hsl(var(--primary)/0.3)]",
+            !isLocked && status === "available" && "border border-foreground/30 text-foreground group-hover:border-foreground",
+            isLocked && "border border-foreground/20 text-muted-foreground"
+          )}
+        >
+          {isLocked ? <Lock className="w-4 h-4" strokeWidth={1.5} /> :
+           isCompleted ? <Check className="w-5 h-5" strokeWidth={2} /> :
+           isInProgress ? <Play className="w-4 h-4" fill="currentColor" /> :
+           <span>{lessonNumber}</span>}
         </div>
-        
+
         {/* Lesson info */}
         <div className="flex-1 min-w-0">
-          <h4 className="font-brush font-bold text-foreground truncate">{title}</h4>
+          <h4 className="serif-jp font-medium text-foreground truncate tracking-wide">{title}</h4>
           {japanese && (
-            <p className="text-lg font-japanese text-muted-foreground">{japanese}</p>
+            <p className="text-base font-japanese text-muted-foreground truncate">{japanese}</p>
           )}
         </div>
-        
-        {/* Right side - XP and difficulty */}
-        <div className="flex flex-col items-end gap-1">
-          <div className="flex items-center gap-1 text-sm font-brush font-bold text-primary">
-            <Circle className="w-2 h-2 fill-primary" />
+
+        {/* Right side — XP & difficulty */}
+        <div className="flex flex-col items-end gap-0.5 shrink-0">
+          <div className="flex items-center gap-1 text-xs serif-jp text-primary tracking-wider">
             <span>+{xpReward}</span>
           </div>
-          <span className="text-xs font-japanese text-muted-foreground">
+          <span className="text-[10px] font-japanese text-muted-foreground tracking-widest">
             {difficultyLabels[difficulty]}
           </span>
         </div>

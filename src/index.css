@@ -10,32 +10,32 @@
 
 @layer base {
   :root {
-    /* Aged rice paper / washi */
-    --background: 40 25% 96%;
-    --foreground: 0 0% 8%;
+    /* Pale washi rice paper — Ghost of Yōtei light mist */
+    --background: 36 22% 94%;
+    --foreground: 30 8% 12%;
 
-    /* Paper card - slightly warmer */
-    --card: 40 30% 98%;
-    --card-foreground: 0 0% 8%;
+    /* Paper card — luminous, slightly cooler */
+    --card: 38 30% 97%;
+    --card-foreground: 30 8% 12%;
 
-    --popover: 40 30% 98%;
-    --popover-foreground: 0 0% 8%;
+    --popover: 38 30% 97%;
+    --popover-foreground: 30 8% 12%;
 
-    /* Vermillion red - hanko stamp color */
-    --primary: 5 85% 45%;
-    --primary-foreground: 40 30% 98%;
+    /* Vermillion red — sparingly, as a hanko seal */
+    --primary: 5 78% 42%;
+    --primary-foreground: 38 30% 97%;
 
-    /* Ink wash gray */
-    --secondary: 30 8% 88%;
-    --secondary-foreground: 0 0% 15%;
+    /* Soft ink wash gray */
+    --secondary: 30 10% 90%;
+    --secondary-foreground: 30 8% 18%;
 
-    /* Muted paper tone */
-    --muted: 35 15% 90%;
-    --muted-foreground: 0 0% 40%;
+    /* Misty paper tone */
+    --muted: 32 14% 89%;
+    --muted-foreground: 30 6% 38%;
 
     /* Deep ink black accent */
-    --accent: 0 0% 12%;
-    --accent-foreground: 40 30% 98%;
+    --accent: 30 6% 10%;
+    --accent-foreground: 38 30% 97%;
 
     /* Bamboo green for success */
     --success: 150 35% 35%;
@@ -45,27 +45,30 @@
     --warning: 35 80% 50%;
     --warning-foreground: 0 0% 8%;
 
-    --destructive: 0 70% 45%;
-    --destructive-foreground: 40 30% 98%;
+    --destructive: 0 65% 42%;
+    --destructive-foreground: 38 30% 97%;
 
-    --border: 30 15% 85%;
-    --input: 30 15% 85%;
-    --ring: 5 85% 45%;
+    /* Subtle, low-contrast borders — let whitespace divide */
+    --border: 30 12% 82%;
+    --input: 30 12% 82%;
+    --ring: 5 78% 42%;
 
-    --radius: 0.5rem;
+    --radius: 0.125rem;
 
     /* Ink gradients */
-    --gradient-ink: linear-gradient(180deg, hsl(0 0% 8%), hsl(0 0% 25%));
-    --gradient-vermillion: linear-gradient(135deg, hsl(5 85% 45%), hsl(0 75% 40%));
-    --gradient-paper: linear-gradient(180deg, hsl(40 30% 98%), hsl(35 20% 93%));
-    --gradient-wash: linear-gradient(180deg, hsl(0 0% 8% / 0.8), hsl(0 0% 8% / 0));
+    --gradient-ink: linear-gradient(180deg, hsl(30 8% 10%), hsl(30 6% 22%));
+    --gradient-vermillion: linear-gradient(135deg, hsl(5 78% 42%), hsl(0 70% 36%));
+    --gradient-paper: linear-gradient(180deg, hsl(38 30% 97%), hsl(34 18% 91%));
+    --gradient-wash: linear-gradient(180deg, hsl(30 8% 10% / 0.7), hsl(30 8% 10% / 0));
+    /* Atmospheric mist gradient — top-down for hero / page backgrounds */
+    --gradient-mist: radial-gradient(ellipse at 50% 0%, hsl(30 8% 10% / 0.06), transparent 60%);
 
-    /* Brush stroke shadows */
-    --shadow-sm: 0 1px 3px hsl(0 0% 0% / 0.08);
-    --shadow-md: 0 4px 12px hsl(0 0% 0% / 0.1);
-    --shadow-lg: 0 8px 24px hsl(0 0% 0% / 0.12);
-    --shadow-ink: 2px 2px 0 hsl(0 0% 8%);
-    --shadow-vermillion: 0 4px 16px hsl(5 85% 45% / 0.3);
+    /* Refined shadows — softer, more atmospheric */
+    --shadow-sm: 0 1px 2px hsl(30 10% 10% / 0.05);
+    --shadow-md: 0 2px 8px hsl(30 10% 10% / 0.07);
+    --shadow-lg: 0 12px 32px hsl(30 10% 10% / 0.1);
+    --shadow-ink: 1px 1px 0 hsl(30 8% 10%);
+    --shadow-vermillion: 0 4px 16px hsl(5 78% 42% / 0.22);
 
     /* Sidebar */
     --sidebar-background: 40 25% 94%;
@@ -130,12 +133,20 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+    /* Layered washi atmosphere — ink-wash mountains + paper grain */
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(ellipse at 50% -10%, hsl(30 8% 10% / 0.07), transparent 55%),
+      radial-gradient(ellipse at 90% 100%, hsl(30 8% 10% / 0.05), transparent 50%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.06 0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: cover, cover, 400px 400px;
   }
 
-  /* Brush stroke titles */
+  /* Cinematic serif titles — Ghost of Yōtei feel */
   h1, h2, h3 {
     font-family: 'Noto Serif JP', serif;
-    @apply font-semibold tracking-wide;
+    @apply font-medium tracking-wide;
   }
 
   h4, h5, h6 {
@@ -264,6 +275,90 @@
     );
     transform: scaleY(0.5) translateY(-50%);
     opacity: 0.8;
+  }
+
+  /* ===== Ghost of Yōtei utilities ===== */
+
+  /* Cinematic page title with thin ink underline (like "SETTINGS") */
+  .yotei-title {
+    font-family: 'Noto Serif JP', serif;
+    @apply text-foreground tracking-[0.18em] uppercase font-normal text-base md:text-lg;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+  }
+  .yotei-title::after {
+    content: '';
+    position: absolute;
+    left: 12%;
+    right: 12%;
+    bottom: 0;
+    height: 1px;
+    background: hsl(var(--foreground) / 0.55);
+  }
+
+  /* Bold brush-stroke active indicator (like the swiped "AUDIO" in the screenshot) */
+  .brush-active {
+    position: relative;
+    isolation: isolate;
+  }
+  .brush-active::before {
+    content: '';
+    position: absolute;
+    inset: -8% -18%;
+    background:
+      radial-gradient(ellipse at 30% 50%, hsl(var(--foreground)) 0%, hsl(var(--foreground) / 0.8) 35%, transparent 70%),
+      radial-gradient(ellipse at 80% 55%, hsl(var(--foreground) / 0.6) 0%, transparent 55%);
+    transform: skewX(-8deg);
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(0.4px);
+  }
+
+  /* Black brush-stroke ribbon banner (for tooltip / hint text) */
+  .ink-ribbon {
+    position: relative;
+    background: hsl(30 8% 8%);
+    color: hsl(38 30% 95%);
+    padding: 0.75rem 1.5rem;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.04em;
+    clip-path: polygon(
+      2% 8%, 6% 0%, 96% 4%, 100% 18%, 99% 88%, 94% 100%,
+      4% 96%, 0% 82%
+    );
+  }
+
+  /* Soft washi card — minimal border, leans on shadow & paper grain */
+  .washi-card {
+    @apply bg-card rounded-sm relative;
+    background-image:
+      radial-gradient(ellipse at 0% 0%, hsl(30 8% 10% / 0.04), transparent 50%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    box-shadow: var(--shadow-md), inset 0 0 0 1px hsl(30 12% 82% / 0.6);
+  }
+
+  /* Vermillion ginkgo seal — the signature gold-leaf pin from the map */
+  .ginkgo-seal {
+    @apply inline-flex items-center justify-center;
+    width: 1.6rem;
+    height: 1.6rem;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-radius: 9999px;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 700;
+    box-shadow: 0 2px 6px hsl(var(--primary) / 0.4), inset 0 -2px 4px hsl(0 0% 0% / 0.15);
+  }
+
+  /* Vertical kanji watermark — large, faded, decorative */
+  .kanji-watermark {
+    font-family: 'Noto Serif JP', serif;
+    writing-mode: vertical-rl;
+    color: hsl(var(--foreground) / 0.08);
+    font-weight: 700;
+    pointer-events: none;
+    user-select: none;
   }
 }
 
