@@ -4,6 +4,7 @@ import { loadAchievements, type AchievementId } from "@/hooks/use-achievement";
 import { useAuth } from "@/context/AuthContext";
 import { usePersonalBadges } from "@/hooks/use-personal-badges";
 import { PersonalBadgesSection } from "@/components/personal-badges-section";
+import { X } from "lucide-react";
 import kitsuneImg from "@/assets/achievement-kitsune.png";
 import tanukiImg from "@/assets/achievement-tanuki.png";
 import tenguImg from "@/assets/achievement-tengu.png";
@@ -22,18 +23,11 @@ const rarityLabel: Record<string, string> = {
   legendary: "Legendary",
 };
 
-const rarityBorderClass: Record<string, string> = {
-  common: "border-border",
-  uncommon: "border-success/60",
-  rare: "border-primary/70",
-  legendary: "border-warning",
-};
-
-const rarityGlowClass: Record<string, string> = {
-  common: "",
-  uncommon: "shadow-[0_0_12px_hsl(var(--success)/0.2)]",
-  rare: "shadow-[0_0_16px_hsl(var(--primary)/0.25)]",
-  legendary: "shadow-[0_0_24px_hsl(var(--warning)/0.35)]",
+const rarityHankoChar: Record<string, string> = {
+  common: "初",
+  uncommon: "中",
+  rare: "上",
+  legendary: "極",
 };
 
 interface AchievementDef {
@@ -160,105 +154,186 @@ const ACHIEVEMENTS: AchievementDef[] = [
   },
 ];
 
-interface AchievementCardProps {
+interface ScrollCardProps {
   def: AchievementDef;
   unlocked: boolean;
-  expanded: boolean;
-  onToggle: () => void;
+  onOpen: () => void;
 }
 
-function AchievementCard({ def, unlocked, expanded, onToggle }: AchievementCardProps) {
+/**
+ * Hanging sumi-e scroll card — like the reference grid image.
+ * Top + bottom dowel bars, washi paper field, hanko seal in corner.
+ */
+function ScrollCard({ def, unlocked, onOpen }: ScrollCardProps) {
   return (
-    <div
+    <button
+      onClick={onOpen}
       className={cn(
-        "card-paper border-2 overflow-hidden transition-all duration-300 cursor-pointer",
-        rarityBorderClass[def.rarity],
-        unlocked ? rarityGlowClass[def.rarity] : "opacity-50 grayscale"
+        "group relative flex flex-col w-full text-left transition-all duration-300",
+        unlocked ? "opacity-100" : "opacity-55"
       )}
-      onClick={onToggle}
     >
-      <div className="flex items-center gap-4 p-4">
-        {/* Sumi-e illustration */}
-        <div
+      {/* Top dowel bar */}
+      <div className="relative h-3 mx-1 bg-gradient-to-b from-foreground/55 to-foreground/35 rounded-[1px] shadow-sm">
+        <span className="absolute -left-1 top-0 bottom-0 w-2 bg-foreground/55 rounded-[1px]" />
+        <span className="absolute -right-1 top-0 bottom-0 w-2 bg-foreground/55 rounded-[1px]" />
+      </div>
+      {/* Suspension cord */}
+      <div className="mx-auto h-1.5 w-px bg-foreground/30" />
+
+      {/* Washi paper scroll body */}
+      <div
+        className={cn(
+          "washi-card relative aspect-[3/4] flex items-center justify-center p-4 transition-all duration-300",
+          "group-hover:translate-y-[-2px]",
+          unlocked ? "" : "grayscale"
+        )}
+      >
+        {/* Hanko seal — corner ginkgo */}
+        <span
           className={cn(
-            "w-16 h-16 rounded-sm border-2 overflow-hidden flex-shrink-0 bg-card flex items-center justify-center",
-            rarityBorderClass[def.rarity]
+            "absolute top-2 left-2 inline-flex items-center justify-center w-5 h-5 rounded-[2px] serif-jp text-[10px] font-medium",
+            unlocked ? "bg-primary text-primary-foreground" : "bg-foreground/15 text-foreground/40"
           )}
+          aria-hidden
         >
+          {rarityHankoChar[def.rarity]}
+        </span>
+
+        {/* Spirit illustration */}
+        {unlocked ? (
           <img
             src={def.image}
             alt={def.title}
-            className="w-full h-full object-contain"
+            className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-[1.04]"
           />
-        </div>
+        ) : (
+          <span className="serif-jp text-foreground/15 text-7xl select-none">？</span>
+        )}
 
-        {/* Info */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-            <h4 className="font-bold serif-jp text-foreground text-sm">{def.title}</h4>
-            <span className="text-xs text-muted-foreground japanese-text">{def.titleJP}</span>
-          </div>
-          <p className="text-xs text-muted-foreground leading-snug">{def.description}</p>
-          <div className="flex items-center gap-2 mt-1.5">
-            <span
-              className={cn(
-                "text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-sm border",
-                def.rarity === "legendary" && "border-warning text-warning",
-                def.rarity === "rare" && "border-primary text-primary",
-                def.rarity === "uncommon" && "border-success text-success",
-                def.rarity === "common" && "border-muted-foreground text-muted-foreground"
-              )}
-            >
-              {rarityLabel[def.rarity]}
-            </span>
-            {unlocked ? (
-              <span className="text-[10px] text-success font-medium serif-jp">解放済み — Unlocked</span>
-            ) : (
-              <span className="text-[10px] text-muted-foreground serif-jp">未解放 — Locked</span>
-            )}
-          </div>
-        </div>
-
-        {/* Expand arrow */}
+        {/* Bottom hanko — small signature */}
         <span
           className={cn(
-            "text-muted-foreground text-lg transition-transform duration-200 serif-jp",
-            expanded && "rotate-180"
+            "absolute bottom-2 right-2 inline-flex items-center justify-center w-4 h-4 rounded-[1px] serif-jp text-[8px]",
+            unlocked ? "bg-primary/90 text-primary-foreground" : "bg-transparent"
           )}
+          aria-hidden
         >
-          ▾
+          {unlocked && "幸"}
         </span>
       </div>
 
-      {/* Myth panel */}
-      {expanded && unlocked && (
-        <div className="border-t border-border px-4 pt-4 pb-5 bg-muted/20">
-          <div className="ink-divider mb-4" />
-          <div className="flex gap-4 items-start">
-            <img
-              src={def.image}
-              alt={def.title}
-              className="w-28 h-28 object-contain rounded-sm border border-border flex-shrink-0"
-            />
-            <div>
-              <p className="text-sm text-foreground leading-relaxed italic">
-                "{def.myth}"
-              </p>
-              <p className="text-xs text-muted-foreground mt-3 serif-jp">
-                — {def.mythSource}
-              </p>
-            </div>
+      {/* Bottom dowel bar */}
+      <div className="relative h-2 mx-1 bg-gradient-to-t from-foreground/55 to-foreground/35 rounded-[1px] shadow-sm" />
+
+      {/* Caption */}
+      <div className="mt-3 text-center px-1">
+        <p className="serif-jp text-xs md:text-sm text-foreground tracking-wide truncate">
+          {unlocked ? def.title : "???"}
+        </p>
+        <p className="text-[10px] text-muted-foreground tracking-[0.2em] uppercase mt-1">
+          {rarityLabel[def.rarity]}
+        </p>
+      </div>
+    </button>
+  );
+}
+
+interface DetailModalProps {
+  def: AchievementDef | null;
+  unlocked: boolean;
+  onClose: () => void;
+}
+
+function DetailModal({ def, unlocked, onClose }: DetailModalProps) {
+  if (!def) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-background/80 backdrop-blur-sm animate-fade-up"
+      onClick={onClose}
+    >
+      <div
+        className="washi-card relative max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-10"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 p-2 rounded-sm brush-hover hover:text-background"
+          aria-label="Close"
+        >
+          <X className="w-4 h-4 relative z-10" strokeWidth={1.5} />
+        </button>
+
+        {/* Hanko + meta */}
+        <div className="flex items-center gap-3 mb-6">
+          <span
+            className={cn(
+              "inline-flex items-center justify-center w-9 h-9 rounded-[2px] serif-jp text-base font-medium",
+              unlocked ? "bg-primary text-primary-foreground" : "bg-foreground/10 text-foreground/40"
+            )}
+          >
+            {rarityHankoChar[def.rarity]}
+          </span>
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
+              {rarityLabel[def.rarity]} Spirit
+            </p>
+            <p className="text-xs serif-jp text-muted-foreground">
+              {unlocked ? "解放済み — Unlocked" : "未解放 — Locked"}
+            </p>
           </div>
         </div>
-      )}
 
-      {expanded && !unlocked && (
-        <div className="border-t border-border px-4 py-4 bg-muted/20 text-center">
-          <p className="text-sm text-muted-foreground serif-jp">
-            ??? — Complete the challenge to reveal this spirit's myth.
-          </p>
+        {/* Image + title */}
+        <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start">
+          <div
+            className={cn(
+              "w-full md:w-56 aspect-[3/4] flex items-center justify-center bg-card rounded-sm shrink-0",
+              !unlocked && "grayscale opacity-50"
+            )}
+            style={{ boxShadow: "var(--shadow-md), inset 0 0 0 1px hsl(30 12% 82% / 0.6)" }}
+          >
+            {unlocked ? (
+              <img src={def.image} alt={def.title} className="max-w-full max-h-full object-contain p-2" />
+            ) : (
+              <span className="serif-jp text-foreground/15 text-8xl">？</span>
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <h2 className="serif-jp font-medium text-foreground text-3xl md:text-4xl tracking-wide leading-tight">
+              {unlocked ? def.title : "???"}
+            </h2>
+            <p className="serif-jp text-muted-foreground text-lg mt-1 tracking-wide">
+              {def.titleJP}
+            </p>
+            <div className="mt-4 h-px w-20 bg-foreground/40" />
+            <p className="text-sm text-foreground/75 mt-4 italic leading-relaxed">
+              {def.description}
+            </p>
+
+            {unlocked ? (
+              <>
+                <div className="ink-divider my-6" />
+                <p className="text-sm text-foreground leading-relaxed italic">
+                  "{def.myth}"
+                </p>
+                <p className="text-xs text-muted-foreground mt-4 serif-jp tracking-wide">
+                  — {def.mythSource}
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="ink-divider my-6" />
+                <p className="text-sm text-muted-foreground serif-jp text-center py-4">
+                  Complete the challenge to reveal this spirit's myth.
+                </p>
+              </>
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -266,7 +341,7 @@ function AchievementCard({ def, unlocked, expanded, onToggle }: AchievementCardP
 export function AchievementsPanel() {
   const { user } = useAuth();
   const [unlocked, setUnlocked] = useState<Set<AchievementId>>(new Set());
-  const [expanded, setExpanded] = useState<AchievementId | null>(null);
+  const [openId, setOpenId] = useState<AchievementId | null>(null);
   const { badges: personalBadges, loading: personalLoading, generating } = usePersonalBadges();
 
   useEffect(() => {
@@ -274,49 +349,52 @@ export function AchievementsPanel() {
   }, [user?.id]);
 
   const unlockedCount = ACHIEVEMENTS.filter((a) => unlocked.has(a.id)).length;
+  const openDef = ACHIEVEMENTS.find((a) => a.id === openId) ?? null;
 
   return (
-    <div className="card-paper border-2 p-5 md:p-6">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-1">
-        <h3 className="font-bold serif-jp text-foreground text-lg">Spirit Bestiary</h3>
-        <span className="text-xs text-muted-foreground japanese-text">霊獣図鑑</span>
+    <div>
+      {/* Progress strip */}
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
+          Yōkai Discovered
+        </p>
+        <p className="serif-jp text-sm text-foreground">
+          {unlockedCount}<span className="text-muted-foreground">／{ACHIEVEMENTS.length}</span>
+        </p>
       </div>
-      <p className="text-xs text-muted-foreground mb-1">
-        Unlock Japanese spirit myths through your studies.
-      </p>
-      <div className="flex items-center gap-2 mb-4">
-        <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
-          <div
-            className="h-full bg-primary rounded-full transition-all duration-700"
-            style={{ width: `${(unlockedCount / ACHIEVEMENTS.length) * 100}%` }}
-          />
-        </div>
-        <span className="text-xs text-muted-foreground serif-jp">
-          {unlockedCount}/{ACHIEVEMENTS.length}
-        </span>
+      <div className="h-px bg-foreground/15 relative overflow-hidden mb-12 md:mb-16">
+        <div
+          className="absolute inset-y-0 left-0 bg-foreground transition-all duration-700"
+          style={{ width: `${(unlockedCount / ACHIEVEMENTS.length) * 100}%` }}
+        />
       </div>
 
-      <div className="ink-divider mb-4" />
-
-      {/* Achievement list */}
-      <div className="space-y-3">
+      {/* Sumi-e scroll grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-5 gap-y-10 md:gap-x-8 md:gap-y-14">
         {ACHIEVEMENTS.map((def) => (
-          <AchievementCard
+          <ScrollCard
             key={def.id}
             def={def}
             unlocked={unlocked.has(def.id)}
-            expanded={expanded === def.id}
-            onToggle={() => setExpanded(expanded === def.id ? null : def.id)}
+            onOpen={() => setOpenId(def.id)}
           />
         ))}
       </div>
 
       {/* Personal Spirits (AI-generated) */}
-      <PersonalBadgesSection
-        badges={personalBadges}
-        loading={personalLoading}
-        generating={generating}
+      <div className="mt-16 md:mt-20">
+        <PersonalBadgesSection
+          badges={personalBadges}
+          loading={personalLoading}
+          generating={generating}
+        />
+      </div>
+
+      {/* Detail modal */}
+      <DetailModal
+        def={openDef}
+        unlocked={openDef ? unlocked.has(openDef.id) : false}
+        onClose={() => setOpenId(null)}
       />
     </div>
   );
