@@ -67,12 +67,15 @@ export type Database = {
           completed: boolean
           correct_index: number
           created_at: string
+          cultural_note: string | null
           id: string
           options: Json
           question: string
           story_furigana: string | null
           story_jp: string
           tale_date: string
+          theme: string | null
+          title: string | null
           translation: string
           user_id: string
           vocab_used: Json | null
@@ -82,12 +85,15 @@ export type Database = {
           completed?: boolean
           correct_index: number
           created_at?: string
+          cultural_note?: string | null
           id?: string
           options: Json
           question: string
           story_furigana?: string | null
           story_jp: string
           tale_date?: string
+          theme?: string | null
+          title?: string | null
           translation: string
           user_id: string
           vocab_used?: Json | null
@@ -97,12 +103,15 @@ export type Database = {
           completed?: boolean
           correct_index?: number
           created_at?: string
+          cultural_note?: string | null
           id?: string
           options?: Json
           question?: string
           story_furigana?: string | null
           story_jp?: string
           tale_date?: string
+          theme?: string | null
+          title?: string | null
           translation?: string
           user_id?: string
           vocab_used?: Json | null
