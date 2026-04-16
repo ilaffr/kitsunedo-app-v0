@@ -27,6 +27,7 @@ import PlacementTest from "./pages/PlacementTest";
 import Practice from "./pages/Practice";
 import Tales from "./pages/Tales";
 import Journey from "./pages/Journey";
+import JlptPractice from "./pages/JlptPractice";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -110,6 +111,7 @@ const App = () => (
             <Route path="/practice" element={<ProtectedRoute><Practice /></ProtectedRoute>} />
             <Route path="/tales" element={<ProtectedRoute><Tales /></ProtectedRoute>} />
             <Route path="/journey" element={<ProtectedRoute><Journey /></ProtectedRoute>} />
+            <Route path="/jlpt-practice" element={<ProtectedRoute><JlptPractice /></ProtectedRoute>} />
             <Route path="/reset-password" element={<ResetPassword />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
