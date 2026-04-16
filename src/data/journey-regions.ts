@@ -3,6 +3,19 @@
  * into 5 regions of feudal Japan. Each region has a guardian yokai whose
  * boss-quiz unlocks once all the region's lessons are completed.
  */
+export interface YokaiBossDialogue {
+  /** Spoken when the encounter begins. */
+  intro: string;
+  /** Spoken when the user takes a hit (gets a wrong answer). */
+  taunt: string[];
+  /** Spoken when the user lands a hit (correct answer). */
+  praise: string[];
+  /** Spoken on victory. */
+  defeat: string;
+  /** Spoken on defeat (user runs out of health). */
+  victory: string;
+}
+
 export interface JourneyRegion {
   id: string;
   /** English region name */
@@ -20,6 +33,15 @@ export interface JourneyRegion {
     /** Long-form lore for the boss intro screen. */
     lore: string;
     emoji: string;
+    /** Achievement id awarded on victory. */
+    achievementId:
+      | "boss_bakeneko"
+      | "boss_tengu"
+      | "boss_kappa"
+      | "boss_yukionna"
+      | "boss_kamuy";
+    /** Themed combat dialogue. */
+    dialogue: YokaiBossDialogue;
   };
   /** Sumi-e mood / cultural anchor */
   flavor: string;
