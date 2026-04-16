@@ -202,7 +202,15 @@ export default function Journey() {
           progressMap={progressMap}
           onClose={() => setActiveRegion(null)}
           onLessonStart={(id) => navigate(`/lesson/${id}`)}
+          onBossStart={(r) => {
+            setActiveRegion(null);
+            setBossRegion(r);
+          }}
         />
+      )}
+
+      {bossRegion && (
+        <BossQuiz region={bossRegion} onClose={() => setBossRegion(null)} />
       )}
     </div>
   );
@@ -455,11 +463,13 @@ function RegionDetail({
   progressMap,
   onClose,
   onLessonStart,
+  onBossStart,
 }: {
   region: JourneyRegion;
   progressMap: Map<string, { completed: boolean; bestScore: number | null }>;
   onClose: () => void;
   onLessonStart: (id: number) => void;
+  onBossStart: (region: JourneyRegion) => void;
 }) {
   const lessons = region.lessonIds
     .map((id) => minnaLessons.find((l) => l.id === id))
@@ -523,6 +533,7 @@ function RegionDetail({
             <p className="text-sm text-foreground/85 leading-relaxed mb-4 italic">{region.yokai.lore}</p>
             <button
               disabled={!bossUnlocked}
+              onClick={() => bossUnlocked && onBossStart(region)}
               className={cn(
                 "w-full py-2.5 rounded-sm border text-sm font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2",
                 bossUnlocked
@@ -531,7 +542,7 @@ function RegionDetail({
               )}
               title={bossUnlocked ? "Challenge the guardian" : `Complete all ${region.lessonIds.length} lessons to unlock`}
             >
-              {bossUnlocked ? <Trophy className="w-4 h-4" /> : <Lock className="w-3.5 h-3.5" />}
+              {bossUnlocked ? <Swords className="w-4 h-4" /> : <Lock className="w-3.5 h-3.5" />}
               {bossUnlocked
                 ? "Challenge the guardian"
                 : `${completedCount} / ${region.lessonIds.length} lessons cleared`}
