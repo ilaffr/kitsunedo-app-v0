@@ -12,13 +12,13 @@ export default function Bestiary() {
       <Header />
       <main className="container max-w-2xl px-4 py-6 pb-24">
         {/* Top bar */}
-        <div className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate("/")} className="p-2 rounded-sm hover:bg-muted transition-colors">
-            <ArrowLeft className="w-5 h-5 text-foreground" />
+        <div className="flex items-center gap-3 mb-8">
+          <button onClick={() => navigate("/")} className="p-2 rounded-sm hover:bg-foreground/5 transition-colors">
+            <ArrowLeft className="w-5 h-5 text-foreground" strokeWidth={1.5} />
           </button>
           <div>
-            <h1 className="text-xl font-brush font-bold text-foreground">霊獣図鑑</h1>
-            <p className="text-xs text-muted-foreground serif-jp">Spirit Bestiary — Your Collection</p>
+            <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">Spirit Bestiary</p>
+            <h1 className="text-2xl serif-jp font-medium text-foreground tracking-wide">霊獣図鑑</h1>
           </div>
         </div>
 
