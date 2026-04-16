@@ -75,16 +75,16 @@ export default function Practice() {
         </button>
 
         {/* Title */}
-        <div className="card-paper p-6 border-2 mb-6">
-          <div className="flex items-start gap-4">
-            <div className="hanko-badge text-lg">練</div>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground serif-jp">Practice</h1>
-              <p className="text-muted-foreground text-sm mt-1">
-                Choose your training style — cards, writing, or both
-              </p>
-            </div>
+        <div className="mb-8 relative">
+          <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground mb-2">Training Hall</p>
+          <div className="flex items-baseline gap-4">
+            <h1 className="text-3xl md:text-4xl serif-jp font-medium text-foreground tracking-wide">練習</h1>
+            <span className="text-sm text-muted-foreground italic">Practice</span>
           </div>
+          <div className="mt-3 h-px w-20 bg-foreground/40" />
+          <p className="text-sm text-muted-foreground mt-3 max-w-md">
+            Choose your training style — cards, writing, or both.
+          </p>
         </div>
 
         {/* Stats strip */}
