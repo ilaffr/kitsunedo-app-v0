@@ -32,14 +32,22 @@ export default function Lessons() {
       <Header />
       <main className="container max-w-2xl px-4 py-6 pb-24">
         {/* Top bar */}
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-3 mb-5">
           <button onClick={() => navigate("/")} className="p-2 rounded-sm hover:bg-muted transition-colors">
             <ArrowLeft className="w-5 h-5 text-foreground" />
           </button>
-          <div>
+          <div className="flex-1 min-w-0">
             <h1 className="text-xl font-brush font-bold text-foreground">みんなの日本語</h1>
             <p className="text-xs text-muted-foreground serif-jp">Minna no Nihongo — 50 Lessons</p>
           </div>
+          <button
+            onClick={() => navigate("/journey")}
+            className="text-xs px-3 py-1.5 border-2 border-primary/50 text-primary rounded-sm hover:bg-primary/5 transition-colors flex items-center gap-1.5"
+            title="Yokai Journey map"
+          >
+            <Mountain className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Journey map</span>
+          </button>
         </div>
 
         {/* Filter chips */}
