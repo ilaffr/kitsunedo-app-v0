@@ -41,8 +41,9 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
               key={item.id}
               onClick={() => handleTabChange(item.id)}
               className={cn(
-                "group relative flex flex-col items-center justify-center gap-1 px-3 py-2 transition-all duration-300 min-w-[56px] md:w-20 md:py-4",
-                isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                "group relative flex flex-col items-center justify-center gap-1 px-3 py-2 transition-colors duration-300 min-w-[56px] md:w-20 md:py-4",
+                !isActive && "brush-hover hover:text-background",
+                isActive ? "text-foreground" : "text-muted-foreground"
               )}
             >
               {/* Brush-stroke active indicator */}
@@ -58,7 +59,7 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
               <span
                 className={cn(
                   "text-[10px] tracking-[0.2em] uppercase relative z-10 hidden md:block transition-colors",
-                  isActive ? "text-background font-medium" : "text-muted-foreground"
+                  isActive ? "text-background font-medium" : "text-muted-foreground group-hover:text-background"
                 )}
               >
                 {item.fullLabel}
@@ -66,7 +67,7 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
               <span
                 className={cn(
                   "text-xs serif-jp md:hidden relative z-10",
-                  isActive ? "text-background font-bold" : "text-muted-foreground"
+                  isActive ? "text-background font-bold" : "text-muted-foreground group-hover:text-background"
                 )}
               >
                 {item.label}
