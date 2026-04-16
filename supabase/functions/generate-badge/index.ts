@@ -170,7 +170,9 @@ Keep it lighthearted and motivating, never mocking. Higher tiers should be progr
 
     let badgeText: { title: string; title_jp: string; description: string; myth: string };
     try {
-      const jsonStr = rawContent.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+      let jsonStr = rawContent.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+      // Tolerate trailing commas before } or ] which Gemini sometimes emits
+      jsonStr = jsonStr.replace(/,(\s*[}\]])/g, "$1");
       badgeText = JSON.parse(jsonStr);
     } catch {
       console.error("Failed to parse badge text:", rawContent);
