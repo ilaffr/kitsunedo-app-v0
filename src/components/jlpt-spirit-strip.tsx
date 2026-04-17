@@ -211,6 +211,19 @@ export function JlptSpiritStrip() {
                   >
                     {isMythic ? `真${s.jp}` : s.jp}
                   </p>
+                  {isUnlocked && bestScores.has(s.level) && (
+                    <p
+                      className={cn(
+                        "text-[9px] md:text-[10px] tracking-wide mt-0.5 font-medium",
+                        (bestScores.get(s.level) ?? 0) === 100
+                          ? "text-primary"
+                          : "text-muted-foreground",
+                      )}
+                      title={`Best score on ${s.level} mock test`}
+                    >
+                      Best: {bestScores.get(s.level)}%
+                    </p>
+                  )}
                 </div>
 
                 {/* Rarity dot */}
