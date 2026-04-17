@@ -247,7 +247,7 @@ export function JlptSpiritStrip() {
                 </div>
 
                 {/* Rarity dot */}
-                {isUnlocked && !isMythic && (
+                {isUnlocked && !isMythic && !isSpeedrun && (
                   <span
                     className={cn(
                       "absolute top-2 right-2 w-1.5 h-1.5 rounded-full",
