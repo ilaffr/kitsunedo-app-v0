@@ -73,6 +73,7 @@ export function NhkNewsReader({ level }: Props) {
   const [articles, setArticles] = useState<NhkArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<NhkArticle | null>(null);
+  const [category, setCategory] = useState<Category>("top");
   const { addCard, savedSet } = useFlashcards();
   const savedKeys = savedSet;
   const [savingWord, setSavingWord] = useState<string | null>(null);
@@ -84,7 +85,7 @@ export function NhkNewsReader({ level }: Props) {
       setSelected(null);
       try {
         const { data, error } = await supabase.functions.invoke("fetch-nhk-news", {
-          body: { level },
+          body: { level, category },
         });
         if (cancelled) return;
         if (error) {
@@ -103,7 +104,7 @@ export function NhkNewsReader({ level }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [level]);
+  }, [level, category]);
 
   const isEasyLevel = level === "N5" || level === "N4" || level === "N3";
 
