@@ -216,14 +216,14 @@ export function JlptSpiritStrip() {
                   <p
                     className={cn(
                       "serif-jp text-[11px] md:text-xs leading-tight mt-0.5 hidden md:block",
-                      isMythic
+                      isSpeedrun || isMythic
                         ? "text-primary font-medium"
                         : isUnlocked
                           ? "text-foreground/80"
                           : "text-muted-foreground/50",
                     )}
                   >
-                    {isMythic ? `真${s.jp}` : s.jp}
+                    {isSpeedrun ? `閃${s.jp}` : isMythic ? `真${s.jp}` : s.jp}
                   </p>
                   {isUnlocked && bestScores.has(s.level) && (
                     <p
