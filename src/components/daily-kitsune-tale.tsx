@@ -40,8 +40,9 @@ export function DailyKitsuneTale() {
     if (tale?.completed && !userToggled) setOpen(false);
   }, [tale?.completed, userToggled]);
 
-  const handleTaleUpdate = (updated: TaleData) => {
-    setTale(updated);
+  const handleSubmitted = () => {
+    // The TaleCard just persisted completion to the DB; mirror it locally so we collapse.
+    setTale((t) => (t ? { ...t, completed: true } : t));
   };
 
   const generateTale = async () => {
