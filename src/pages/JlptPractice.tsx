@@ -59,6 +59,9 @@ export default function JlptPractice() {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [answers, setAnswers] = useState<{ correct: boolean; selected: number }[]>([]);
+  const [quizStartedAt, setQuizStartedAt] = useState<number | null>(null);
+
+  const SPEEDRUN_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes for full 15-question 100% perfect run
 
   // Deep-link support: ?level=N5&mode=news jumps straight into the NHK reader
   useEffect(() => {
