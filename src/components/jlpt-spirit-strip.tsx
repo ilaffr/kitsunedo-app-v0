@@ -83,6 +83,7 @@ export function JlptSpiritStrip() {
 
   const earnedTier1 = LEVEL_SPIRITS.filter((s) => unlocked.has(`${s.level}|1`)).length;
   const earnedMythic = LEVEL_SPIRITS.filter((s) => unlocked.has(`${s.level}|2`)).length;
+  const earnedSpeedrun = LEVEL_SPIRITS.filter((s) => unlocked.has(`${s.level}|3`)).length;
 
   return (
     <section className="mb-10 md:mb-12">
