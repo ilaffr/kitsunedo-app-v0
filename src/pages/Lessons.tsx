@@ -24,6 +24,8 @@ export default function Lessons() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [filter, setFilter] = useState<"all" | "beginner" | "elementary" | "intermediate">("all");
   const { lessons: progressList } = useAllLessonProgress();
+  const { progress: kanaProgress } = useLessonProgress(KANA_PRIMER_LESSON_ID);
+  const kanaCleared = kanaProgress?.completed ?? false;
   const progressMap = new Map(progressList.map((p) => [p.lessonId, p]));
 
   const filtered = filter === "all" ? minnaLessons : minnaLessons.filter(l => l.difficulty === filter);
@@ -69,10 +71,42 @@ export default function Lessons() {
           ))}
         </div>
 
+        {/* Kana primer card — always shown at the top */}
+        <button
+          onClick={() => navigate("/lesson/kana")}
+          className={cn(
+            "w-full mb-3 card-paper border-2 p-4 flex items-center gap-3 text-left transition-colors",
+            kanaCleared
+              ? "border-success/40 hover:border-success/70"
+              : "border-primary/40 hover:border-primary/70",
+          )}
+        >
+          <span className="text-3xl">{kanaCleared ? "🎌" : "✍️"}</span>
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+              Prerequisite · 入門前
+            </p>
+            <h3 className="font-brush font-bold text-foreground text-sm">
+              かな入門 — Hiragana &amp; Katakana primer
+            </h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {kanaCleared
+                ? `Cleared${kanaProgress?.bestScore != null ? ` · best ${kanaProgress.bestScore}%` : ""} — Lesson 1 unlocked`
+                : `Pass the ${KANA_PASS_THRESHOLD}% knowledge check to unlock Lesson 1 (or skip)`}
+            </p>
+          </div>
+          {kanaCleared ? (
+            <Check className="w-5 h-5 text-success" strokeWidth={3} />
+          ) : (
+            <Sparkles className="w-5 h-5 text-primary" />
+          )}
+        </button>
+
         {/* Lesson list */}
         <div className="space-y-2">
           {filtered.map((lesson) => {
             const prog = progressMap.get(`lesson_${lesson.id}`);
+            const kanaLocked = lesson.id === 1 && !kanaCleared;
             return (
               <LessonRow
                 key={lesson.id}
@@ -80,8 +114,15 @@ export default function Lessons() {
                 completed={prog?.completed ?? false}
                 bestScore={prog?.bestScore ?? null}
                 expanded={expandedId === lesson.id}
+                kanaLocked={kanaLocked}
                 onToggle={() => setExpandedId(expandedId === lesson.id ? null : lesson.id)}
-                onStart={() => lesson.id <= 10 ? navigate(`/lesson/${lesson.id}`) : undefined}
+                onStart={() => {
+                  if (kanaLocked) {
+                    navigate("/lesson/kana");
+                    return;
+                  }
+                  if (lesson.id <= 10) navigate(`/lesson/${lesson.id}`);
+                }}
               />
             );
           })}
