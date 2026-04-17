@@ -14,6 +14,14 @@ import {
   TranslateComposeCard,
   ReadingComprehensionCard,
 } from "@/components/exercise-cards";
+import {
+  ParticleFillCard,
+  ConjugationCard,
+  SubstitutionCard,
+  DictationCard,
+  TransformCard,
+  DialogueCard,
+} from "@/components/exercise-cards-minna";
 import { generateLessonSteps, type LessonStep } from "@/lib/exercise-engine";
 import type { LessonData, VocabItem } from "@/components/lesson-page";
 
@@ -29,7 +37,15 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
   const { saveProgress } = useLessonProgress(`lesson_${lesson.number}`);
 
   const steps = useMemo(
-    () => generateLessonSteps(lesson.vocabulary, lesson.grammarPoints, lesson.readingPassages),
+    () =>
+      generateLessonSteps(lesson.vocabulary, lesson.grammarPoints, lesson.readingPassages, {
+        particleDrills: lesson.particleDrills,
+        conjugationDrills: lesson.conjugationDrills,
+        substitutionDrills: lesson.substitutionDrills,
+        dictationDrills: lesson.dictationDrills,
+        transformDrills: lesson.transformDrills,
+        dialogue: lesson.dialogue,
+      }),
     [lesson]
   );
 
