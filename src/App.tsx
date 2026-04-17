@@ -71,7 +71,8 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-            <Route path="/lesson/kana" element={<ProtectedRoute><KanaPrimer /></ProtectedRoute>} />
+            {/* Public preview — visitors can try the kana primer before signing up */}
+            <Route path="/lesson/kana" element={<KanaPrimer />} />
             <Route path="/lesson/1" element={<ProtectedRoute><Lesson1 /></ProtectedRoute>} />
             <Route path="/lesson/2" element={<ProtectedRoute><Lesson2 /></ProtectedRoute>} />
             <Route path="/lesson/3" element={<ProtectedRoute><Lesson3 /></ProtectedRoute>} />
