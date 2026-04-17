@@ -193,36 +193,9 @@ export function NhkHeadlineTeaser() {
       if (cancelled) return;
       setLevel(userLevel);
 
-      // 2. Try cached article first (no fetch round-trip)
-      const { data: cached } = await supabase
-        .from("nhk_news_cache")
-        .select("title, summary, body_html, published_at, level")
-        .eq("level", userLevel)
-        .order("published_at", { ascending: false, nullsFirst: false })
-        .limit(1);
-
-      if (!cancelled && cached && cached.length > 0) {
-        setArticle(cached[0] as Article);
-        setLoading(false);
-        return;
-      }
-
-      // 3. Cache empty — invoke edge fn to populate, then re-read
+      // 2. Load article (cached first, fallback to fn)
       try {
-        await supabase.functions.invoke("fetch-nhk-news", {
-          body: { level: userLevel },
-        });
-        const { data: refreshed } = await supabase
-          .from("nhk_news_cache")
-          .select("title, summary, body_html, published_at, level")
-          .eq("level", userLevel)
-          .order("published_at", { ascending: false, nullsFirst: false })
-          .limit(1);
-        if (!cancelled && refreshed && refreshed.length > 0) {
-          setArticle(refreshed[0] as Article);
-        }
-      } catch {
-        /* silent — teaser is non-critical */
+        await loadArticle(userLevel, false);
       } finally {
         if (!cancelled) setLoading(false);
       }
