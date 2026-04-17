@@ -177,7 +177,7 @@ export function DailyKitsuneTale() {
         </button>
       </div>
 
-      {open && <TaleCard tale={tale} onUpdate={handleTaleUpdate} />}
+      {open && <TaleCard tale={tale} onSubmitted={handleSubmitted} />}
     </div>
   );
 }
