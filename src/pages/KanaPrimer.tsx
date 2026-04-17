@@ -97,12 +97,14 @@ export default function KanaPrimer() {
       <Header />
       <main className="container max-w-3xl px-4 py-6 pb-24">
         <button
-          onClick={() => navigate("/lessons")}
+          onClick={() => navigate(backHref)}
           className="flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6 text-sm"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span className="serif-jp">道場へ戻る</span>
+          <span className="serif-jp">{backLabel}</span>
         </button>
+
+        {isGuest && <GuestPreviewBanner />}
 
         <div className="mb-6">
           <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground mb-2">
@@ -186,9 +188,10 @@ export default function KanaPrimer() {
             correct={correctCount}
             total={totalQ}
             passed={passed}
+            isGuest={isGuest}
             onRetry={restartQuiz}
-            onContinue={() => navigate("/lesson/1")}
-            onBack={() => navigate("/lessons")}
+            onContinue={() => navigate(isGuest ? "/auth" : "/lesson/1")}
+            onBack={() => navigate(isGuest ? "/auth" : "/lessons")}
           />
         )}
       </main>
