@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { speakJapanese } from "@/lib/japanese-tts";
 import { useFlashcards } from "@/hooks/use-flashcards";
+import { NhkComprehensionQuiz } from "@/components/nhk-comprehension-quiz";
 
 type Level = "N5" | "N4" | "N3" | "N2" | "N1";
 
@@ -297,6 +298,15 @@ export function NhkNewsReader({ level }: Props) {
           Read on NHK <ExternalLink className="w-3 h-3" />
         </a>
       </div>
+
+      {selected.body_html && (
+        <NhkComprehensionQuiz
+          articleId={selected.id}
+          title={selected.title}
+          bodyHtml={selected.body_html}
+          level={selected.level}
+        />
+      )}
     </div>
   );
 }
