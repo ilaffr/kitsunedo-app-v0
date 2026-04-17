@@ -467,6 +467,7 @@ function ResultView({
   correct,
   total,
   passed,
+  isGuest,
   onRetry,
   onContinue,
   onBack,
@@ -475,6 +476,7 @@ function ResultView({
   correct: number;
   total: number;
   passed: boolean;
+  isGuest: boolean;
   onRetry: () => void;
   onContinue: () => void;
   onBack: () => void;
@@ -491,16 +493,20 @@ function ResultView({
         <span className="text-destructive font-medium">✗ {total - correct} wrong</span>
       </div>
       <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-        {passed
-          ? `You scored above the ${KANA_PASS_THRESHOLD}% threshold — Lesson 1 is now unlocked.`
-          : `You need at least ${KANA_PASS_THRESHOLD}% to unlock Lesson 1. Review the charts and try again — you've got this.`}
+        {isGuest
+          ? passed
+            ? `Brilliant — you'd unlock Lesson 1 at this score. Sign up free to save your progress and continue the path.`
+            : `So close. Sign up free to save your attempts, retake the quiz, and unlock Lesson 1 once you pass ${KANA_PASS_THRESHOLD}%.`
+          : passed
+            ? `You scored above the ${KANA_PASS_THRESHOLD}% threshold — Lesson 1 is now unlocked.`
+            : `You need at least ${KANA_PASS_THRESHOLD}% to unlock Lesson 1. Review the charts and try again — you've got this.`}
       </p>
       <div className="flex gap-3 justify-center pt-4 flex-wrap">
         <button
           onClick={onBack}
           className="px-6 py-2.5 rounded-sm border-2 border-border text-sm hover:border-foreground/30 transition-colors"
         >
-          Back to Lessons
+          {isGuest ? "Back to sign in" : "Back to Lessons"}
         </button>
         <button
           onClick={onRetry}
@@ -508,14 +514,47 @@ function ResultView({
         >
           もう一度 — Retry quiz
         </button>
-        {passed && (
+        {isGuest ? (
           <button
             onClick={onContinue}
             className="px-6 py-2.5 rounded-sm border-2 border-foreground text-sm font-medium btn-ink text-background transition-colors"
           >
-            Start Lesson 1 →
+            Sign up to continue →
           </button>
+        ) : (
+          passed && (
+            <button
+              onClick={onContinue}
+              className="px-6 py-2.5 rounded-sm border-2 border-foreground text-sm font-medium btn-ink text-background transition-colors"
+            >
+              Start Lesson 1 →
+            </button>
+          )
         )}
+      </div>
+    </div>
+  );
+}
+
+// ── Guest Banner ──────────────────────────────────────────────────────────
+
+function GuestPreviewBanner() {
+  return (
+    <div className="card-paper border-2 border-primary/40 bg-primary/5 p-4 mb-6 flex items-start gap-3">
+      <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+      <div className="flex-1 text-sm text-foreground">
+        <p className="font-medium serif-jp mb-1">You're trying Kitsune-dō as a guest</p>
+        <p className="text-muted-foreground text-xs leading-relaxed">
+          Browse the kana charts and take the knowledge check freely. To save your progress,
+          unlock Lesson 1, and start the full 50-lesson journey,{" "}
+          <Link
+            to="/auth"
+            className="text-primary underline underline-offset-4 font-medium hover:no-underline"
+          >
+            create a free account
+          </Link>
+          .
+        </p>
       </div>
     </div>
   );
