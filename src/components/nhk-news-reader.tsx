@@ -8,11 +8,13 @@ import { useFlashcards } from "@/hooks/use-flashcards";
 import { NhkComprehensionQuiz } from "@/components/nhk-comprehension-quiz";
 
 type Level = "N5" | "N4" | "N3" | "N2" | "N1";
+type Category = "top" | "politics" | "sports" | "tech" | "world" | "business" | "society";
 
 interface NhkArticle {
   id: string;
   news_id: string;
   level: Level;
+  category?: Category;
   source: "easy" | "regular";
   title: string;
   summary: string | null;
@@ -25,6 +27,16 @@ interface NhkArticle {
 interface Props {
   level: Level;
 }
+
+const CATEGORIES: { id: Category; label: string; jp: string }[] = [
+  { id: "top", label: "Top", jp: "主要" },
+  { id: "politics", label: "Politics", jp: "政治" },
+  { id: "world", label: "World", jp: "国際" },
+  { id: "business", label: "Business", jp: "経済" },
+  { id: "tech", label: "Tech / Science", jp: "科学" },
+  { id: "sports", label: "Sports", jp: "スポーツ" },
+  { id: "society", label: "Society", jp: "社会" },
+];
 
 function formatDate(iso: string | null) {
   if (!iso) return "";
