@@ -41,6 +41,87 @@ export interface ReadingPassage {
   questions: { question: string; options: string[]; correct: number }[];
 }
 
+// ── Minna-style additional exercise data ───────────────────────────────────
+
+export interface ParticleFillItem {
+  /** Sentence with a single ___ where the particle goes. */
+  sentence: string;
+  /** English translation shown as context. */
+  translation: string;
+  /** The 3-4 particle options shown to the user. */
+  options: string[];
+  /** Index in `options` of the correct particle. */
+  correctIndex: number;
+}
+
+export interface ConjugationItem {
+  /** Dictionary / base form shown to the user, e.g. "たべます". */
+  base: string;
+  /** Reading of the base form. */
+  reading?: string;
+  /** Meaning, shown as a hint. */
+  meaning: string;
+  /** Target form label, e.g. "negative", "past", "past negative". */
+  targetFormLabel: string;
+  /** Accepted answers (always include the canonical form). */
+  acceptedAnswers: string[];
+}
+
+export interface SubstitutionItem {
+  /** Question prompt in JP, e.g. 「これは　なんですか。」 */
+  questionJp: string;
+  /** English translation of the question. */
+  questionEn: string;
+  /** Cue word(s) the learner must use in the answer. */
+  cue: string;
+  /** Accepted JP answers (canonical first). */
+  acceptedAnswers: string[];
+  /** Optional pattern hint, e.g. "それは　〜です。" */
+  hint?: string;
+}
+
+export interface DictationItem {
+  /** Sentence to speak via TTS. */
+  jp: string;
+  /** Romaji + kana accepted answers. */
+  acceptedAnswers: string[];
+  /** English translation for feedback. */
+  translation: string;
+}
+
+export interface TransformItem {
+  /** The original sentence shown. */
+  source: string;
+  /** Instruction (e.g. "Rewrite in the negative form"). */
+  instruction: string;
+  /** Accepted target sentences. */
+  acceptedAnswers: string[];
+  /** Optional hint pattern. */
+  hint?: string;
+}
+
+export interface DialogueLine {
+  /** Speaker name (e.g. "ミラー", "やまだ"). */
+  speaker: string;
+  /** Japanese line spoken aloud via TTS. */
+  jp: string;
+  /** English translation. */
+  en: string;
+}
+
+export interface Dialogue {
+  /** Title in JP (会話 / scene name). */
+  titleJp: string;
+  /** English title. */
+  titleEn: string;
+  /** Brief 1-line scene description shown above the dialogue. */
+  scene: string;
+  /** Ordered dialogue lines. */
+  lines: DialogueLine[];
+  /** Comprehension questions (2 recommended). */
+  questions: { question: string; options: string[]; correct: number }[];
+}
+
 export interface LessonData {
   id: string;
   number: number;
@@ -52,6 +133,13 @@ export interface LessonData {
   practiceQuestions: QuizQuestion[];
   questionWordMap: QuestionWordMap[];
   readingPassages?: ReadingPassage[];
+  // ── Minna-style additions (all optional for backward compat) ─────────────
+  particleDrills?: ParticleFillItem[];
+  conjugationDrills?: ConjugationItem[];
+  substitutionDrills?: SubstitutionItem[];
+  dictationDrills?: DictationItem[];
+  transformDrills?: TransformItem[];
+  dialogue?: Dialogue;
 }
 
 type Section = "vocabulary" | "grammar" | "practice";
