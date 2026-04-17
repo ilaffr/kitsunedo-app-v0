@@ -163,6 +163,28 @@ export function NhkNewsReader({ level }: Props) {
           </p>
         </div>
 
+        {/* Category tabs */}
+        <div className="flex flex-wrap gap-1.5 mb-5">
+          {CATEGORIES.map((c) => {
+            const active = c.id === category;
+            return (
+              <button
+                key={c.id}
+                onClick={() => setCategory(c.id)}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-[11px] tracking-wide whitespace-nowrap transition-all border",
+                  active
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-transparent text-muted-foreground border-border hover:text-foreground hover:border-foreground/40",
+                )}
+              >
+                <span className="serif-jp mr-1.5">{c.jp}</span>
+                <span className="uppercase tracking-[0.18em]">{c.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
         {loading && (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 className="w-6 h-6 animate-spin text-foreground mb-4" />
