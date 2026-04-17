@@ -269,6 +269,7 @@ export const lesson1Data: LessonData = {
           "He works at a hospital.",
         ],
         correct: 2,
+      },
     ],
   },
 
