@@ -189,6 +189,28 @@ export function NhkHeadlineTeaser() {
     };
   }, [user]);
 
+  // When an article successfully loads, log today's read & possibly award the badge.
+  useEffect(() => {
+    if (!user || !article) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const newStreak = await recordReadAndCheckStreak(user.id, level);
+        if (cancelled) return;
+        setStreak(newStreak);
+        if (newStreak >= STREAK_TIERS[0].days) {
+          await maybeAwardStreakBadge(user.id, newStreak);
+        }
+      } catch (e) {
+        console.error("nhk streak track error", e);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, article?.title]);
+
   if (loading) {
     return (
       <button
