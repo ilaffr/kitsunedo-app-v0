@@ -33,6 +33,8 @@ export function JlptSpiritStrip() {
   const { user } = useAuth();
   // key = `${level}|${tier}`
   const [unlocked, setUnlocked] = useState<Map<string, UnlockedBadge>>(new Map());
+  // key = level → best percentage (0–100)
+  const [bestScores, setBestScores] = useState<Map<Level, number>>(new Map());
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,17 +44,36 @@ export function JlptSpiritStrip() {
     }
     let cancelled = false;
     (async () => {
-      const { data } = await supabase
-        .from("personal_badges")
-        .select("trigger_detail, tier, image_url, title")
-        .eq("user_id", user.id)
-        .eq("trigger_type", "jlpt_pass");
+      const [{ data: badges }, { data: sessions }] = await Promise.all([
+        supabase
+          .from("personal_badges")
+          .select("trigger_detail, tier, image_url, title")
+          .eq("user_id", user.id)
+          .eq("trigger_type", "jlpt_pass"),
+        supabase
+          .from("jlpt_sessions")
+          .select("level, correct_count, total_questions")
+          .eq("user_id", user.id)
+          .gt("total_questions", 0),
+      ]);
       if (cancelled) return;
+
       const map = new Map<string, UnlockedBadge>();
-      (data ?? []).forEach((b) => {
+      (badges ?? []).forEach((b) => {
         map.set(`${b.trigger_detail}|${b.tier}`, b as UnlockedBadge);
       });
       setUnlocked(map);
+
+      const scores = new Map<Level, number>();
+      (sessions ?? []).forEach((s) => {
+        if (!s.total_questions) return;
+        const pct = Math.round((s.correct_count / s.total_questions) * 100);
+        const lvl = s.level as Level;
+        const prev = scores.get(lvl) ?? 0;
+        if (pct > prev) scores.set(lvl, pct);
+      });
+      setBestScores(scores);
+
       setLoading(false);
     })();
     return () => {
@@ -190,6 +211,19 @@ export function JlptSpiritStrip() {
                   >
                     {isMythic ? `真${s.jp}` : s.jp}
                   </p>
+                  {isUnlocked && bestScores.has(s.level) && (
+                    <p
+                      className={cn(
+                        "text-[9px] md:text-[10px] tracking-wide mt-0.5 font-medium",
+                        (bestScores.get(s.level) ?? 0) === 100
+                          ? "text-primary"
+                          : "text-muted-foreground",
+                      )}
+                      title={`Best score on ${s.level} mock test`}
+                    >
+                      Best: {bestScores.get(s.level)}%
+                    </p>
+                  )}
                 </div>
 
                 {/* Rarity dot */}
