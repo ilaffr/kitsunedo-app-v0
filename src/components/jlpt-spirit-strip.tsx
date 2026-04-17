@@ -134,22 +134,26 @@ export function JlptSpiritStrip() {
                   "group relative flex flex-col items-center gap-2 p-3 md:p-4 rounded-sm transition-all hover:bg-foreground/5",
                 )}
                 aria-label={
-                  isMythic
-                    ? `${s.level} ${s.archetype} — mythic perfect-score form earned`
-                    : isUnlocked
-                      ? `${s.level} ${s.archetype} — earned, perfect-score form locked`
-                      : `${s.level} ${s.archetype} — locked, take the mock test to unlock`
+                  isSpeedrun
+                    ? `${s.level} ${s.archetype} — speedrun lightning form earned`
+                    : isMythic
+                      ? `${s.level} ${s.archetype} — mythic perfect-score form earned`
+                      : isUnlocked
+                        ? `${s.level} ${s.archetype} — earned, perfect-score form locked`
+                        : `${s.level} ${s.archetype} — locked, take the mock test to unlock`
                 }
               >
                 {/* Silhouette / portrait */}
                 <div
                   className={cn(
                     "relative w-14 h-14 md:w-20 md:h-20 rounded-full flex items-center justify-center overflow-hidden transition-all",
-                    isMythic
-                      ? "bg-gradient-to-br from-primary/10 to-background ring-2 ring-primary/70 shadow-[0_0_20px_-4px_hsl(var(--primary)/0.5)]"
-                      : isUnlocked
-                        ? "bg-gradient-to-br from-background to-muted ring-1 ring-foreground/20"
-                        : "bg-foreground/[0.04] ring-1 ring-dashed ring-foreground/15",
+                    isSpeedrun
+                      ? "bg-gradient-to-br from-primary/20 to-background ring-2 ring-primary shadow-[0_0_24px_-4px_hsl(var(--primary)/0.7)]"
+                      : isMythic
+                        ? "bg-gradient-to-br from-primary/10 to-background ring-2 ring-primary/70 shadow-[0_0_20px_-4px_hsl(var(--primary)/0.5)]"
+                        : isUnlocked
+                          ? "bg-gradient-to-br from-background to-muted ring-1 ring-foreground/20"
+                          : "bg-foreground/[0.04] ring-1 ring-dashed ring-foreground/15",
                   )}
                 >
                   {isUnlocked && portrait?.image_url ? (
