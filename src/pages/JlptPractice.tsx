@@ -138,6 +138,13 @@ export default function JlptPractice() {
       const correctCount = answers.filter((a) => a.correct).length;
       const xpEarned = correctCount * 5;
       const pct = Math.round((correctCount / questions.length) * 100);
+      const elapsedMs = quizStartedAt ? Date.now() - quizStartedAt : Number.MAX_SAFE_INTEGER;
+      const isSpeedrun =
+        pct === 100 &&
+        questions.length >= 15 &&
+        mode === "mixed" &&
+        elapsedMs < SPEEDRUN_THRESHOLD_MS;
+
       if (user) {
         await supabase.from("jlpt_sessions").insert({
           user_id: user.id,
@@ -148,10 +155,14 @@ export default function JlptPractice() {
           xp_earned: xpEarned,
         });
 
-        // Bestiary: award JLPT-pass spirit at 80%+ (tier 1) and a mythic perfect-score variant at 100% (tier 2)
+        // Bestiary tiers:
+        //  1 = pass (≥80%) — uncommon
+        //  2 = perfect (100%) — mythic
+        //  3 = speedrun (100% + <5min on a full 15Q mock test) — legendary
         const tiersToAward: number[] = [];
         if (pct >= 80) tiersToAward.push(1);
         if (pct === 100) tiersToAward.push(2);
+        if (isSpeedrun) tiersToAward.push(3);
 
         for (const t of tiersToAward) {
           supabase.functions
@@ -164,6 +175,7 @@ export default function JlptPractice() {
                 jlpt_level: level,
                 jlpt_score_pct: pct,
                 jlpt_mode: mode,
+                jlpt_elapsed_ms: elapsedMs,
               },
             })
             .then(({ data, error }) => {
@@ -172,15 +184,16 @@ export default function JlptPractice() {
                 return;
               }
               if (data?.badge?.title) {
-                toast.success(
-                  t === 2
-                    ? `✨ MYTHIC: ${data.badge.title}`
-                    : `🎌 New Bestiary spirit: ${data.badge.title}`,
-                  {
-                    description: data.badge.description,
-                    duration: t === 2 ? 10000 : 7000,
-                  }
-                );
+                const prefix =
+                  t === 3
+                    ? "⚡ SPEEDRUN: "
+                    : t === 2
+                      ? "✨ MYTHIC: "
+                      : "🎌 New Bestiary spirit: ";
+                toast.success(`${prefix}${data.badge.title}`, {
+                  description: data.badge.description,
+                  duration: t >= 2 ? 10000 : 7000,
+                });
               }
             })
             .catch((e) => console.error("Bestiary badge error:", e));
