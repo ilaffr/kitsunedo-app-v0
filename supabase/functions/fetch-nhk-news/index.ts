@@ -113,13 +113,14 @@ function splitJapaneseSentences(text: string): string[] {
     .filter(Boolean);
 }
 
-function buildArticles(level: Level, items: RegularItem[]): CachedArticle[] {
+function buildArticles(
+  level: Level,
+  category: Category,
+  items: RegularItem[],
+): (CachedArticle & { category: Category })[] {
   const kind = levelToSourceKind(level);
 
   if (kind === "easy") {
-    // For learner levels, pick the shortest descriptions and break them into
-    // wrapped <p> tags so the reader can render sentence-by-sentence with TTS
-    // and "add to deck" buttons.
     const sorted = [...items].sort(
       (a, b) => a.description.length - b.description.length,
     );
@@ -130,6 +131,7 @@ function buildArticles(level: Level, items: RegularItem[]): CachedArticle[] {
       return {
         news_id: it.news_id,
         level,
+        category,
         source: "easy" as const,
         title: it.title,
         summary: null,
@@ -141,10 +143,10 @@ function buildArticles(level: Level, items: RegularItem[]): CachedArticle[] {
     });
   }
 
-  // Native level: link-out cards with summary
   return items.slice(0, 12).map((it) => ({
     news_id: it.news_id,
     level,
+    category,
     source: "regular" as const,
     title: it.title,
     summary: it.description,
@@ -159,7 +161,12 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { level } = (await req.json()) as { level: Level };
+    const body = (await req.json()) as { level: Level; category?: Category };
+    const level = body.level;
+    const category: Category = body.category && VALID_CATEGORIES.includes(body.category)
+      ? body.category
+      : "top";
+
     if (!["N5", "N4", "N3", "N2", "N1"].includes(level)) {
       return new Response(JSON.stringify({ error: "invalid level" }), {
         status: 400,
@@ -172,11 +179,12 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    // Check cache freshness
+    // Check cache freshness for this (level, category)
     const { data: existing } = await supabase
       .from("nhk_news_cache")
       .select("*")
       .eq("level", level)
+      .eq("category", category)
       .order("fetched_at", { ascending: false })
       .limit(12);
 
@@ -187,19 +195,19 @@ Deno.serve(async (req) => {
       Date.now() - new Date(existing[0].fetched_at).getTime() < CACHE_TTL_MS;
 
     if (fresh) {
-      return new Response(JSON.stringify({ articles: existing, cached: true }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ articles: existing, cached: true, category }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
     }
 
-    // Fetch fresh from NHK
-    const items = await fetchRss(RSS_FEEDS.top);
-    const articles = buildArticles(level, items);
+    const items = await fetchRss(RSS_FEEDS[category]);
+    const articles = buildArticles(level, category, items);
 
     if (articles.length > 0) {
       await supabase.from("nhk_news_cache").upsert(
         articles.map((a) => ({ ...a, fetched_at: new Date().toISOString() })),
-        { onConflict: "news_id,level" },
+        { onConflict: "news_id,level,category" },
       );
     }
 
@@ -207,11 +215,12 @@ Deno.serve(async (req) => {
       .from("nhk_news_cache")
       .select("*")
       .eq("level", level)
+      .eq("category", category)
       .order("published_at", { ascending: false, nullsFirst: false })
       .limit(12);
 
     return new Response(
-      JSON.stringify({ articles: latest ?? articles, cached: false }),
+      JSON.stringify({ articles: latest ?? articles, cached: false, category }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (e) {
