@@ -111,6 +111,7 @@ export default function JlptPractice() {
       setSelectedIdx(null);
       setRevealed(false);
       setAnswers([]);
+      setQuizStartedAt(Date.now());
       setPhase("quiz");
     } catch (e) {
       console.error(e);
