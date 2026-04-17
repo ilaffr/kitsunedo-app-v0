@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Newspaper, ChevronRight, Loader2 } from "lucide-react";
+import { Newspaper, ChevronRight, Loader2, Flame } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 
 type Level = "N5" | "N4" | "N3" | "N2" | "N1";
 
