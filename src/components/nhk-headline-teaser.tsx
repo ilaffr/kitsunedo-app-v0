@@ -124,7 +124,51 @@ export function NhkHeadlineTeaser() {
   const [article, setArticle] = useState<Article | null>(null);
   const [level, setLevel] = useState<Level>("N5");
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [streak, setStreak] = useState(0);
+
+  const loadArticle = async (userLevel: Level, force = false) => {
+    if (!force) {
+      const { data: cached } = await supabase
+        .from("nhk_news_cache")
+        .select("title, summary, body_html, published_at, level")
+        .eq("level", userLevel)
+        .order("published_at", { ascending: false, nullsFirst: false })
+        .limit(1);
+      if (cached && cached.length > 0) {
+        setArticle(cached[0] as Article);
+        return true;
+      }
+    }
+    try {
+      await supabase.functions.invoke("fetch-nhk-news", {
+        body: { level: userLevel, force },
+      });
+      const { data: refreshed } = await supabase
+        .from("nhk_news_cache")
+        .select("title, summary, body_html, published_at, level")
+        .eq("level", userLevel)
+        .order("published_at", { ascending: false, nullsFirst: false })
+        .limit(1);
+      if (refreshed && refreshed.length > 0) {
+        setArticle(refreshed[0] as Article);
+        return true;
+      }
+    } catch {
+      /* silent */
+    }
+    return false;
+  };
+
+  const handleRefresh = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (refreshing) return;
+    setRefreshing(true);
+    const ok = await loadArticle(level, true);
+    setRefreshing(false);
+    if (ok) toast.success("Latest NHK headline loaded");
+    else toast.error("Could not refresh headlines");
+  };
 
   useEffect(() => {
     if (!user) {
