@@ -84,14 +84,21 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
   );
 
   const [activeSection, setActiveSection] = useState<SectionKey>("summary");
-  // Sections the user has visited (consumed) — used as "soft completion".
   const [visited, setVisited] = useState<Set<SectionKey>>(new Set(["summary"]));
+
+  // ── Practice state (hearts only here) ────────────────────────────────────
+  const [practiceStep, setPracticeStep] = useState(0);
+  const [hearts, setHearts] = useState(3);
+  const [xpTotal, setXpTotal] = useState(0);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [exerciseCount, setExerciseCount] = useState(0);
+  const [practiceComplete, setPracticeComplete] = useState(false);
+  const [practiceFailed, setPracticeFailed] = useState(false);
 
   useEffect(() => {
     fetchCards();
   }, [fetchCards]);
 
-  // Mark visited when user lands on a section.
   useEffect(() => {
     setVisited((prev) => {
       if (prev.has(activeSection)) return prev;
@@ -103,20 +110,14 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
 
   const recommendedNext: SectionKey | null = useMemo(() => {
     for (const s of visibleSections) {
-      if (!visited.has(s) || (s === "practice" && !practiceComplete)) return s;
+      if (s === "practice") {
+        if (!practiceComplete) return s;
+        continue;
+      }
+      if (!visited.has(s)) return s;
     }
     return null;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visited, visibleSections]);
-
-  // ── Practice state (hearts only here) ────────────────────────────────────
-  const [practiceStep, setPracticeStep] = useState(0);
-  const [hearts, setHearts] = useState(3);
-  const [xpTotal, setXpTotal] = useState(0);
-  const [correctCount, setCorrectCount] = useState(0);
-  const [exerciseCount, setExerciseCount] = useState(0);
-  const [practiceComplete, setPracticeComplete] = useState(false);
-  const [practiceFailed, setPracticeFailed] = useState(false);
+  }, [visited, visibleSections, practiceComplete]);
 
   const totalPractice = practiceSteps.length;
   const currentEx = practiceSteps[practiceStep];
