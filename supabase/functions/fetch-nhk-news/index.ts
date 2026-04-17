@@ -27,11 +27,30 @@ interface CachedArticle {
 
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1h
 
-// Public RSS feeds. cat0 = top stories. We use cat0 for all levels but pick
-// shorter, more digestible items for the "easy" tiers.
-const RSS_FEEDS: Record<string, string> = {
+// Public NHK RSS feeds by category.
+// cat0 = top stories, cat1 = society, cat2 = culture, cat3 = science,
+// cat4 = politics, cat5 = business, cat6 = international (world), cat7 = sports.
+type Category = "top" | "politics" | "sports" | "tech" | "world" | "business" | "society";
+
+const RSS_FEEDS: Record<Category, string> = {
   top: "https://www.nhk.or.jp/rss/news/cat0.xml",
+  society: "https://www.nhk.or.jp/rss/news/cat1.xml",
+  tech: "https://www.nhk.or.jp/rss/news/cat3.xml",
+  politics: "https://www.nhk.or.jp/rss/news/cat4.xml",
+  business: "https://www.nhk.or.jp/rss/news/cat5.xml",
+  world: "https://www.nhk.or.jp/rss/news/cat6.xml",
+  sports: "https://www.nhk.or.jp/rss/news/cat7.xml",
 };
+
+const VALID_CATEGORIES: Category[] = [
+  "top",
+  "politics",
+  "sports",
+  "tech",
+  "world",
+  "business",
+  "society",
+];
 
 const NHK_HEADERS: HeadersInit = {
   "User-Agent":
