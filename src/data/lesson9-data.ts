@@ -101,4 +101,43 @@ export const lesson9Data: LessonData = {
       ],
     },
   ],
+
+  kanji: [
+    {
+      kanji: "好",
+      onyomi: "コウ",
+      kunyomi: "す(き)",
+      meaning: "like, fond",
+      strokes: 6,
+      mnemonic: "A woman (女) and a child (子) — the love between them.",
+      examples: [{ jp: "好き", reading: "suki", en: "like" }, { jp: "大好き", reading: "daisuki", en: "love (something)" }],
+    },
+    {
+      kanji: "上手",
+      onyomi: "ジョウズ",
+      kunyomi: "—",
+      meaning: "skillful (compound)",
+      strokes: 7,
+      mnemonic: "Above (上) + hand (手) — skilled hands.",
+      examples: [{ jp: "上手", reading: "jōzu", en: "skillful" }],
+    },
+    {
+      kanji: "下手",
+      onyomi: "ヘタ",
+      kunyomi: "—",
+      meaning: "unskilled (compound)",
+      strokes: 7,
+      mnemonic: "Below (下) + hand (手) — clumsy hands.",
+      examples: [{ jp: "下手", reading: "heta", en: "unskilled" }],
+    },
+    {
+      kanji: "音",
+      onyomi: "オン, イン",
+      kunyomi: "おと",
+      meaning: "sound",
+      strokes: 9,
+      mnemonic: "Stand (立) + sun (日) — sound rises up to the sun.",
+      examples: [{ jp: "音楽", reading: "ongaku", en: "music" }, { jp: "音", reading: "oto", en: "sound" }],
+    },
+  ],
 };

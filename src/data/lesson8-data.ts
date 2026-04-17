@@ -99,4 +99,43 @@ export const lesson8Data: LessonData = {
       ],
     },
   ],
+
+  kanji: [
+    {
+      kanji: "新",
+      onyomi: "シン",
+      kunyomi: "あたら(しい)",
+      meaning: "new",
+      strokes: 13,
+      mnemonic: "Standing wood (立 + 木) cut by an axe (斤) — a freshly cut new tree.",
+      examples: [{ jp: "新しい", reading: "atarashii", en: "new" }, { jp: "新聞", reading: "shinbun", en: "newspaper" }],
+    },
+    {
+      kanji: "古",
+      onyomi: "コ",
+      kunyomi: "ふる(い)",
+      meaning: "old",
+      strokes: 5,
+      mnemonic: "Ten (十) generations of mouths (口) — passed down stories grow old.",
+      examples: [{ jp: "古い", reading: "furui", en: "old" }, { jp: "古本", reading: "furuhon", en: "used book" }],
+    },
+    {
+      kanji: "大",
+      onyomi: "ダイ, タイ",
+      kunyomi: "おお(きい)",
+      meaning: "big",
+      strokes: 3,
+      mnemonic: "A person stretching arms wide — making themselves BIG.",
+      examples: [{ jp: "大きい", reading: "ōkii", en: "big" }, { jp: "大学", reading: "daigaku", en: "university" }],
+    },
+    {
+      kanji: "小",
+      onyomi: "ショウ",
+      kunyomi: "ちい(さい)",
+      meaning: "small",
+      strokes: 3,
+      mnemonic: "A center pillar with two small dots beside it — tiny things flanking a stem.",
+      examples: [{ jp: "小さい", reading: "chiisai", en: "small" }, { jp: "小学校", reading: "shōgakkō", en: "elementary school" }],
+    },
+  ],
 };

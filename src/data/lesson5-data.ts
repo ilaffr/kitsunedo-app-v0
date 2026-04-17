@@ -143,4 +143,43 @@ export const lesson5Data: LessonData = {
     { word: "らいしゅう", meaning: "next week" },
     { word: "いっしょに", meaning: "together" },
   ],
+
+  kanji: [
+    {
+      kanji: "行",
+      onyomi: "コウ, ギョウ",
+      kunyomi: "い(く)",
+      meaning: "go, conduct",
+      strokes: 6,
+      mnemonic: "A crossroads — paths to go in any direction.",
+      examples: [{ jp: "行きます", reading: "ikimasu", en: "to go" }, { jp: "銀行", reading: "ginkō", en: "bank" }],
+    },
+    {
+      kanji: "来",
+      onyomi: "ライ",
+      kunyomi: "く(る)",
+      meaning: "come, next",
+      strokes: 7,
+      mnemonic: "A wheat plant — the harvest comes to us.",
+      examples: [{ jp: "来ます", reading: "kimasu", en: "to come" }, { jp: "来週", reading: "raishū", en: "next week" }],
+    },
+    {
+      kanji: "車",
+      onyomi: "シャ",
+      kunyomi: "くるま",
+      meaning: "car, vehicle",
+      strokes: 7,
+      mnemonic: "Pictograph of a cart with a central axle.",
+      examples: [{ jp: "電車", reading: "densha", en: "train" }, { jp: "車", reading: "kuruma", en: "car" }],
+    },
+    {
+      kanji: "国",
+      onyomi: "コク",
+      kunyomi: "くに",
+      meaning: "country",
+      strokes: 8,
+      mnemonic: "A border (口) enclosing a jewel (玉) — the precious land of a country.",
+      examples: [{ jp: "国", reading: "kuni", en: "country" }, { jp: "中国", reading: "chūgoku", en: "China" }],
+    },
+  ],
 };

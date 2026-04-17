@@ -132,4 +132,34 @@ export const lesson3Data: LessonData = {
     { word: "すみません", meaning: "excuse me" },
     { word: "なんがい", meaning: "what floor?" },
   ],
+
+  kanji: [
+    {
+      kanji: "上",
+      onyomi: "ジョウ",
+      kunyomi: "うえ, あ(げる)",
+      meaning: "up, above",
+      strokes: 3,
+      mnemonic: "A line above another line — pointing upward.",
+      examples: [{ jp: "上", reading: "ue", en: "above" }, { jp: "屋上", reading: "okujō", en: "rooftop" }],
+    },
+    {
+      kanji: "下",
+      onyomi: "カ, ゲ",
+      kunyomi: "した, さ(げる)",
+      meaning: "down, below",
+      strokes: 3,
+      mnemonic: "Mirror of 上 — a line dropping below the horizon.",
+      examples: [{ jp: "下", reading: "shita", en: "below" }, { jp: "地下", reading: "chika", en: "underground" }],
+    },
+    {
+      kanji: "円",
+      onyomi: "エン",
+      kunyomi: "まる(い)",
+      meaning: "yen, circle, round",
+      strokes: 4,
+      mnemonic: "A round coin in a frame — the round Japanese yen.",
+      examples: [{ jp: "千円", reading: "sen-en", en: "1,000 yen" }, { jp: "円い", reading: "marui", en: "round" }],
+    },
+  ],
 };

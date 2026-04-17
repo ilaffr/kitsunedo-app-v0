@@ -135,4 +135,43 @@ export const lesson4Data: LessonData = {
     { word: "まいあさ", meaning: "every morning" },
     { word: "すいようび", meaning: "Wednesday" },
   ],
+
+  kanji: [
+    {
+      kanji: "時",
+      onyomi: "ジ",
+      kunyomi: "とき",
+      meaning: "time, hour, o'clock",
+      strokes: 10,
+      mnemonic: "Sun (日) + temple (寺) — the temple bell marks the hour.",
+      examples: [{ jp: "三時", reading: "sanji", en: "3 o'clock" }, { jp: "時間", reading: "jikan", en: "time, duration" }],
+    },
+    {
+      kanji: "分",
+      onyomi: "フン, ブン",
+      kunyomi: "わ(ける)",
+      meaning: "minute, part, divide",
+      strokes: 4,
+      mnemonic: "A sword (刀) splitting something in two — division and minutes.",
+      examples: [{ jp: "五分", reading: "gofun", en: "5 minutes" }, { jp: "半分", reading: "hanbun", en: "half" }],
+    },
+    {
+      kanji: "今",
+      onyomi: "コン, キン",
+      kunyomi: "いま",
+      meaning: "now",
+      strokes: 4,
+      mnemonic: "A roof over a tucked figure — sheltering THIS very moment.",
+      examples: [{ jp: "今", reading: "ima", en: "now" }, { jp: "今日", reading: "kyō", en: "today" }],
+    },
+    {
+      kanji: "半",
+      onyomi: "ハン",
+      kunyomi: "なか(ば)",
+      meaning: "half",
+      strokes: 5,
+      mnemonic: "A cow (牛) split down the middle — half a cow.",
+      examples: [{ jp: "七時半", reading: "shichiji-han", en: "7:30" }, { jp: "半分", reading: "hanbun", en: "half" }],
+    },
+  ],
 };

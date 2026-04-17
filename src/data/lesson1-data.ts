@@ -272,4 +272,56 @@ export const lesson1Data: LessonData = {
       },
     ],
   },
+
+  kanji: [
+    {
+      kanji: "人",
+      onyomi: "ジン, ニン",
+      kunyomi: "ひと",
+      meaning: "person, people",
+      strokes: 2,
+      mnemonic: "Two legs of a person walking — the simplest pictograph.",
+      examples: [
+        { jp: "あの人", reading: "ano hito", en: "that person" },
+        { jp: "三人", reading: "sannin", en: "three people" },
+      ],
+    },
+    {
+      kanji: "学",
+      onyomi: "ガク",
+      kunyomi: "まな(ぶ)",
+      meaning: "study, learning",
+      strokes: 8,
+      mnemonic: "A child (子) under a roof with sparkles of knowledge — learning under the temple roof.",
+      examples: [
+        { jp: "学生", reading: "gakusei", en: "student" },
+        { jp: "大学", reading: "daigaku", en: "university" },
+      ],
+    },
+    {
+      kanji: "先",
+      onyomi: "セン",
+      kunyomi: "さき",
+      meaning: "before, ahead, previous",
+      strokes: 6,
+      mnemonic: "A person striding ahead — going first.",
+      examples: [
+        { jp: "先生", reading: "sensei", en: "teacher" },
+        { jp: "先週", reading: "senshū", en: "last week" },
+      ],
+    },
+    {
+      kanji: "日",
+      onyomi: "ニチ, ジツ",
+      kunyomi: "ひ, か",
+      meaning: "day, sun",
+      strokes: 4,
+      mnemonic: "A picture of the sun — a circle with a mark inside.",
+      examples: [
+        { jp: "日本", reading: "nihon", en: "Japan" },
+        { jp: "今日", reading: "kyō", en: "today" },
+      ],
+    },
+  ],
 };
+

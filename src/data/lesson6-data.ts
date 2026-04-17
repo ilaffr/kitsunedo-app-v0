@@ -100,4 +100,43 @@ export const lesson6Data: LessonData = {
       ],
     },
   ],
+
+  kanji: [
+    {
+      kanji: "食",
+      onyomi: "ショク",
+      kunyomi: "た(べる)",
+      meaning: "eat, food",
+      strokes: 9,
+      mnemonic: "A roof over a bowl of rice — coming home to eat.",
+      examples: [{ jp: "食べます", reading: "tabemasu", en: "to eat" }, { jp: "食堂", reading: "shokudō", en: "cafeteria" }],
+    },
+    {
+      kanji: "飲",
+      onyomi: "イン",
+      kunyomi: "の(む)",
+      meaning: "drink",
+      strokes: 12,
+      mnemonic: "Food radical (食) + a person opening their mouth (欠) — gulping a drink.",
+      examples: [{ jp: "飲みます", reading: "nomimasu", en: "to drink" }, { jp: "飲み物", reading: "nomimono", en: "beverage" }],
+    },
+    {
+      kanji: "見",
+      onyomi: "ケン",
+      kunyomi: "み(る)",
+      meaning: "see, look",
+      strokes: 7,
+      mnemonic: "A big eye (目) on legs (儿) — walking around looking.",
+      examples: [{ jp: "見ます", reading: "mimasu", en: "to see" }, { jp: "見学", reading: "kengaku", en: "field trip" }],
+    },
+    {
+      kanji: "聞",
+      onyomi: "ブン, モン",
+      kunyomi: "き(く)",
+      meaning: "hear, listen, ask",
+      strokes: 14,
+      mnemonic: "An ear (耳) inside a gate (門) — listening at the gate.",
+      examples: [{ jp: "聞きます", reading: "kikimasu", en: "to listen" }, { jp: "新聞", reading: "shinbun", en: "newspaper" }],
+    },
+  ],
 };

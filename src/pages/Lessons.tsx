@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, BookOpen, Lock, Check, Play, ChevronDown, ChevronUp, Mountain } from "lucide-react";
+import { ArrowLeft, BookOpen, Lock, Check, Play, ChevronDown, ChevronUp, Mountain, Sparkles } from "lucide-react";
 import { Header } from "@/components/header";
 import { minnaLessons, type MinnaLesson } from "@/data/minna-lessons";
-import { useAllLessonProgress } from "@/hooks/use-user-data";
+import { useAllLessonProgress, useLessonProgress } from "@/hooks/use-user-data";
+import { KANA_PRIMER_LESSON_ID, KANA_PASS_THRESHOLD } from "@/data/kana-data";
 import { cn } from "@/lib/utils";
 
 const difficultyColors = {
@@ -23,6 +24,8 @@ export default function Lessons() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [filter, setFilter] = useState<"all" | "beginner" | "elementary" | "intermediate">("all");
   const { lessons: progressList } = useAllLessonProgress();
+  const { progress: kanaProgress } = useLessonProgress(KANA_PRIMER_LESSON_ID);
+  const kanaCleared = kanaProgress?.completed ?? false;
   const progressMap = new Map(progressList.map((p) => [p.lessonId, p]));
 
   const filtered = filter === "all" ? minnaLessons : minnaLessons.filter(l => l.difficulty === filter);
@@ -68,10 +71,42 @@ export default function Lessons() {
           ))}
         </div>
 
+        {/* Kana primer card — always shown at the top */}
+        <button
+          onClick={() => navigate("/lesson/kana")}
+          className={cn(
+            "w-full mb-3 card-paper border-2 p-4 flex items-center gap-3 text-left transition-colors",
+            kanaCleared
+              ? "border-success/40 hover:border-success/70"
+              : "border-primary/40 hover:border-primary/70",
+          )}
+        >
+          <span className="text-3xl">{kanaCleared ? "🎌" : "✍️"}</span>
+          <div className="flex-1 min-w-0">
+            <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+              Prerequisite · 入門前
+            </p>
+            <h3 className="font-brush font-bold text-foreground text-sm">
+              かな入門 — Hiragana &amp; Katakana primer
+            </h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {kanaCleared
+                ? `Cleared${kanaProgress?.bestScore != null ? ` · best ${kanaProgress.bestScore}%` : ""} — Lesson 1 unlocked`
+                : `Pass the ${KANA_PASS_THRESHOLD}% knowledge check to unlock Lesson 1 (or skip)`}
+            </p>
+          </div>
+          {kanaCleared ? (
+            <Check className="w-5 h-5 text-success" strokeWidth={3} />
+          ) : (
+            <Sparkles className="w-5 h-5 text-primary" />
+          )}
+        </button>
+
         {/* Lesson list */}
         <div className="space-y-2">
           {filtered.map((lesson) => {
             const prog = progressMap.get(`lesson_${lesson.id}`);
+            const kanaLocked = lesson.id === 1 && !kanaCleared;
             return (
               <LessonRow
                 key={lesson.id}
@@ -79,8 +114,15 @@ export default function Lessons() {
                 completed={prog?.completed ?? false}
                 bestScore={prog?.bestScore ?? null}
                 expanded={expandedId === lesson.id}
+                kanaLocked={kanaLocked}
                 onToggle={() => setExpandedId(expandedId === lesson.id ? null : lesson.id)}
-                onStart={() => lesson.id <= 10 ? navigate(`/lesson/${lesson.id}`) : undefined}
+                onStart={() => {
+                  if (kanaLocked) {
+                    navigate("/lesson/kana");
+                    return;
+                  }
+                  if (lesson.id <= 10) navigate(`/lesson/${lesson.id}`);
+                }}
               />
             );
           })}
@@ -95,6 +137,7 @@ function LessonRow({
   completed,
   bestScore,
   expanded,
+  kanaLocked,
   onToggle,
   onStart,
 }: {
@@ -102,10 +145,109 @@ function LessonRow({
   completed: boolean;
   bestScore: number | null;
   expanded: boolean;
+  kanaLocked?: boolean;
   onToggle: () => void;
   onStart: () => void;
 }) {
-  const available = lesson.id <= 10;
+  const available = lesson.id <= 10 && !kanaLocked;
+  const showLockBadge = lesson.id <= 10 && kanaLocked;
+
+  return (
+    <div className={cn("border-2 rounded-sm transition-colors", expanded ? "border-foreground/30" : "border-border")}>
+      <button onClick={onToggle} className="w-full p-3 md:p-4 text-left flex items-center gap-3">
+        {/* Number / Status */}
+        <div className={cn(
+          "w-9 h-9 rounded-sm flex items-center justify-center font-brush font-bold text-sm border-2 shrink-0",
+          completed ? "bg-success border-success text-success-foreground" :
+          showLockBadge ? "bg-muted border-border text-muted-foreground" :
+          available ? "bg-primary border-primary text-primary-foreground" : "bg-muted border-border text-muted-foreground"
+        )}>
+          {completed ? <Check className="w-4 h-4" strokeWidth={3} /> :
+           showLockBadge ? <Lock className="w-3.5 h-3.5" /> :
+           available ? <Play className="w-3.5 h-3.5" /> : lesson.id}
+        </div>
+
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <h3 className="font-brush font-bold text-foreground text-sm truncate">
+              第{lesson.id}課 — {lesson.title}
+            </h3>
+          </div>
+          <p className="text-xs text-muted-foreground serif-jp truncate">
+            {lesson.titleJp} · {lesson.theme}
+            {completed && bestScore != null && ` · ${bestScore}%`}
+            {showLockBadge && " · pass kana primer to unlock"}
+          </p>
+        </div>
+
+        {/* Badge + chevron */}
+        <span className={cn("text-[10px] font-bold uppercase px-2 py-0.5 rounded-sm border shrink-0", difficultyColors[lesson.difficulty])}>
+          {difficultyLabelsJp[lesson.difficulty]}
+        </span>
+        {expanded ? <ChevronUp className="w-4 h-4 text-muted-foreground shrink-0" /> : <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />}
+      </button>
+
+      {expanded && (
+        <div className="px-3 md:px-4 pb-4 space-y-3 border-t border-border pt-3">
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 serif-jp">Grammar 文法</h4>
+            <div className="flex flex-wrap gap-1.5">
+              {lesson.grammarPoints.map((g, i) => (
+                <span key={i} className="text-xs px-2 py-1 rounded-sm bg-primary/10 text-primary border border-primary/20 font-japanese">
+                  {g}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 serif-jp">Vocabulary 語彙</h4>
+            <div className="flex flex-wrap gap-1.5">
+              {lesson.vocabThemes.map((v, i) => (
+                <span key={i} className="text-xs px-2 py-1 rounded-sm bg-muted text-foreground border border-border">
+                  {v}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1.5 serif-jp">Key Expressions 重要表現</h4>
+            <div className="flex flex-wrap gap-1.5">
+              {lesson.keyExpressions.map((k, i) => (
+                <span key={i} className="text-xs px-2 py-1 rounded-sm bg-success/10 text-success border border-success/20 font-japanese">
+                  {k}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {available && (
+            <button
+              onClick={onStart}
+              className="w-full py-2.5 rounded-sm border-2 font-bold serif-jp text-sm btn-ink text-background border-foreground mt-1 transition-opacity"
+            >
+              入門 — Start Lesson
+            </button>
+          )}
+          {showLockBadge && (
+            <button
+              onClick={onStart}
+              className="w-full py-2.5 rounded-sm border-2 border-primary/40 text-foreground text-sm font-medium hover:border-primary transition-colors mt-1 flex items-center justify-center gap-2"
+            >
+              <Lock className="w-3.5 h-3.5" /> Pass the kana primer to unlock
+            </button>
+          )}
+          {lesson.id > 10 && (
+            <p className="text-xs text-muted-foreground serif-jp flex items-center gap-1.5 mt-1">
+              <Lock className="w-3 h-3" /> Coming soon — lesson content under development
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className={cn("border-2 rounded-sm transition-colors", expanded ? "border-foreground/30" : "border-border")}>

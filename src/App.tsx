@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import Index from "./pages/Index";
 import Lesson1 from "./pages/Lesson1";
+import KanaPrimer from "./pages/KanaPrimer";
 import Lesson2 from "./pages/Lesson2";
 import Lesson3 from "./pages/Lesson3";
 import Lesson4 from "./pages/Lesson4";
@@ -70,6 +71,7 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+            <Route path="/lesson/kana" element={<ProtectedRoute><KanaPrimer /></ProtectedRoute>} />
             <Route path="/lesson/1" element={<ProtectedRoute><Lesson1 /></ProtectedRoute>} />
             <Route path="/lesson/2" element={<ProtectedRoute><Lesson2 /></ProtectedRoute>} />
             <Route path="/lesson/3" element={<ProtectedRoute><Lesson3 /></ProtectedRoute>} />
