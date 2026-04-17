@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { loadAchievements, type AchievementId } from "@/hooks/use-achievement";
 import { useAuth } from "@/context/AuthContext";
 import { usePersonalBadges } from "@/hooks/use-personal-badges";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Sparkles, ScrollText } from "lucide-react";
 import kitsuneImg from "@/assets/achievement-kitsune.png";
 import tanukiImg from "@/assets/achievement-tanuki.png";
 import tenguImg from "@/assets/achievement-tengu.png";
