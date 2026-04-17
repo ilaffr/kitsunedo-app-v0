@@ -47,6 +47,7 @@ serve(async (req) => {
     const jlpt_level: string | undefined = body.jlpt_level;
     const jlpt_score_pct: number | undefined = body.jlpt_score_pct;
     const jlpt_mode: string | undefined = body.jlpt_mode;
+    const jlpt_elapsed_ms: number | undefined = body.jlpt_elapsed_ms;
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
