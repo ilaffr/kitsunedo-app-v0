@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Volume2, Check, X, ChevronRight, Heart } from "lucide-react";
+import { ArrowLeft, Volume2, Check, X, ChevronRight } from "lucide-react";
 import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
 import { speakJapanese } from "@/lib/japanese-tts";
@@ -10,7 +10,7 @@ import {
   kanaQuizQuestions,
   KANA_PASS_THRESHOLD,
   KANA_PRIMER_LESSON_ID,
-  type KanaChar,
+  type KanaQuizQuestion,
 } from "@/data/kana-data";
 
 type Phase = "intro" | "hiragana" | "katakana" | "quiz" | "result";
@@ -370,7 +370,7 @@ function QuizView({
 }: {
   qIdx: number;
   total: number;
-  question: ReturnType<typeof useQuizQuestion>;
+  question: KanaQuizQuestion;
   picked: number | null;
   revealed: boolean;
   onPick: (i: number) => void;
@@ -443,11 +443,6 @@ function QuizView({
       </div>
     </div>
   );
-}
-
-// Type helper so QuizView's `question` prop has the right shape.
-function useQuizQuestion() {
-  return kanaQuizQuestions[0];
 }
 
 // ── Result ─────────────────────────────────────────────────────────────────
