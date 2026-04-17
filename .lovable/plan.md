@@ -1,54 +1,38 @@
 
-The user wants to embed NHK news per JLPT level into the practice section. Let me think about this.
+Add a GitHub Actions workflow that runs build + tests on every push and PR to `main`. Since GitHub is bidirectionally synced, creating the file in Lovable pushes it to the `kitsunedo` repo automatically.
 
-NHK has "News Web Easy" (NEWS WEB EASY / やさしい日本語) which is graded news for learners — perfect for N5/N4. Regular NHK News is appropriate for N2/N1, with N3 sitting in between.
+## File to create
 
-**Sources available:**
-- NHK News Web Easy: https://www3.nhk.or.jp/news/easy/ — has furigana, simple vocab, audio. Best for N5–N4.
-- NHK News Web (regular): https://www3.nhk.or.jp/news/ — native-level, best for N2–N1.
+**`.github/workflows/ci.yml`**
 
-**Embedding constraints:** NHK pages set `X-Frame-Options: SAMEORIGIN`, so a direct `<iframe>` of nhk.or.jp will be blocked by the browser. We cannot iframe them.
+## Workflow design
 
-**Workable approach:** Fetch NHK's RSS feeds / News Web Easy JSON index server-side via an edge function, cache, then render natively in our sumi-e UI. This also lets us add per-word click-to-flashcard (sentence mining), TTS playback, and a comprehension question.
+- **Name**: `CI`
+- **Triggers**: `push` to `main` + `pull_request` targeting `main`
+- **Runner**: `ubuntu-latest`
+- **Node version**: 20 (LTS, matches Vite 5 requirements)
+- **Package manager**: npm with `package-lock.json` (project has both `bun.lockb` and `package-lock.json` — npm is the safer default for CI since `package.json` scripts use it and the README documents `npm i` / `npm run dev`)
 
-NHK News Web Easy exposes a public JSON list: `https://www3.nhk.or.jp/news/easy/news-list.json` and per-article HTML at `https://www3.nhk.or.jp/news/easy/{news_id}/{news_id}.html` plus audio at `.../{news_id}.mp3`. Regular NHK has RSS at `https://www3.nhk.or.jp/rss/news/cat0.xml` (titles + links only — full body needs scraping).
+## Steps
 
-Plan: simplest, legal-safe path = link out + show preview cards (title, date, summary). For Easy News we can also render the cleaned HTML inline since it's designed for learners. Per-level mapping: N5/N4 → Easy News, N3 → Easy News + selected regular headlines, N2/N1 → regular NHK headlines (link out, no full body to avoid copyright). Cache fetched lists in DB for 1 hour.
+1. `actions/checkout@v4` — clone repo
+2. `actions/setup-node@v4` — Node 20 + npm cache keyed on `package-lock.json`
+3. `npm ci` — clean reproducible install
+4. `npm run lint` — fast feedback on style errors (script already exists in `package.json`)
+5. `npm run test -- --run` — vitest in single-run mode (no watch); `vitest.config.ts` is already configured with jsdom + setup file
+6. `npm run build` — production Vite build to catch type/build errors
 
-I'll ask one clarifying question about copyright comfort level, then present a tight plan.
+All steps run sequentially in one job called `build-and-test` so a single red ✗ pinpoints the failing stage.
 
----
+## Notes
 
-# Plan: NHK News Per JLPT Level
+- No secrets needed — the build doesn't hit Supabase at compile time (env vars are read at runtime in the browser), and `vitest` uses jsdom with no network calls in `src/test/example.test.ts`.
+- If the build later starts requiring `VITE_SUPABASE_*` at build time, we'd add them as repo secrets and inject via `env:` — out of scope for now.
+- No caching beyond npm's built-in setup-node cache; project is small enough that adding Vite/Vitest caches is premature.
+- Workflow will appear as a green check on PRs and on the `main` branch in GitHub once the file syncs.
 
-## What we'll build
-A new "NHK News" tab on `/jlpt-practice` (and a card on `/practice`) that surfaces real Japanese news matched to the selected JLPT level.
+## Out of scope
 
-## Per-level mapping
-| Level | Source | Render |
-|---|---|---|
-| N5, N4 | NHK News Web Easy (graded, with furigana + audio) | Inline reader with TTS, tap-word → flashcard |
-| N3 | News Web Easy + selected short regular headlines | Inline reader |
-| N2, N1 | NHK News Web (native level) | Headline + 2-line summary card → "Read on NHK" link out |
-
-## How it works
-1. **Edge function `fetch-nhk-news`** runs server-side:
-   - Pulls `news-list.json` from NHK Easy + RSS `cat0.xml` from regular NHK.
-   - Caches results in a new `nhk_news_cache` table (1-hour TTL) so we don't hammer NHK on every visit.
-   - Returns 10 articles tagged with a level.
-2. **Frontend reader** (`NhkNewsReader.tsx`):
-   - Sumi-e washi-card list of articles (date, title, mini-summary).
-   - Click an Easy article → opens an in-app reader: title, body (with furigana ruby tags preserved), play-audio button (NHK mp3 or our Web Speech TTS fallback), and a "+ flashcard" on each word (reusing the sentence-mining pattern from `/tales`).
-   - For N2/N1: card opens the article on NHK in a new tab (avoids copyright/iframe issues).
-3. **DB table `nhk_news_cache`**: `news_id, level, title, summary, body_html, audio_url, published_at, fetched_at`. Public read RLS (no user data), service-role write.
-
-## Why not iframe?
-NHK sends `X-Frame-Options: SAMEORIGIN`, so embedding nhk.or.jp directly is blocked by browsers. We fetch + render server-side instead.
-
-## Files
-- **New**: `supabase/functions/fetch-nhk-news/index.ts`, `src/components/nhk-news-reader.tsx`, migration for `nhk_news_cache`.
-- **Edited**: `src/pages/JlptPractice.tsx` (add "News" mode tab), `.lovable/memory/features/jlpt-practice.md`.
-
-## Out of scope (for this round)
-- Auto-generated comprehension questions on the news (can be a follow-up using the same Gemini setup).
-- Storing full body text for regular NHK (link-out only — respects copyright).
+- Deploy steps (Lovable handles publishing)
+- Branch protection rules (configured in GitHub UI, not in the workflow file)
+- Matrix testing across Node versions (single Node 20 is sufficient for a Vite SPA)
