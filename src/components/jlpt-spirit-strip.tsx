@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Lock, Sparkles } from "lucide-react";
+import { Lock, Sparkles, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
@@ -83,6 +83,7 @@ export function JlptSpiritStrip() {
 
   const earnedTier1 = LEVEL_SPIRITS.filter((s) => unlocked.has(`${s.level}|1`)).length;
   const earnedMythic = LEVEL_SPIRITS.filter((s) => unlocked.has(`${s.level}|2`)).length;
+  const earnedSpeedrun = LEVEL_SPIRITS.filter((s) => unlocked.has(`${s.level}|3`)).length;
 
   return (
     <section className="mb-10 md:mb-12">
@@ -92,7 +93,7 @@ export function JlptSpiritStrip() {
             JLPT Spirits · 能試霊
           </p>
           <p className="serif-jp text-sm text-foreground/70">
-            Pass at 80%+ to earn the spirit · Score 100% to unlock its mythic form
+            Pass at 80%+ to earn · 100% for mythic · 100% under 5 min for speedrun
           </p>
         </div>
         <div className="text-right">
@@ -104,6 +105,11 @@ export function JlptSpiritStrip() {
               ✨ {earnedMythic} mythic
             </p>
           )}
+          {earnedSpeedrun > 0 && (
+            <p className="text-[10px] uppercase tracking-[0.3em] text-primary mt-0.5">
+              ⚡ {earnedSpeedrun} speedrun
+            </p>
+          )}
         </div>
       </div>
 
@@ -112,10 +118,12 @@ export function JlptSpiritStrip() {
           {LEVEL_SPIRITS.map((s) => {
             const earnedBase = unlocked.get(`${s.level}|1`);
             const earnedMyth = unlocked.get(`${s.level}|2`);
+            const earnedSpeed = unlocked.get(`${s.level}|3`);
             const isUnlocked = Boolean(earnedBase);
             const isMythic = Boolean(earnedMyth);
-            // Mythic image takes precedence as the portrait
-            const portrait = earnedMyth ?? earnedBase;
+            const isSpeedrun = Boolean(earnedSpeed);
+            // Speedrun > Mythic > Base for portrait precedence
+            const portrait = earnedSpeed ?? earnedMyth ?? earnedBase;
             return (
               <button
                 key={s.level}
@@ -132,22 +140,26 @@ export function JlptSpiritStrip() {
                   "group relative flex flex-col items-center gap-2 p-3 md:p-4 rounded-sm transition-all hover:bg-foreground/5",
                 )}
                 aria-label={
-                  isMythic
-                    ? `${s.level} ${s.archetype} — mythic perfect-score form earned`
-                    : isUnlocked
-                      ? `${s.level} ${s.archetype} — earned, perfect-score form locked`
-                      : `${s.level} ${s.archetype} — locked, take the mock test to unlock`
+                  isSpeedrun
+                    ? `${s.level} ${s.archetype} — speedrun lightning form earned`
+                    : isMythic
+                      ? `${s.level} ${s.archetype} — mythic perfect-score form earned`
+                      : isUnlocked
+                        ? `${s.level} ${s.archetype} — earned, perfect-score form locked`
+                        : `${s.level} ${s.archetype} — locked, take the mock test to unlock`
                 }
               >
                 {/* Silhouette / portrait */}
                 <div
                   className={cn(
                     "relative w-14 h-14 md:w-20 md:h-20 rounded-full flex items-center justify-center overflow-hidden transition-all",
-                    isMythic
-                      ? "bg-gradient-to-br from-primary/10 to-background ring-2 ring-primary/70 shadow-[0_0_20px_-4px_hsl(var(--primary)/0.5)]"
-                      : isUnlocked
-                        ? "bg-gradient-to-br from-background to-muted ring-1 ring-foreground/20"
-                        : "bg-foreground/[0.04] ring-1 ring-dashed ring-foreground/15",
+                    isSpeedrun
+                      ? "bg-gradient-to-br from-primary/20 to-background ring-2 ring-primary shadow-[0_0_24px_-4px_hsl(var(--primary)/0.7)]"
+                      : isMythic
+                        ? "bg-gradient-to-br from-primary/10 to-background ring-2 ring-primary/70 shadow-[0_0_20px_-4px_hsl(var(--primary)/0.5)]"
+                        : isUnlocked
+                          ? "bg-gradient-to-br from-background to-muted ring-1 ring-foreground/20"
+                          : "bg-foreground/[0.04] ring-1 ring-dashed ring-foreground/15",
                   )}
                 >
                   {isUnlocked && portrait?.image_url ? (
@@ -178,7 +190,15 @@ export function JlptSpiritStrip() {
                       <Lock className="absolute w-3.5 h-3.5 md:w-4 md:h-4 text-muted-foreground/60" />
                     </>
                   )}
-                  {isMythic && (
+                  {isSpeedrun ? (
+                    <span
+                      className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md"
+                      title="Speedrun — 100% in under 5 minutes"
+                      aria-label="Speedrun lightning form"
+                    >
+                      <Zap className="w-3 h-3" />
+                    </span>
+                  ) : isMythic ? (
                     <span
                       className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md"
                       title="Mythic — Perfect Score"
@@ -186,7 +206,7 @@ export function JlptSpiritStrip() {
                     >
                       <Sparkles className="w-3 h-3" />
                     </span>
-                  )}
+                  ) : null}
                 </div>
 
                 {/* Level label */}
@@ -202,14 +222,14 @@ export function JlptSpiritStrip() {
                   <p
                     className={cn(
                       "serif-jp text-[11px] md:text-xs leading-tight mt-0.5 hidden md:block",
-                      isMythic
+                      isSpeedrun || isMythic
                         ? "text-primary font-medium"
                         : isUnlocked
                           ? "text-foreground/80"
                           : "text-muted-foreground/50",
                     )}
                   >
-                    {isMythic ? `真${s.jp}` : s.jp}
+                    {isSpeedrun ? `閃${s.jp}` : isMythic ? `真${s.jp}` : s.jp}
                   </p>
                   {isUnlocked && bestScores.has(s.level) && (
                     <p
@@ -227,7 +247,7 @@ export function JlptSpiritStrip() {
                 </div>
 
                 {/* Rarity dot */}
-                {isUnlocked && !isMythic && (
+                {isUnlocked && !isMythic && !isSpeedrun && (
                   <span
                     className={cn(
                       "absolute top-2 right-2 w-1.5 h-1.5 rounded-full",
@@ -245,11 +265,13 @@ export function JlptSpiritStrip() {
           })}
         </div>
 
-        {!loading && (earnedTier1 < 5 || earnedMythic < 5) && (
+        {!loading && (earnedTier1 < 5 || earnedMythic < 5 || earnedSpeedrun < 5) && (
           <p className="text-[10px] text-center text-muted-foreground mt-4 italic tracking-wide">
             {earnedTier1 < 5
               ? "Tap a locked spirit to attempt its JLPT trial."
-              : "Score 100% on each level to ascend the spirits to their mythic form."}
+              : earnedMythic < 5
+                ? "Score 100% on each level to ascend the spirits to their mythic form."
+                : "Finish a perfect 15/15 mock test in under 5 minutes to summon the lightning speedrun form."}
           </p>
         )}
       </div>

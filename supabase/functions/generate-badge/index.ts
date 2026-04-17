@@ -47,6 +47,7 @@ serve(async (req) => {
     const jlpt_level: string | undefined = body.jlpt_level;
     const jlpt_score_pct: number | undefined = body.jlpt_score_pct;
     const jlpt_mode: string | undefined = body.jlpt_mode;
+    const jlpt_elapsed_ms: number | undefined = body.jlpt_elapsed_ms;
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
@@ -81,8 +82,30 @@ serve(async (req) => {
     if (trigger_type === "jlpt_pass" && jlpt_level) {
       const arch = JLPT_ARCHETYPE[jlpt_level] || JLPT_ARCHETYPE.N5;
       const isPerfect = tier === 2;
+      const isSpeedrun = tier === 3;
+      const elapsedSeconds = jlpt_elapsed_ms ? Math.round(jlpt_elapsed_ms / 1000) : null;
+      const elapsedMin = elapsedSeconds ? Math.floor(elapsedSeconds / 60) : null;
+      const elapsedSec = elapsedSeconds ? elapsedSeconds % 60 : null;
+      const elapsedLabel = elapsedSeconds
+        ? `${elapsedMin}m ${elapsedSec}s`
+        : "under 5 minutes";
 
-      if (isPerfect) {
+      if (isSpeedrun) {
+        // Tier 3 — Speedrun (100% in under 5 minutes on full 15Q mock test) — legendary
+        rarity = "legendary";
+        userPrompt = `A student just completed a full 15-question ${jlpt_level} JLPT mock exam with a PERFECT 100% score in only ${elapsedLabel} — a true speedrun. Award them a SPEEDRUN variant of the "${arch.archetype}" (${arch.jp}) — a swift, lightning-fast spirit that moves like wind across the page. Setting: ${arch.element}, but blurred with motion — streaks of ink, paper torn by speed, lightning sigils.
+
+Generate a JSON object (no markdown, pure JSON):
+{
+  "title": "evocative English name with 'Speedrun' or speed/lightning theme — e.g. '${jlpt_level} Speedrun — Lightning ${arch.archetype}', 'Wind-Stroke ${arch.archetype}', or similar. Must include the level.",
+  "title_jp": "Japanese name 3-6 characters, evoking speed/lightning (e.g. 疾, 雷, 風, 閃 prefix/suffix welcome)",
+  "description": "one sentence honoring the perfect 15/15 score completed in ${elapsedLabel}. Awe-struck at the sheer pace.",
+  "myth": "a 2-3 sentence sumi-e myth about a scholar so quick that ink couldn't dry between answers — the mountain spirit took the form of lightning to honor them."
+}
+
+Tone: reverent but electrified — fast, sharp, lightning-coded.`;
+        imagePrompt = `Create a dynamic Japanese sumi-e ink brush illustration on aged washi paper background. Subject: a SPEEDRUN, lightning-fast variant of a ${arch.archetype} (${arch.jp}) — representing a 100% score on JLPT ${jlpt_level} completed in under 5 minutes. Setting elements: ${arch.element}, blurred with intense motion — streaks of ink trailing behind, paper edges torn by wind, lightning sigils crackling around the figure. Style: traditional sumi-e but with extreme dynamism — long sweeping diagonal brush strokes, electric blue and gold highlights, vermillion hanko seal in corner, sense of supernatural speed. The figure should feel mid-motion, almost dissolving into wind. No text in the image.`;
+      } else if (isPerfect) {
         // Tier 2 — Perfect Score (100%) — overrides to "mythic" rarity always
         rarity = "mythic";
         userPrompt = `A student just achieved a PERFECT SCORE (100%) on a ${jlpt_level} JLPT-style mock exam (${jlpt_mode || "mixed"} section). This is the rarest possible accomplishment. Award them an ASCENDED form of the "${arch.archetype}" (${arch.jp}) — a mythic, divine variant. Setting: ${arch.element}, but elevated — celestial, aurora-touched, ancient.
@@ -197,17 +220,24 @@ Keep it lighthearted and motivating, never mocking. Higher tiers should be progr
       if (trigger_type === "jlpt_pass" && jlpt_level) {
         const arch = JLPT_ARCHETYPE[jlpt_level] || JLPT_ARCHETYPE.N5;
         const isPerfect = tier === 2;
+        const isSpeedrun = tier === 3;
         badgeText = {
-          title: isPerfect
-            ? `${jlpt_level} Perfect — Ascended ${arch.archetype}`
-            : `${jlpt_level} — ${arch.archetype}`,
-          title_jp: isPerfect ? `真${arch.jp}` : arch.jp,
-          description: isPerfect
-            ? `A flawless 100% on the ${jlpt_level} trial — the spirit revealed its divine form.`
-            : `Earned by passing a ${jlpt_level} mock exam with ${jlpt_score_pct}%.`,
-          myth: isPerfect
-            ? "Long ago, a scholar answered every question without hesitation. The mountain mist parted, and the kami showed itself in full radiance — a sight granted only to the perfect-hearted."
-            : "A spirit emerged from the mountain mist to honor the scholar's perseverance.",
+          title: isSpeedrun
+            ? `${jlpt_level} Speedrun — Lightning ${arch.archetype}`
+            : isPerfect
+              ? `${jlpt_level} Perfect — Ascended ${arch.archetype}`
+              : `${jlpt_level} — ${arch.archetype}`,
+          title_jp: isSpeedrun ? `閃${arch.jp}` : isPerfect ? `真${arch.jp}` : arch.jp,
+          description: isSpeedrun
+            ? `A perfect 15/15 on the ${jlpt_level} trial in under 5 minutes — the spirit took the form of lightning.`
+            : isPerfect
+              ? `A flawless 100% on the ${jlpt_level} trial — the spirit revealed its divine form.`
+              : `Earned by passing a ${jlpt_level} mock exam with ${jlpt_score_pct}%.`,
+          myth: isSpeedrun
+            ? "A scholar moved so swiftly the ink could not dry between strokes. The mountain spirit, astonished, took the form of lightning to keep pace — and bowed."
+            : isPerfect
+              ? "Long ago, a scholar answered every question without hesitation. The mountain mist parted, and the kami showed itself in full radiance — a sight granted only to the perfect-hearted."
+              : "A spirit emerged from the mountain mist to honor the scholar's perseverance.",
         };
       } else {
         badgeText = {

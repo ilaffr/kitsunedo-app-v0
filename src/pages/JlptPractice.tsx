@@ -59,6 +59,9 @@ export default function JlptPractice() {
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [answers, setAnswers] = useState<{ correct: boolean; selected: number }[]>([]);
+  const [quizStartedAt, setQuizStartedAt] = useState<number | null>(null);
+
+  const SPEEDRUN_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes for full 15-question 100% perfect run
 
   // Deep-link support: ?level=N5&mode=news jumps straight into the NHK reader
   useEffect(() => {
@@ -108,6 +111,7 @@ export default function JlptPractice() {
       setSelectedIdx(null);
       setRevealed(false);
       setAnswers([]);
+      setQuizStartedAt(Date.now());
       setPhase("quiz");
     } catch (e) {
       console.error(e);
@@ -134,6 +138,13 @@ export default function JlptPractice() {
       const correctCount = answers.filter((a) => a.correct).length;
       const xpEarned = correctCount * 5;
       const pct = Math.round((correctCount / questions.length) * 100);
+      const elapsedMs = quizStartedAt ? Date.now() - quizStartedAt : Number.MAX_SAFE_INTEGER;
+      const isSpeedrun =
+        pct === 100 &&
+        questions.length >= 15 &&
+        mode === "mixed" &&
+        elapsedMs < SPEEDRUN_THRESHOLD_MS;
+
       if (user) {
         await supabase.from("jlpt_sessions").insert({
           user_id: user.id,
@@ -144,10 +155,14 @@ export default function JlptPractice() {
           xp_earned: xpEarned,
         });
 
-        // Bestiary: award JLPT-pass spirit at 80%+ (tier 1) and a mythic perfect-score variant at 100% (tier 2)
+        // Bestiary tiers:
+        //  1 = pass (≥80%) — uncommon
+        //  2 = perfect (100%) — mythic
+        //  3 = speedrun (100% + <5min on a full 15Q mock test) — legendary
         const tiersToAward: number[] = [];
         if (pct >= 80) tiersToAward.push(1);
         if (pct === 100) tiersToAward.push(2);
+        if (isSpeedrun) tiersToAward.push(3);
 
         for (const t of tiersToAward) {
           supabase.functions
@@ -160,6 +175,7 @@ export default function JlptPractice() {
                 jlpt_level: level,
                 jlpt_score_pct: pct,
                 jlpt_mode: mode,
+                jlpt_elapsed_ms: elapsedMs,
               },
             })
             .then(({ data, error }) => {
@@ -168,15 +184,16 @@ export default function JlptPractice() {
                 return;
               }
               if (data?.badge?.title) {
-                toast.success(
-                  t === 2
-                    ? `✨ MYTHIC: ${data.badge.title}`
-                    : `🎌 New Bestiary spirit: ${data.badge.title}`,
-                  {
-                    description: data.badge.description,
-                    duration: t === 2 ? 10000 : 7000,
-                  }
-                );
+                const prefix =
+                  t === 3
+                    ? "⚡ SPEEDRUN: "
+                    : t === 2
+                      ? "✨ MYTHIC: "
+                      : "🎌 New Bestiary spirit: ";
+                toast.success(`${prefix}${data.badge.title}`, {
+                  description: data.badge.description,
+                  duration: t >= 2 ? 10000 : 7000,
+                });
               }
             })
             .catch((e) => console.error("Bestiary badge error:", e));
@@ -330,6 +347,9 @@ export default function JlptPractice() {
             index={currentIdx}
             total={questions.length}
             level={level}
+            mode={mode}
+            startedAt={quizStartedAt}
+            speedrunThresholdMs={SPEEDRUN_THRESHOLD_MS}
             selectedIdx={selectedIdx}
             revealed={revealed}
             onSelect={(i) => !revealed && setSelectedIdx(i)}
@@ -361,6 +381,9 @@ interface QuizViewProps {
   index: number;
   total: number;
   level: Level;
+  mode: Mode;
+  startedAt: number | null;
+  speedrunThresholdMs: number;
   selectedIdx: number | null;
   revealed: boolean;
   onSelect: (i: number) => void;
@@ -368,28 +391,67 @@ interface QuizViewProps {
   onNext: () => void;
 }
 
+function formatElapsed(ms: number): string {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return `${m}:${r.toString().padStart(2, "0")}`;
+}
+
 function QuizView({
   question,
   index,
   total,
   level,
+  mode,
+  startedAt,
+  speedrunThresholdMs,
   selectedIdx,
   revealed,
   onSelect,
   onSubmit,
   onNext,
 }: QuizViewProps) {
+  // Live elapsed timer for Speedrun feedback
+  const [now, setNow] = useState<number>(Date.now());
+  useEffect(() => {
+    if (!startedAt) return;
+    const id = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(id);
+  }, [startedAt]);
+
+  const elapsedMs = startedAt ? now - startedAt : 0;
+  const speedrunEligible = mode === "mixed" && total >= 15;
+  const remainingMs = speedrunThresholdMs - elapsedMs;
+  const showSpeedrunChip = speedrunEligible;
+  const speedrunActive = speedrunEligible && remainingMs > 0;
+
   return (
     <div>
       {/* Progress + meta */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
         <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
           {level} · {SECTION_LABEL[question.section]}
         </p>
-        <p className="serif-jp text-sm text-foreground">
-          {index + 1}
-          <span className="text-muted-foreground">／{total}</span>
-        </p>
+        <div className="flex items-center gap-2">
+          {showSpeedrunChip && (
+            <span
+              className={cn(
+                "inline-flex items-center gap-1 text-[10px] tracking-[0.2em] uppercase rounded-sm px-1.5 py-0.5 border",
+                speedrunActive
+                  ? "border-primary/50 text-primary bg-primary/5"
+                  : "border-muted-foreground/30 text-muted-foreground/60",
+              )}
+              title="Finish all 15 questions in under 5 minutes with 100% to earn the Speedrun spirit"
+            >
+              ⚡ {speedrunActive ? formatElapsed(remainingMs) : "—"}
+            </span>
+          )}
+          <p className="serif-jp text-sm text-foreground">
+            {index + 1}
+            <span className="text-muted-foreground">／{total}</span>
+          </p>
+        </div>
       </div>
       <div className="h-px bg-foreground/15 relative overflow-hidden mb-8">
         <div
