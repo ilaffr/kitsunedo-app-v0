@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, BookOpen, Lock, Check, Play, ChevronDown, ChevronUp, Mountain } from "lucide-react";
+import { ArrowLeft, BookOpen, Lock, Check, Play, ChevronDown, ChevronUp, Mountain, Sparkles } from "lucide-react";
 import { Header } from "@/components/header";
 import { minnaLessons, type MinnaLesson } from "@/data/minna-lessons";
-import { useAllLessonProgress } from "@/hooks/use-user-data";
+import { useAllLessonProgress, useLessonProgress } from "@/hooks/use-user-data";
+import { KANA_PRIMER_LESSON_ID, KANA_PASS_THRESHOLD } from "@/data/kana-data";
 import { cn } from "@/lib/utils";
 
 const difficultyColors = {
