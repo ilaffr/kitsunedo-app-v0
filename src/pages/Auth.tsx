@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import heroBrush from "@/assets/hero-brush.jpg";
@@ -203,6 +203,17 @@ export default function Auth() {
               </form>
             )}
           </div>
+
+          {/* Guest preview — try kana primer without signing up */}
+          <Link
+            to="/lesson/kana"
+            className="block w-full text-center mt-5 py-3 border border-foreground/25 hover:border-foreground/60 transition-colors serif-jp text-[11px] uppercase tracking-[0.3em] text-foreground bg-background/40 backdrop-blur-sm"
+          >
+            試す — Try the kana primer free
+          </Link>
+          <p className="text-center text-[9px] uppercase tracking-[0.25em] text-muted-foreground/70 mt-2">
+            No signup required
+          </p>
 
           {/* Footnote */}
           <p className="text-center text-[10px] uppercase tracking-[0.35em] text-muted-foreground/70 serif-jp mt-6">
