@@ -93,7 +93,7 @@ export function JlptSpiritStrip() {
             JLPT Spirits · 能試霊
           </p>
           <p className="serif-jp text-sm text-foreground/70">
-            Pass at 80%+ to earn the spirit · Score 100% to unlock its mythic form
+            Pass at 80%+ to earn · 100% for mythic · 100% under 5 min for speedrun
           </p>
         </div>
         <div className="text-right">
@@ -103,6 +103,11 @@ export function JlptSpiritStrip() {
           {earnedMythic > 0 && (
             <p className="text-[10px] uppercase tracking-[0.3em] text-primary mt-0.5">
               ✨ {earnedMythic} mythic
+            </p>
+          )}
+          {earnedSpeedrun > 0 && (
+            <p className="text-[10px] uppercase tracking-[0.3em] text-primary mt-0.5">
+              ⚡ {earnedSpeedrun} speedrun
             </p>
           )}
         </div>
