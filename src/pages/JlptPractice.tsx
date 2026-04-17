@@ -347,6 +347,9 @@ export default function JlptPractice() {
             index={currentIdx}
             total={questions.length}
             level={level}
+            mode={mode}
+            startedAt={quizStartedAt}
+            speedrunThresholdMs={SPEEDRUN_THRESHOLD_MS}
             selectedIdx={selectedIdx}
             revealed={revealed}
             onSelect={(i) => !revealed && setSelectedIdx(i)}
