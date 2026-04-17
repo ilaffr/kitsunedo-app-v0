@@ -381,6 +381,9 @@ interface QuizViewProps {
   index: number;
   total: number;
   level: Level;
+  mode: Mode;
+  startedAt: number | null;
+  speedrunThresholdMs: number;
   selectedIdx: number | null;
   revealed: boolean;
   onSelect: (i: number) => void;
@@ -388,28 +391,67 @@ interface QuizViewProps {
   onNext: () => void;
 }
 
+function formatElapsed(ms: number): string {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return `${m}:${r.toString().padStart(2, "0")}`;
+}
+
 function QuizView({
   question,
   index,
   total,
   level,
+  mode,
+  startedAt,
+  speedrunThresholdMs,
   selectedIdx,
   revealed,
   onSelect,
   onSubmit,
   onNext,
 }: QuizViewProps) {
+  // Live elapsed timer for Speedrun feedback
+  const [now, setNow] = useState<number>(Date.now());
+  useEffect(() => {
+    if (!startedAt) return;
+    const id = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(id);
+  }, [startedAt]);
+
+  const elapsedMs = startedAt ? now - startedAt : 0;
+  const speedrunEligible = mode === "mixed" && total >= 15;
+  const remainingMs = speedrunThresholdMs - elapsedMs;
+  const showSpeedrunChip = speedrunEligible;
+  const speedrunActive = speedrunEligible && remainingMs > 0;
+
   return (
     <div>
       {/* Progress + meta */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
         <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
           {level} · {SECTION_LABEL[question.section]}
         </p>
-        <p className="serif-jp text-sm text-foreground">
-          {index + 1}
-          <span className="text-muted-foreground">／{total}</span>
-        </p>
+        <div className="flex items-center gap-2">
+          {showSpeedrunChip && (
+            <span
+              className={cn(
+                "inline-flex items-center gap-1 text-[10px] tracking-[0.2em] uppercase rounded-sm px-1.5 py-0.5 border",
+                speedrunActive
+                  ? "border-primary/50 text-primary bg-primary/5"
+                  : "border-muted-foreground/30 text-muted-foreground/60",
+              )}
+              title="Finish all 15 questions in under 5 minutes with 100% to earn the Speedrun spirit"
+            >
+              ⚡ {speedrunActive ? formatElapsed(remainingMs) : "—"}
+            </span>
+          )}
+          <p className="serif-jp text-sm text-foreground">
+            {index + 1}
+            <span className="text-muted-foreground">／{total}</span>
+          </p>
+        </div>
       </div>
       <div className="h-px bg-foreground/15 relative overflow-hidden mb-8">
         <div
