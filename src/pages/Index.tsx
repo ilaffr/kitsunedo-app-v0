@@ -29,6 +29,7 @@ const studyCategories = [
     totalLessons: 12,
     completedLessons: 10,
     variant: "hiragana" as const,
+    href: "/lesson/kana",
   },
   {
     title: "Katakana",
@@ -39,6 +40,7 @@ const studyCategories = [
     totalLessons: 12,
     completedLessons: 7,
     variant: "katakana" as const,
+    href: "/lesson/kana",
   },
   {
     title: "Kanji",
