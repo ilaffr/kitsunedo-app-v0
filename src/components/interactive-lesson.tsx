@@ -12,7 +12,6 @@ import {
   PenTool,
   Brush,
   Check,
-  Lock,
   ChevronRight,
 } from "lucide-react";
 import { Header } from "@/components/header";
