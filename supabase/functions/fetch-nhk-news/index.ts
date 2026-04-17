@@ -16,6 +16,7 @@ type SourceKind = "easy" | "regular";
 interface CachedArticle {
   news_id: string;
   level: Level;
+  category: string;
   source: SourceKind;
   title: string;
   summary: string | null;
