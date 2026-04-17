@@ -254,6 +254,42 @@ export default function InteractiveLesson({ lesson }: InteractiveLessonProps) {
                   onComplete={(r) => handleExerciseComplete(r.correct, step.xpReward)}
                 />
               )}
+              {step.exercise.type === "particle_fill" && (
+                <ParticleFillCard
+                  exercise={step.exercise}
+                  onComplete={(r) => handleExerciseComplete(r.correct, step.xpReward)}
+                />
+              )}
+              {step.exercise.type === "conjugation" && (
+                <ConjugationCard
+                  exercise={step.exercise}
+                  onComplete={(r) => handleExerciseComplete(r.correct, step.xpReward)}
+                />
+              )}
+              {step.exercise.type === "substitution" && (
+                <SubstitutionCard
+                  exercise={step.exercise}
+                  onComplete={(r) => handleExerciseComplete(r.correct, step.xpReward)}
+                />
+              )}
+              {step.exercise.type === "dictation" && (
+                <DictationCard
+                  exercise={step.exercise}
+                  onComplete={(r) => handleExerciseComplete(r.correct, step.xpReward)}
+                />
+              )}
+              {step.exercise.type === "transform" && (
+                <TransformCard
+                  exercise={step.exercise}
+                  onComplete={(r) => handleExerciseComplete(r.correct, step.xpReward)}
+                />
+              )}
+              {step.exercise.type === "dialogue" && (
+                <DialogueCard
+                  exercise={step.exercise}
+                  onComplete={(r) => handleExerciseComplete(r.correct, step.xpReward)}
+                />
+              )}
             </div>
           )}
         </div>
