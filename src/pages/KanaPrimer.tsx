@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Volume2, Check, X, ChevronRight } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, Volume2, Check, X, ChevronRight, Sparkles } from "lucide-react";
 import { Header } from "@/components/header";
 import { cn } from "@/lib/utils";
 import { speakJapanese } from "@/lib/japanese-tts";
 import { useLessonProgress, useStreak } from "@/hooks/use-user-data";
+import { useAuth } from "@/context/AuthContext";
 import {
   kanaRows,
   kanaQuizQuestions,
@@ -17,6 +18,8 @@ type Phase = "intro" | "hiragana" | "katakana" | "quiz" | "result";
 
 export default function KanaPrimer() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const isGuest = !user;
   const { saveProgress, progress } = useLessonProgress(KANA_PRIMER_LESSON_ID);
   const { recordStudy } = useStreak();
   const [phase, setPhase] = useState<Phase>("intro");
@@ -46,7 +49,7 @@ export default function KanaPrimer() {
     setPicked(null);
     setRevealed(false);
     if (quizIdx + 1 >= totalQ) {
-      // Finished — compute and save
+      // Finished — compute and save (only if signed in)
       const finalCorrect =
         [...answers].reduce(
           (acc, a, i) => acc + (a === kanaQuizQuestions[i].correctIndex ? 1 : 0),
@@ -54,12 +57,14 @@ export default function KanaPrimer() {
         );
       const finalPct = Math.round((finalCorrect / totalQ) * 100);
       const didPass = finalPct >= KANA_PASS_THRESHOLD;
-      // Save best score; mark completed only if passed (so Lesson 1 unlocks)
-      await saveProgress({
-        completed: didPass,
-        bestScore: Math.max(progress?.bestScore ?? 0, finalPct),
-      });
-      if (didPass) await recordStudy();
+      if (!isGuest) {
+        // Save best score; mark completed only if passed (so Lesson 1 unlocks)
+        await saveProgress({
+          completed: didPass,
+          bestScore: Math.max(progress?.bestScore ?? 0, finalPct),
+        });
+        if (didPass) await recordStudy();
+      }
       setPhase("result");
     } else {
       setQuizIdx((i) => i + 1);
@@ -75,10 +80,17 @@ export default function KanaPrimer() {
   };
 
   const handleSkip = async () => {
+    if (isGuest) {
+      navigate("/auth");
+      return;
+    }
     // Skipping does NOT unlock Lesson 1 — but record they've seen the primer.
     await saveProgress({ completed: false, bestScore: progress?.bestScore ?? 0 });
     navigate("/lessons");
   };
+
+  const backHref = isGuest ? "/auth" : "/lessons";
+  const backLabel = isGuest ? "戻る — Back to sign in" : "道場へ戻る";
 
   return (
     <div className="min-h-screen bg-background">
