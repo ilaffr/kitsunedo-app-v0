@@ -112,10 +112,12 @@ export function JlptSpiritStrip() {
           {LEVEL_SPIRITS.map((s) => {
             const earnedBase = unlocked.get(`${s.level}|1`);
             const earnedMyth = unlocked.get(`${s.level}|2`);
+            const earnedSpeed = unlocked.get(`${s.level}|3`);
             const isUnlocked = Boolean(earnedBase);
             const isMythic = Boolean(earnedMyth);
-            // Mythic image takes precedence as the portrait
-            const portrait = earnedMyth ?? earnedBase;
+            const isSpeedrun = Boolean(earnedSpeed);
+            // Speedrun > Mythic > Base for portrait precedence
+            const portrait = earnedSpeed ?? earnedMyth ?? earnedBase;
             return (
               <button
                 key={s.level}
