@@ -26,10 +26,26 @@ const rarityBorderClass: Record<string, string> = {
 
 const rarityGlowClass: Record<string, string> = {
   common: "",
-  uncommon: "shadow-[0_0_8px_hsl(var(--success)/0.15)]",
-  rare: "shadow-[0_0_10px_hsl(var(--primary)/0.2)]",
-  legendary: "shadow-[0_0_14px_hsl(var(--warning)/0.25)]",
-  mythic: "shadow-[0_0_18px_hsl(var(--primary)/0.45)]",
+  uncommon: "shadow-[0_0_10px_hsl(var(--success)/0.18)]",
+  rare: "shadow-[0_0_14px_hsl(var(--primary)/0.22)]",
+  legendary: "shadow-[0_0_18px_hsl(var(--warning)/0.28)]",
+  mythic: "shadow-[0_0_22px_hsl(var(--primary)/0.45)]",
+};
+
+const rarityLabel: Record<string, string> = {
+  common: "常",
+  uncommon: "稀",
+  rare: "珍",
+  legendary: "伝",
+  mythic: "神",
+};
+
+const rarityTextClass: Record<string, string> = {
+  common: "text-muted-foreground",
+  uncommon: "text-success",
+  rare: "text-primary",
+  legendary: "text-warning",
+  mythic: "text-primary",
 };
 
 interface RecentSpirit {
