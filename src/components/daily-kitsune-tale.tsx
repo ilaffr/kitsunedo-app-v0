@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
-import { Sparkles, Loader2, BookOpen, Library } from "lucide-react";
+import { Sparkles, Loader2, BookOpen, Library, ChevronDown, ChevronUp, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import { TaleCard, type TaleData } from "@/components/tale-card";
+import { cn } from "@/lib/utils";
 
 export function DailyKitsuneTale() {
   const { user } = useAuth();
   const [tale, setTale] = useState<TaleData | null>(null);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
+  const [open, setOpen] = useState(true);
+  // Track whether the user has explicitly toggled, so we don't fight their choice
+  const [userToggled, setUserToggled] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -22,10 +26,23 @@ export function DailyKitsuneTale() {
       .eq("tale_date", today)
       .maybeSingle()
       .then(({ data }) => {
-        if (data) setTale(data as TaleData);
+        if (data) {
+          setTale(data as TaleData);
+          // Auto-collapse if already completed today
+          if ((data as TaleData).completed) setOpen(false);
+        }
         setLoading(false);
       });
   }, [user]);
+
+  // When the tale gets marked completed during the session, auto-collapse once
+  useEffect(() => {
+    if (tale?.completed && !userToggled) setOpen(false);
+  }, [tale?.completed, userToggled]);
+
+  const handleTaleUpdate = (updated: TaleData) => {
+    setTale(updated);
+  };
 
   const generateTale = async () => {
     if (!user || generating) return;
@@ -35,12 +52,19 @@ export function DailyKitsuneTale() {
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
       setTale(data.tale);
+      setOpen(true);
+      setUserToggled(false);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Failed to summon a tale";
       toast.error(msg);
     } finally {
       setGenerating(false);
     }
+  };
+
+  const toggle = () => {
+    setUserToggled(true);
+    setOpen((v) => !v);
   };
 
   if (loading) {
@@ -97,18 +121,62 @@ export function DailyKitsuneTale() {
     );
   }
 
+  const completed = !!tale.completed;
+
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-end">
-        <Link
-          to="/tales"
-          className="text-xs text-muted-foreground hover:text-primary inline-flex items-center gap-1"
+      {/* Foldable header bar */}
+      <div className="card-paper border-2 overflow-hidden">
+        <button
+          onClick={toggle}
+          aria-expanded={open}
+          className="w-full flex items-center justify-between gap-3 px-4 md:px-5 py-3 text-left hover:bg-muted/30 transition-colors"
         >
-          <Library className="w-3.5 h-3.5" />
-          Tale archive
-        </Link>
+          <div className="flex items-center gap-3 min-w-0">
+            <div
+              className={cn(
+                "w-8 h-8 rounded-sm border flex items-center justify-center shrink-0",
+                completed
+                  ? "bg-success/10 border-success/30 text-success"
+                  : "bg-primary/10 border-primary/30 text-primary",
+              )}
+            >
+              {completed ? <Check className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
+            </div>
+            <div className="min-w-0">
+              <p className="font-brush font-bold text-foreground text-sm truncate">
+                Daily Kitsune Tale
+                {completed && (
+                  <span className="ml-2 text-[10px] uppercase tracking-[0.2em] text-success font-sans">
+                    Completed
+                  </span>
+                )}
+              </p>
+              <p className="text-[11px] text-muted-foreground serif-jp italic truncate">
+                {tale.title ?? "狐の昔話"}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 shrink-0">
+            <Link
+              to="/tales"
+              onClick={(e) => e.stopPropagation()}
+              className="text-xs text-muted-foreground hover:text-primary hidden sm:inline-flex items-center gap-1"
+            >
+              <Library className="w-3.5 h-3.5" />
+              Archive
+            </Link>
+            {open ? (
+              <ChevronUp className="w-4 h-4 text-muted-foreground" />
+            ) : (
+              <ChevronDown className="w-4 h-4 text-muted-foreground" />
+            )}
+          </div>
+        </button>
       </div>
-      <TaleCard tale={tale} />
+
+      {open && <TaleCard tale={tale} onUpdate={handleTaleUpdate} />}
     </div>
   );
 }
