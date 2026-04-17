@@ -119,6 +119,7 @@ export default function Index() {
       );
       let status: "completed" | "in-progress" | "available" | "locked";
       if (completed) status = "completed";
+      else if (!kanaCleared) status = "locked"; // gate every Minna lesson behind kana primer
       else if (firstIncomplete?.id === l.id) status = "in-progress";
       else if (l.id <= (firstIncomplete?.id ?? 1)) status = "available";
       else status = "available";
@@ -131,7 +132,7 @@ export default function Index() {
         difficulty: (l.difficulty === "beginner" ? "easy" : l.difficulty === "elementary" ? "medium" : "hard") as "easy" | "medium" | "hard",
       };
     });
-  }, [progressMap]);
+  }, [progressMap, kanaCleared]);
 
   return (
     <div className="min-h-screen bg-background">
