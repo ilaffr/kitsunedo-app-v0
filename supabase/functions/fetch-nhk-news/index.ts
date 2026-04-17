@@ -191,6 +191,7 @@ Deno.serve(async (req) => {
       .limit(12);
 
     const fresh =
+      !force &&
       existing &&
       existing.length >= 5 &&
       existing[0].fetched_at &&
