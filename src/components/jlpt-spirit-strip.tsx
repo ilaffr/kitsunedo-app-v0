@@ -265,11 +265,13 @@ export function JlptSpiritStrip() {
           })}
         </div>
 
-        {!loading && (earnedTier1 < 5 || earnedMythic < 5) && (
+        {!loading && (earnedTier1 < 5 || earnedMythic < 5 || earnedSpeedrun < 5) && (
           <p className="text-[10px] text-center text-muted-foreground mt-4 italic tracking-wide">
             {earnedTier1 < 5
               ? "Tap a locked spirit to attempt its JLPT trial."
-              : "Score 100% on each level to ascend the spirits to their mythic form."}
+              : earnedMythic < 5
+                ? "Score 100% on each level to ascend the spirits to their mythic form."
+                : "Finish a perfect 15/15 mock test in under 5 minutes to summon the lightning speedrun form."}
           </p>
         )}
       </div>
