@@ -1,4 +1,15 @@
-import type { VocabItem, GrammarPoint, ReadingPassage } from "@/components/lesson-page";
+import type {
+  VocabItem,
+  GrammarPoint,
+  ReadingPassage,
+  LessonData,
+  ParticleFillItem,
+  ConjugationItem,
+  SubstitutionItem,
+  DictationItem,
+  TransformItem,
+  Dialogue,
+} from "@/components/lesson-page";
 
 // ── Exercise types ─────────────────────────────────────────────────────────
 
@@ -8,7 +19,13 @@ export type ExerciseType =
   | "match_pairs"
   | "sentence_builder"
   | "translate_compose"
-  | "reading_comprehension";
+  | "reading_comprehension"
+  | "particle_fill"
+  | "conjugation"
+  | "substitution"
+  | "dictation"
+  | "transform"
+  | "dialogue";
 
 export interface MultipleChoiceExercise {
   type: "multiple_choice";
@@ -56,13 +73,45 @@ export interface ReadingComprehensionExercise {
   correctIndex: number;
 }
 
+// ── Minna-style exercises ──────────────────────────────────────────────────
+
+export interface ParticleFillExercise extends ParticleFillItem {
+  type: "particle_fill";
+}
+
+export interface ConjugationExercise extends ConjugationItem {
+  type: "conjugation";
+}
+
+export interface SubstitutionExercise extends SubstitutionItem {
+  type: "substitution";
+}
+
+export interface DictationExercise extends DictationItem {
+  type: "dictation";
+}
+
+export interface TransformExercise extends TransformItem {
+  type: "transform";
+}
+
+export interface DialogueExercise extends Dialogue {
+  type: "dialogue";
+}
+
 export type Exercise =
   | MultipleChoiceExercise
   | TypeAnswerExercise
   | MatchPairsExercise
   | SentenceBuilderExercise
   | TranslateComposeExercise
-  | ReadingComprehensionExercise;
+  | ReadingComprehensionExercise
+  | ParticleFillExercise
+  | ConjugationExercise
+  | SubstitutionExercise
+  | DictationExercise
+  | TransformExercise
+  | DialogueExercise;
 
 // ── Lesson step types ──────────────────────────────────────────────────────
 
@@ -112,58 +161,103 @@ function chunk<T>(arr: T[], size: number): T[][] {
   return chunks;
 }
 
-// ── Generate lesson steps (Duolingo-style) ─────────────────────────────────
+// ── Generate lesson steps (Minna-style two-phase flow) ─────────────────────
 
+/**
+ * Two-phase Minna-style flow:
+ *   PHASE 1 — LEARN: vocab chunks (intro + mini quiz) → grammar points (intro + light exercise).
+ *   PHASE 2 — REVIEW: particle drills, conjugation, substitution, transform, dictation, dialogue,
+ *                     and a final mixed quiz (MC, type-answer, sentence builder, reading).
+ *
+ * If a lesson opts in via the new optional fields (particleDrills, conjugationDrills, …, dialogue),
+ * those Minna-style exercises are inserted in PHASE 2.
+ */
 export function generateLessonSteps(
   vocabulary: VocabItem[],
   grammarPoints: GrammarPoint[],
   readingPassages?: ReadingPassage[],
+  minna?: Pick<
+    LessonData,
+    "particleDrills" | "conjugationDrills" | "substitutionDrills" | "dictationDrills" | "transformDrills" | "dialogue"
+  >,
 ): LessonStep[] {
   const steps: LessonStep[] = [];
   const CHUNK = 4;
   const vocabChunks = chunk(vocabulary, CHUNK);
 
-  // ── PHASE 1: Vocabulary — learn + immediate mini-quiz ────────────────
+  // ───────── PHASE 1 — LEARN ─────────
   steps.push({
     type: "phase_label",
-    title: "Vocabulary",
-    subtitle: "Learn new words, then test yourself",
+    title: "Phase 1 — 学ぶ Learn",
+    subtitle: "Meet new words & grammar, with light practice as you go",
     emoji: "📝",
   });
 
+  // Vocabulary chunks: intro + mini-quiz
   for (const words of vocabChunks) {
     steps.push({ type: "vocab_intro", words });
     const exercises = generateVocabExercises(words, vocabulary);
     exercises.forEach((ex) => steps.push({ type: "exercise", exercise: ex, xpReward: 5 }));
   }
 
-  // ── PHASE 2: Grammar — learn each rule + practice it ─────────────────
-  if (grammarPoints.length > 0) {
-    steps.push({
-      type: "phase_label",
-      title: "Grammar",
-      subtitle: "Learn each rule, then put it into practice",
-      emoji: "📖",
-    });
+  // Grammar points: each rule + 1-2 quick exercises
+  for (const point of grammarPoints) {
+    steps.push({ type: "grammar_intro", point });
+    const gExercises = generateGrammarExercises(point, vocabulary);
+    gExercises.forEach((ex) => steps.push({ type: "exercise", exercise: ex, xpReward: 10 }));
+  }
 
-    for (const point of grammarPoints) {
-      steps.push({ type: "grammar_intro", point });
-      const gExercises = generateGrammarExercises(point, vocabulary);
-      gExercises.forEach((ex) => steps.push({ type: "exercise", exercise: ex, xpReward: 10 }));
+  // ───────── PHASE 2 — REVIEW (Minna 練習A/B/C style) ─────────
+  const reviewExercises: ExerciseStep[] = [];
+
+  // 練習A — particle fill-in
+  if (minna?.particleDrills?.length) {
+    for (const item of minna.particleDrills) {
+      reviewExercises.push({ type: "exercise", xpReward: 8, exercise: { type: "particle_fill", ...item } });
+    }
+  }
+  // 練習A — conjugation
+  if (minna?.conjugationDrills?.length) {
+    for (const item of minna.conjugationDrills) {
+      reviewExercises.push({ type: "exercise", xpReward: 10, exercise: { type: "conjugation", ...item } });
+    }
+  }
+  // 練習B — substitution Q→A
+  if (minna?.substitutionDrills?.length) {
+    for (const item of minna.substitutionDrills) {
+      reviewExercises.push({ type: "exercise", xpReward: 12, exercise: { type: "substitution", ...item } });
+    }
+  }
+  // 練習B — transform / rewrite
+  if (minna?.transformDrills?.length) {
+    for (const item of minna.transformDrills) {
+      reviewExercises.push({ type: "exercise", xpReward: 12, exercise: { type: "transform", ...item } });
+    }
+  }
+  // Listening dictation
+  if (minna?.dictationDrills?.length) {
+    for (const item of minna.dictationDrills) {
+      reviewExercises.push({ type: "exercise", xpReward: 12, exercise: { type: "dictation", ...item } });
     }
   }
 
-  // ── PHASE 3: Final Quiz — mixed review of everything ─────────────────
+  // Mixed final quiz (existing engine logic)
   const finalExercises = generateFinalQuiz(vocabulary, grammarPoints, readingPassages);
-  if (finalExercises.length > 0) {
+  finalExercises.forEach((ex) => reviewExercises.push({ type: "exercise", exercise: ex, xpReward: 15 }));
+
+  // 会話 — Dialogue (always last in review, Minna-style)
+  if (minna?.dialogue) {
+    reviewExercises.push({ type: "exercise", xpReward: 20, exercise: { type: "dialogue", ...minna.dialogue } });
+  }
+
+  if (reviewExercises.length > 0) {
     steps.push({
       type: "phase_label",
-      title: "Final Quiz — 総復習",
-      subtitle: "Mixed review of everything you learned",
+      title: "Phase 2 — 復習 Review",
+      subtitle: "Drill particles, conjugation, listening & a real conversation",
       emoji: "🏯",
     });
-
-    finalExercises.forEach((ex) => steps.push({ type: "exercise", exercise: ex, xpReward: 15 }));
+    steps.push(...reviewExercises);
   }
 
   return steps;

@@ -94,4 +94,182 @@ export const lesson1Data: LessonData = {
     { word: "の", meaning: "possessive/descriptive particle" },
     { word: "はじめまして", meaning: "How do you do (first meeting)" },
   ],
+
+  // ── Minna-style 練習A: particle fill-in ──────────────────────────────────
+  particleDrills: [
+    {
+      sentence: "わたし___ がくせいです。",
+      translation: "I am a student.",
+      options: ["は", "が", "を", "に"],
+      correctIndex: 0,
+    },
+    {
+      sentence: "ミラーさん___ かいしゃいんです。",
+      translation: "Miller is a company employee.",
+      options: ["の", "は", "を", "で"],
+      correctIndex: 1,
+    },
+    {
+      sentence: "グプタさん___ かいしゃいんです。",
+      translation: "Gupta is ALSO a company employee.",
+      options: ["は", "の", "も", "が"],
+      correctIndex: 2,
+    },
+    {
+      sentence: "わたしは IMC___ しゃいんです。",
+      translation: "I am an employee OF IMC.",
+      options: ["は", "の", "も", "に"],
+      correctIndex: 1,
+    },
+    {
+      sentence: "ミラーさんは アメリカじんです___。",
+      translation: "Is Miller American?",
+      options: ["よ", "ね", "か", "の"],
+      correctIndex: 2,
+    },
+  ],
+
+  // ── Minna-style 練習A: conjugation drill (です ↔ じゃ ありません ↔ ですか) ──
+  conjugationDrills: [
+    {
+      base: "がくせいです",
+      reading: "gakusei desu",
+      meaning: "is a student",
+      targetFormLabel: "negative",
+      acceptedAnswers: ["がくせいじゃ ありません", "がくせいじゃありません", "がくせいでは ありません", "がくせいではありません"],
+    },
+    {
+      base: "せんせいです",
+      reading: "sensei desu",
+      meaning: "is a teacher",
+      targetFormLabel: "question (yes/no)",
+      acceptedAnswers: ["せんせいですか", "せんせいですか。"],
+    },
+    {
+      base: "エンジニアです",
+      reading: "enjinia desu",
+      meaning: "is an engineer",
+      targetFormLabel: "negative",
+      acceptedAnswers: ["エンジニアじゃ ありません", "エンジニアじゃありません", "エンジニアでは ありません", "エンジニアではありません"],
+    },
+    {
+      base: "アメリカじんです",
+      reading: "amerikajin desu",
+      meaning: "is American",
+      targetFormLabel: "question (yes/no)",
+      acceptedAnswers: ["アメリカじんですか", "アメリカじんですか。"],
+    },
+  ],
+
+  // ── Minna-style 練習B: substitution Q → A ────────────────────────────────
+  substitutionDrills: [
+    {
+      questionJp: "あなたは がくせいですか。",
+      questionEn: "Are you a student?",
+      cue: "はい / がくせい",
+      acceptedAnswers: ["はい、がくせいです", "はい、わたしは がくせいです"],
+      hint: "はい、〜です。",
+    },
+    {
+      questionJp: "ミラーさんは せんせいですか。",
+      questionEn: "Is Miller a teacher?",
+      cue: "いいえ / かいしゃいん",
+      acceptedAnswers: [
+        "いいえ、せんせいじゃ ありません。かいしゃいんです",
+        "いいえ、かいしゃいんです",
+      ],
+      hint: "いいえ、〜じゃ ありません。〜です。",
+    },
+    {
+      questionJp: "あの ひとは だれですか。",
+      questionEn: "Who is that person?",
+      cue: "やまださん",
+      acceptedAnswers: ["やまださんです", "あの ひとは やまださんです"],
+      hint: "〜です。",
+    },
+  ],
+
+  // ── Minna-style 練習B: transform / rewrite ───────────────────────────────
+  transformDrills: [
+    {
+      source: "わたしは せんせいです。",
+      instruction: "Rewrite in the negative",
+      acceptedAnswers: [
+        "わたしは せんせいじゃ ありません",
+        "わたしは せんせいではありません",
+        "わたしは せんせいでは ありません",
+      ],
+      hint: "〜は 〜じゃ ありません。",
+    },
+    {
+      source: "ミラーさんは アメリカじんです。",
+      instruction: "Turn into a yes/no question",
+      acceptedAnswers: [
+        "ミラーさんは アメリカじんですか",
+        "ミラーさんは アメリカじんですか。",
+      ],
+      hint: "〜は 〜ですか。",
+    },
+    {
+      source: "サントスさんは ブラジルじんです。",
+      instruction: "Add 'Maria is also Brazilian' using も",
+      acceptedAnswers: [
+        "マリアさんも ブラジルじんです",
+        "マリアさんも ブラジルじんです。",
+      ],
+      hint: "〜も 〜です。",
+    },
+  ],
+
+  // ── Listening dictation (uses Web Speech TTS) ────────────────────────────
+  dictationDrills: [
+    {
+      jp: "わたしは がくせいです。",
+      acceptedAnswers: ["watashi wa gakusei desu", "わたしは がくせいです", "わたしはがくせいです"],
+      translation: "I am a student.",
+    },
+    {
+      jp: "ミラーさんは かいしゃいんです。",
+      acceptedAnswers: ["miraa san wa kaishain desu", "mira- san wa kaishain desu", "ミラーさんは かいしゃいんです", "ミラーさんはかいしゃいんです"],
+      translation: "Miller is a company employee.",
+    },
+    {
+      jp: "あの ひとは せんせいですか。",
+      acceptedAnswers: ["ano hito wa sensei desu ka", "あの ひとは せんせいですか", "あのひとはせんせいですか"],
+      translation: "Is that person a teacher?",
+    },
+  ],
+
+  // ── 会話 — Static scripted dialogue + comprehension ──────────────────────
+  dialogue: {
+    titleJp: "はじめまして",
+    titleEn: "Nice to meet you",
+    scene: "Mr. Miller introduces himself to Mr. Yamada at the IMC office.",
+    lines: [
+      { speaker: "ミラー", jp: "はじめまして。", en: "How do you do." },
+      { speaker: "ミラー", jp: "わたしは マイク・ミラーです。", en: "I am Mike Miller." },
+      { speaker: "ミラー", jp: "アメリカから きました。IMCの しゃいんです。", en: "I came from America. I'm an employee of IMC." },
+      { speaker: "ミラー", jp: "どうぞ よろしく おねがいします。", en: "Pleased to meet you." },
+      { speaker: "やまだ", jp: "やまだです。", en: "I'm Yamada." },
+      { speaker: "やまだ", jp: "わたしも IMCの しゃいんです。", en: "I'm also an employee of IMC." },
+      { speaker: "やまだ", jp: "どうぞ よろしく。", en: "Pleased to meet you." },
+    ],
+    questions: [
+      {
+        question: "Where is Mr. Miller from?",
+        options: ["Japan", "America", "Brazil", "Korea"],
+        correct: 1,
+      },
+      {
+        question: "What does Mr. Yamada say about himself?",
+        options: [
+          "He is a teacher.",
+          "He is a student at IMC.",
+          "He is also an employee of IMC.",
+          "He works at a hospital.",
+        ],
+        correct: 2,
+      },
+    ],
+  },
 };
