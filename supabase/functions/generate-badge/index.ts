@@ -112,6 +112,24 @@ Generate a JSON object (no markdown, pure JSON):
 Tone: reverent, mythic, sumi-e poetic. NOT comedic. This is an honor, not a joke.`;
         imagePrompt = `Create a minimalist Japanese sumi-e ink brush illustration on a clean white washi paper background. Subject: a ${arch.archetype} (${arch.jp}) — a dignified yokai/kami representing mastery of JLPT ${jlpt_level}. Setting elements: ${arch.element}. Style: traditional sumi-e, black ink wash with subtle vermillion seal accent, confident brush strokes, sense of ancient honor. ${jlpt_level === "N1" ? "Add gold leaf highlights and a divine aura." : jlpt_level === "N2" ? "Add a single vermillion accent." : ""} No text in the image.`;
       }
+    } else if (trigger_type === "news_streak") {
+      // News reader streak (consecutive days opening the NHK headline)
+      const streakDays: number = body.streak_days ?? 7;
+      // Tier 1 = 7 days (rare), Tier 2 = 30 days (legendary)
+      rarity = tier >= 2 ? "legendary" : "rare";
+
+      userPrompt = `A student has opened the daily NHK news headline ${streakDays} days in a row. They are building a real-world Japanese reading habit. Award them a Bestiary spirit themed as a "News Reader" — a sumi-e crow or sparrow perched on a folded newspaper, ink dripping from its beak. The bird is a messenger of current events.
+
+Generate a JSON object (no markdown, pure JSON):
+{
+  "title": "evocative English spirit name, must reference reading/news/messenger e.g. 'News Reader', 'Ink-Tongued Sparrow', 'Headline Crow' — include the streak count if it fits",
+  "title_jp": "Japanese name 2-6 characters, poetic (e.g. 報せ烏, 新聞雀, 朝の使者)",
+  "description": "one sentence celebrating ${streakDays} consecutive days of reading NHK news, dignified and warm",
+  "myth": "a 2-3 sentence sumi-e style myth about a small bird that delivers the morning news to scholars who keep faithful daily habits"
+}
+
+Tone: warm, dignified, mythic. NOT comedic. This is an honor for daily discipline.`;
+      imagePrompt = `Create a minimalist Japanese sumi-e ink brush illustration on a clean white washi paper background. Subject: a small dignified bird (sparrow or crow) perched on a folded newspaper or scroll, with a single ink-stained character peeking out. Style: traditional sumi-e, confident black ink wash, single vermillion hanko seal in corner. ${tier >= 2 ? "Add gold leaf accents and a sense of ancient mastery." : "Subtle, humble, morning-light feel."} No text in the image.`;
     } else {
       // Legacy word_struggle path
       userPrompt = `A student has made ${mistake_count} mistakes on the Japanese word/particle "${word}" (meaning: "${meaning}"). This is tier ${tier} of 3.

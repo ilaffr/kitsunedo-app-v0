@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Newspaper, ChevronRight, Loader2 } from "lucide-react";
+import { Newspaper, ChevronRight, Loader2, Flame } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 
 type Level = "N5" | "N4" | "N3" | "N2" | "N1";
 
@@ -33,12 +34,97 @@ function formatDate(iso: string | null) {
   );
 }
 
+// Tier thresholds (consecutive days)
+const STREAK_TIERS: { days: number; tier: number; label: string }[] = [
+  { days: 7, tier: 1, label: "7-day" },
+  { days: 30, tier: 2, label: "30-day" },
+];
+
+async function recordReadAndCheckStreak(userId: string, level: Level): Promise<number> {
+  // 1. Insert today's read (idempotent via UNIQUE (user_id, read_date))
+  await supabase
+    .from("nhk_reading_log")
+    .insert({ user_id: userId, level })
+    .then(() => undefined, () => undefined); // ignore conflict on existing
+
+  // 2. Pull last 35 days of reads to compute current streak
+  const since = new Date();
+  since.setDate(since.getDate() - 35);
+  const { data: rows } = await supabase
+    .from("nhk_reading_log")
+    .select("read_date")
+    .eq("user_id", userId)
+    .gte("read_date", since.toISOString().slice(0, 10))
+    .order("read_date", { ascending: false });
+
+  if (!rows || rows.length === 0) return 0;
+
+  // 3. Count consecutive distinct dates ending today (or yesterday — tolerate single-day gap)
+  const dates = new Set(rows.map((r: { read_date: string }) => r.read_date));
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let streak = 0;
+  for (let i = 0; i < 60; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const key = d.toISOString().slice(0, 10);
+    if (dates.has(key)) streak += 1;
+    else break;
+  }
+  return streak;
+}
+
+async function maybeAwardStreakBadge(userId: string, streak: number) {
+  // Find the highest tier the user qualifies for that they haven't earned yet
+  const eligible = STREAK_TIERS.filter((t) => streak >= t.days);
+  if (eligible.length === 0) return;
+
+  for (const t of eligible) {
+    const triggerDetail = t.label;
+    const { data: existing } = await supabase
+      .from("personal_badges")
+      .select("id")
+      .eq("user_id", userId)
+      .eq("trigger_type", "news_streak")
+      .eq("trigger_detail", triggerDetail)
+      .eq("tier", t.tier)
+      .maybeSingle();
+
+    if (existing) continue;
+
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-badge", {
+        body: {
+          user_id: userId,
+          trigger_type: "news_streak",
+          trigger_detail: triggerDetail,
+          tier: t.tier,
+          streak_days: t.days,
+        },
+      });
+      if (error) {
+        console.error("News streak badge error", error);
+        continue;
+      }
+      if (data?.badge) {
+        toast.success(`🦊 ${data.badge.title}`, {
+          description: `${t.days} days of NHK reading — ${data.badge.description ?? "a new spirit joins your bestiary."}`,
+          duration: 6000,
+        });
+      }
+    } catch (e) {
+      console.error("News streak badge failed", e);
+    }
+  }
+}
+
 export function NhkHeadlineTeaser() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [article, setArticle] = useState<Article | null>(null);
   const [level, setLevel] = useState<Level>("N5");
   const [loading, setLoading] = useState(true);
+  const [streak, setStreak] = useState(0);
 
   useEffect(() => {
     if (!user) {
@@ -103,6 +189,28 @@ export function NhkHeadlineTeaser() {
     };
   }, [user]);
 
+  // When an article successfully loads, log today's read & possibly award the badge.
+  useEffect(() => {
+    if (!user || !article) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const newStreak = await recordReadAndCheckStreak(user.id, level);
+        if (cancelled) return;
+        setStreak(newStreak);
+        if (newStreak >= STREAK_TIERS[0].days) {
+          await maybeAwardStreakBadge(user.id, newStreak);
+        }
+      } catch (e) {
+        console.error("nhk streak track error", e);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, article?.title]);
+
   if (loading) {
     return (
       <button
@@ -143,6 +251,15 @@ export function NhkHeadlineTeaser() {
           {article.published_at && (
             <span className="text-[10px] text-muted-foreground/70">
               {formatDate(article.published_at)}
+            </span>
+          )}
+          {streak >= 2 && (
+            <span
+              className="inline-flex items-center gap-1 text-[10px] font-brush text-primary border border-primary/40 bg-primary/5 rounded-full px-1.5 py-0.5"
+              title={`${streak}-day NHK reading streak`}
+            >
+              <Flame className="w-2.5 h-2.5" />
+              {streak}d
             </span>
           )}
         </div>

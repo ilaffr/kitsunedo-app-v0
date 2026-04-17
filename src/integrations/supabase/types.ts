@@ -290,6 +290,30 @@ export type Database = {
         }
         Relationships: []
       }
+      nhk_reading_log: {
+        Row: {
+          created_at: string
+          id: string
+          level: string | null
+          read_date: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          level?: string | null
+          read_date?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          level?: string | null
+          read_date?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       personal_badges: {
         Row: {
           created_at: string

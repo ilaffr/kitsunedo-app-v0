@@ -34,3 +34,4 @@ Rule: Daily Kitsune Tales must always be rooted in REAL Japanese culture/lore/hi
 - [Yokai Journey Map](mem://features/yokai-journey) — Sumi-e SVG map at /journey grouping 50 lessons into 5 region with yokai bosses
 - [Yokai Boss Quiz](mem://features/yokai-boss) — Region-end mixed-review challenge with themed dialogue + bestiary award
 - [JLPT Practice](mem://features/jlpt-practice) — N5–N1 mock exam at /jlpt-practice with mixed/section modes, AI-generated + DB-cached question bank
+- [News Reader Streak](mem://features/news-reader-streak) — Daily NHK headline opens are logged; 7-day and 30-day consecutive streaks unlock 'News Reader' personal badges
