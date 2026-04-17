@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Newspaper, ChevronRight, Loader2, Flame } from "lucide-react";
+import { Newspaper, ChevronRight, Loader2, Flame, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
@@ -124,7 +124,51 @@ export function NhkHeadlineTeaser() {
   const [article, setArticle] = useState<Article | null>(null);
   const [level, setLevel] = useState<Level>("N5");
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [streak, setStreak] = useState(0);
+
+  const loadArticle = async (userLevel: Level, force = false) => {
+    if (!force) {
+      const { data: cached } = await supabase
+        .from("nhk_news_cache")
+        .select("title, summary, body_html, published_at, level")
+        .eq("level", userLevel)
+        .order("published_at", { ascending: false, nullsFirst: false })
+        .limit(1);
+      if (cached && cached.length > 0) {
+        setArticle(cached[0] as Article);
+        return true;
+      }
+    }
+    try {
+      await supabase.functions.invoke("fetch-nhk-news", {
+        body: { level: userLevel, force },
+      });
+      const { data: refreshed } = await supabase
+        .from("nhk_news_cache")
+        .select("title, summary, body_html, published_at, level")
+        .eq("level", userLevel)
+        .order("published_at", { ascending: false, nullsFirst: false })
+        .limit(1);
+      if (refreshed && refreshed.length > 0) {
+        setArticle(refreshed[0] as Article);
+        return true;
+      }
+    } catch {
+      /* silent */
+    }
+    return false;
+  };
+
+  const handleRefresh = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (refreshing) return;
+    setRefreshing(true);
+    const ok = await loadArticle(level, true);
+    setRefreshing(false);
+    if (ok) toast.success("Latest NHK headline loaded");
+    else toast.error("Could not refresh headlines");
+  };
 
   useEffect(() => {
     if (!user) {
@@ -149,36 +193,9 @@ export function NhkHeadlineTeaser() {
       if (cancelled) return;
       setLevel(userLevel);
 
-      // 2. Try cached article first (no fetch round-trip)
-      const { data: cached } = await supabase
-        .from("nhk_news_cache")
-        .select("title, summary, body_html, published_at, level")
-        .eq("level", userLevel)
-        .order("published_at", { ascending: false, nullsFirst: false })
-        .limit(1);
-
-      if (!cancelled && cached && cached.length > 0) {
-        setArticle(cached[0] as Article);
-        setLoading(false);
-        return;
-      }
-
-      // 3. Cache empty — invoke edge fn to populate, then re-read
+      // 2. Load article (cached first, fallback to fn)
       try {
-        await supabase.functions.invoke("fetch-nhk-news", {
-          body: { level: userLevel },
-        });
-        const { data: refreshed } = await supabase
-          .from("nhk_news_cache")
-          .select("title, summary, body_html, published_at, level")
-          .eq("level", userLevel)
-          .order("published_at", { ascending: false, nullsFirst: false })
-          .limit(1);
-        if (!cancelled && refreshed && refreshed.length > 0) {
-          setArticle(refreshed[0] as Article);
-        }
-      } catch {
-        /* silent — teaser is non-critical */
+        await loadArticle(userLevel, false);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -237,13 +254,21 @@ export function NhkHeadlineTeaser() {
   const titleText = stripHtml(article.title);
 
   return (
-    <button
+    <div
+      className="w-full washi-card p-4 md:p-5 flex items-start gap-4 hover:translate-y-[-1px] transition-all group cursor-pointer"
       onClick={() => navigate(`/jlpt-practice?level=${level}&mode=news`)}
-      className="w-full washi-card p-4 md:p-5 flex items-start gap-4 text-left hover:translate-y-[-1px] transition-all group"
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          navigate(`/jlpt-practice?level=${level}&mode=news`);
+        }
+      }}
       aria-label="Open today's NHK headline"
     >
       <Newspaper className="w-5 h-5 text-foreground shrink-0 mt-0.5" />
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 text-left">
         <div className="flex items-center gap-2 flex-wrap mb-1">
           <p className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
             Today's NHK · {level}
@@ -272,7 +297,18 @@ export function NhkHeadlineTeaser() {
           </p>
         )}
       </div>
-      <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-0.5" />
-    </button>
+      <div className="flex items-center gap-1 shrink-0 mt-0.5">
+        <button
+          onClick={handleRefresh}
+          disabled={refreshing}
+          className="p-1.5 rounded-full hover:bg-muted/60 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
+          title="Refresh latest headlines"
+          aria-label="Refresh latest NHK headlines"
+        >
+          <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`} />
+        </button>
+        <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+      </div>
+    </div>
   );
 }

@@ -162,8 +162,9 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const body = (await req.json()) as { level: Level; category?: Category };
+    const body = (await req.json()) as { level: Level; category?: Category; force?: boolean };
     const level = body.level;
+    const force = body.force === true;
     const category: Category = body.category && VALID_CATEGORIES.includes(body.category)
       ? body.category
       : "top";
@@ -190,6 +191,7 @@ Deno.serve(async (req) => {
       .limit(12);
 
     const fresh =
+      !force &&
       existing &&
       existing.length >= 5 &&
       existing[0].fetched_at &&
