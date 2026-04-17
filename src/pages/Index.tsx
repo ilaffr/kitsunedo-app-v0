@@ -84,6 +84,8 @@ export default function Index() {
   const { lessons: progressList } = useAllLessonProgress();
   const { days, weekTotal } = useWeeklyXP();
   const { totalXP, sessionsCount, completedLessons } = useOverallStats();
+  const { progress: kanaProgress } = useLessonProgress(KANA_PRIMER_LESSON_ID);
+  const kanaCleared = kanaProgress?.completed ?? false;
   const [todayXP, setTodayXP] = useState(0);
   const [hasPlacementResult, setHasPlacementResult] = useState(true); // default true to avoid flash
 
