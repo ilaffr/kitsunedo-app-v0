@@ -254,13 +254,21 @@ export function NhkHeadlineTeaser() {
   const titleText = stripHtml(article.title);
 
   return (
-    <button
+    <div
+      className="w-full washi-card p-4 md:p-5 flex items-start gap-4 hover:translate-y-[-1px] transition-all group cursor-pointer"
       onClick={() => navigate(`/jlpt-practice?level=${level}&mode=news`)}
-      className="w-full washi-card p-4 md:p-5 flex items-start gap-4 text-left hover:translate-y-[-1px] transition-all group"
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          navigate(`/jlpt-practice?level=${level}&mode=news`);
+        }
+      }}
       aria-label="Open today's NHK headline"
     >
       <Newspaper className="w-5 h-5 text-foreground shrink-0 mt-0.5" />
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 text-left">
         <div className="flex items-center gap-2 flex-wrap mb-1">
           <p className="text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
             Today's NHK · {level}
@@ -289,7 +297,18 @@ export function NhkHeadlineTeaser() {
           </p>
         )}
       </div>
-      <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0 mt-0.5" />
-    </button>
+      <div className="flex items-center gap-1 shrink-0 mt-0.5">
+        <button
+          onClick={handleRefresh}
+          disabled={refreshing}
+          className="p-1.5 rounded-full hover:bg-muted/60 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
+          title="Refresh latest headlines"
+          aria-label="Refresh latest NHK headlines"
+        >
+          <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`} />
+        </button>
+        <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+      </div>
+    </div>
   );
 }
