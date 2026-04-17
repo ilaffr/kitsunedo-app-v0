@@ -253,6 +253,15 @@ export function NhkHeadlineTeaser() {
               {formatDate(article.published_at)}
             </span>
           )}
+          {streak >= 2 && (
+            <span
+              className="inline-flex items-center gap-1 text-[10px] font-brush text-primary border border-primary/40 bg-primary/5 rounded-full px-1.5 py-0.5"
+              title={`${streak}-day NHK reading streak`}
+            >
+              <Flame className="w-2.5 h-2.5" />
+              {streak}d
+            </span>
+          )}
         </div>
         <p className="japanese-text text-foreground text-base leading-snug font-medium group-hover:text-primary transition-colors line-clamp-2">
           {titleText}
