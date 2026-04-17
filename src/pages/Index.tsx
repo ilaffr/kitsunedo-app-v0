@@ -12,8 +12,9 @@ import { HeroBanner } from "@/components/hero-banner";
 import { RecentSpiritsPreview } from "@/components/recent-spirits-preview";
 import { DailyKitsuneTale } from "@/components/daily-kitsune-tale";
 import { NhkHeadlineTeaser } from "@/components/nhk-headline-teaser";
-import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP, useOverallStats } from "@/hooks/use-user-data";
+import { useStreak, usePracticeSession, useAllLessonProgress, useWeeklyXP, useOverallStats, useLessonProgress } from "@/hooks/use-user-data";
 import { minnaLessons } from "@/data/minna-lessons";
+import { KANA_PRIMER_LESSON_ID } from "@/data/kana-data";
 import { WeeklyXPMini } from "@/components/weekly-xp-chart";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
@@ -28,6 +29,7 @@ const studyCategories = [
     totalLessons: 12,
     completedLessons: 10,
     variant: "hiragana" as const,
+    href: "/lesson/kana",
   },
   {
     title: "Katakana",
@@ -38,6 +40,7 @@ const studyCategories = [
     totalLessons: 12,
     completedLessons: 7,
     variant: "katakana" as const,
+    href: "/lesson/kana",
   },
   {
     title: "Kanji",
@@ -83,6 +86,8 @@ export default function Index() {
   const { lessons: progressList } = useAllLessonProgress();
   const { days, weekTotal } = useWeeklyXP();
   const { totalXP, sessionsCount, completedLessons } = useOverallStats();
+  const { progress: kanaProgress } = useLessonProgress(KANA_PRIMER_LESSON_ID);
+  const kanaCleared = kanaProgress?.completed ?? false;
   const [todayXP, setTodayXP] = useState(0);
   const [hasPlacementResult, setHasPlacementResult] = useState(true); // default true to avoid flash
 
@@ -116,6 +121,7 @@ export default function Index() {
       );
       let status: "completed" | "in-progress" | "available" | "locked";
       if (completed) status = "completed";
+      else if (!kanaCleared) status = "locked"; // gate every Minna lesson behind kana primer
       else if (firstIncomplete?.id === l.id) status = "in-progress";
       else if (l.id <= (firstIncomplete?.id ?? 1)) status = "available";
       else status = "available";
@@ -128,7 +134,7 @@ export default function Index() {
         difficulty: (l.difficulty === "beginner" ? "easy" : l.difficulty === "elementary" ? "medium" : "hard") as "easy" | "medium" | "hard",
       };
     });
-  }, [progressMap]);
+  }, [progressMap, kanaCleared]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -238,9 +244,34 @@ export default function Index() {
                     </button>
                   </div>
 
+                  {!kanaCleared && (
+                    <button
+                      onClick={() => navigate("/lesson/kana")}
+                      className="w-full mb-3 border-2 border-primary/40 hover:border-primary/70 p-3 flex items-center gap-3 text-left transition-colors rounded-sm"
+                    >
+                      <span className="text-2xl">✍️</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Prerequisite · 入門前</p>
+                        <h4 className="font-brush font-bold text-foreground text-sm">かな入門 — Kana primer</h4>
+                        <p className="text-xs text-muted-foreground mt-0.5">Pass the knowledge check to unlock Lesson 1</p>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-primary shrink-0" />
+                    </button>
+                  )}
+
                   <div>
                     {continueLessons.map((lesson, index) => (
-                      <LessonCard key={index} {...lesson} onClick={() => navigate(`/lesson/${lesson.lessonNumber}`)} />
+                      <LessonCard
+                        key={index}
+                        {...lesson}
+                        onClick={() => {
+                          if (lesson.status === "locked") {
+                            navigate("/lesson/kana");
+                            return;
+                          }
+                          navigate(`/lesson/${lesson.lessonNumber}`);
+                        }}
+                      />
                     ))}
                   </div>
                 </div>
