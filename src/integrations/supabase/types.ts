@@ -249,6 +249,7 @@ export type Database = {
         Row: {
           audio_url: string | null
           body_html: string | null
+          category: string
           fetched_at: string
           id: string
           level: string
@@ -262,6 +263,7 @@ export type Database = {
         Insert: {
           audio_url?: string | null
           body_html?: string | null
+          category?: string
           fetched_at?: string
           id?: string
           level: string
@@ -275,6 +277,7 @@ export type Database = {
         Update: {
           audio_url?: string | null
           body_html?: string | null
+          category?: string
           fetched_at?: string
           id?: string
           level?: string
