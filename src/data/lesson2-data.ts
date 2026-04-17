@@ -135,4 +135,34 @@ export const lesson2Data: LessonData = {
     { word: "ちがいます", meaning: "that's wrong / it differs" },
     { word: "くるま", meaning: "car" },
   ],
+
+  kanji: [
+    {
+      kanji: "本",
+      onyomi: "ホン",
+      kunyomi: "もと",
+      meaning: "book, origin",
+      strokes: 5,
+      mnemonic: "A tree (木) with a line at its root — the origin or 'main thing'.",
+      examples: [{ jp: "本", reading: "hon", en: "book" }, { jp: "日本", reading: "nihon", en: "Japan" }],
+    },
+    {
+      kanji: "車",
+      onyomi: "シャ",
+      kunyomi: "くるま",
+      meaning: "car, vehicle",
+      strokes: 7,
+      mnemonic: "A pictograph of a cart — axle through the middle, wheels on top and bottom.",
+      examples: [{ jp: "車", reading: "kuruma", en: "car" }, { jp: "電車", reading: "densha", en: "train" }],
+    },
+    {
+      kanji: "私",
+      onyomi: "シ",
+      kunyomi: "わたし, わたくし",
+      meaning: "I, private",
+      strokes: 7,
+      mnemonic: "A grain of rice (禾) you keep private — your own self.",
+      examples: [{ jp: "私", reading: "watashi", en: "I, me" }],
+    },
+  ],
 };

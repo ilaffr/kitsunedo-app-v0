@@ -88,4 +88,43 @@ export const lesson7Data: LessonData = {
       ],
     },
   ],
+
+  kanji: [
+    {
+      kanji: "手",
+      onyomi: "シュ",
+      kunyomi: "て",
+      meaning: "hand",
+      strokes: 4,
+      mnemonic: "A pictograph of a hand with five fingers spread.",
+      examples: [{ jp: "手紙", reading: "tegami", en: "letter" }, { jp: "手", reading: "te", en: "hand" }],
+    },
+    {
+      kanji: "紙",
+      onyomi: "シ",
+      kunyomi: "かみ",
+      meaning: "paper",
+      strokes: 10,
+      mnemonic: "Thread (糸) + family (氏) — the family scroll, made of paper.",
+      examples: [{ jp: "手紙", reading: "tegami", en: "letter" }, { jp: "紙", reading: "kami", en: "paper" }],
+    },
+    {
+      kanji: "花",
+      onyomi: "カ",
+      kunyomi: "はな",
+      meaning: "flower",
+      strokes: 7,
+      mnemonic: "Grass radical (艹) + change (化) — grass that changes into something beautiful.",
+      examples: [{ jp: "花", reading: "hana", en: "flower" }, { jp: "花見", reading: "hanami", en: "flower viewing" }],
+    },
+    {
+      kanji: "電",
+      onyomi: "デン",
+      kunyomi: "—",
+      meaning: "electricity",
+      strokes: 13,
+      mnemonic: "Rain (雨) + a lightning bolt below — electric storm.",
+      examples: [{ jp: "電気", reading: "denki", en: "electricity" }, { jp: "電車", reading: "densha", en: "train" }],
+    },
+  ],
 };
