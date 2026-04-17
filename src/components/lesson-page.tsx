@@ -122,6 +122,23 @@ export interface Dialogue {
   questions: { question: string; options: string[]; correct: number }[];
 }
 
+export interface KanjiItem {
+  /** The kanji character, e.g. "学". */
+  kanji: string;
+  /** On-yomi readings (Chinese-derived), comma-separated. */
+  onyomi: string;
+  /** Kun-yomi readings (native Japanese), comma-separated. */
+  kunyomi: string;
+  /** Primary English meaning(s). */
+  meaning: string;
+  /** Stroke count. */
+  strokes: number;
+  /** Mnemonic / radical breakdown to remember it. */
+  mnemonic: string;
+  /** 1-2 example words using this kanji. */
+  examples: { jp: string; reading: string; en: string }[];
+}
+
 export interface LessonData {
   id: string;
   number: number;
@@ -133,6 +150,8 @@ export interface LessonData {
   practiceQuestions: QuizQuestion[];
   questionWordMap: QuestionWordMap[];
   readingPassages?: ReadingPassage[];
+  /** Optional kanji introduced in this lesson. */
+  kanji?: KanjiItem[];
   // ── Minna-style additions (all optional for backward compat) ─────────────
   particleDrills?: ParticleFillItem[];
   conjugationDrills?: ConjugationItem[];
