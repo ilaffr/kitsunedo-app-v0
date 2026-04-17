@@ -220,17 +220,24 @@ Keep it lighthearted and motivating, never mocking. Higher tiers should be progr
       if (trigger_type === "jlpt_pass" && jlpt_level) {
         const arch = JLPT_ARCHETYPE[jlpt_level] || JLPT_ARCHETYPE.N5;
         const isPerfect = tier === 2;
+        const isSpeedrun = tier === 3;
         badgeText = {
-          title: isPerfect
-            ? `${jlpt_level} Perfect — Ascended ${arch.archetype}`
-            : `${jlpt_level} — ${arch.archetype}`,
-          title_jp: isPerfect ? `真${arch.jp}` : arch.jp,
-          description: isPerfect
-            ? `A flawless 100% on the ${jlpt_level} trial — the spirit revealed its divine form.`
-            : `Earned by passing a ${jlpt_level} mock exam with ${jlpt_score_pct}%.`,
-          myth: isPerfect
-            ? "Long ago, a scholar answered every question without hesitation. The mountain mist parted, and the kami showed itself in full radiance — a sight granted only to the perfect-hearted."
-            : "A spirit emerged from the mountain mist to honor the scholar's perseverance.",
+          title: isSpeedrun
+            ? `${jlpt_level} Speedrun — Lightning ${arch.archetype}`
+            : isPerfect
+              ? `${jlpt_level} Perfect — Ascended ${arch.archetype}`
+              : `${jlpt_level} — ${arch.archetype}`,
+          title_jp: isSpeedrun ? `閃${arch.jp}` : isPerfect ? `真${arch.jp}` : arch.jp,
+          description: isSpeedrun
+            ? `A perfect 15/15 on the ${jlpt_level} trial in under 5 minutes — the spirit took the form of lightning.`
+            : isPerfect
+              ? `A flawless 100% on the ${jlpt_level} trial — the spirit revealed its divine form.`
+              : `Earned by passing a ${jlpt_level} mock exam with ${jlpt_score_pct}%.`,
+          myth: isSpeedrun
+            ? "A scholar moved so swiftly the ink could not dry between strokes. The mountain spirit, astonished, took the form of lightning to keep pace — and bowed."
+            : isPerfect
+              ? "Long ago, a scholar answered every question without hesitation. The mountain mist parted, and the kami showed itself in full radiance — a sight granted only to the perfect-hearted."
+              : "A spirit emerged from the mountain mist to honor the scholar's perseverance.",
         };
       } else {
         badgeText = {
