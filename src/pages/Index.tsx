@@ -242,9 +242,34 @@ export default function Index() {
                     </button>
                   </div>
 
+                  {!kanaCleared && (
+                    <button
+                      onClick={() => navigate("/lesson/kana")}
+                      className="w-full mb-3 border-2 border-primary/40 hover:border-primary/70 p-3 flex items-center gap-3 text-left transition-colors rounded-sm"
+                    >
+                      <span className="text-2xl">✍️</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Prerequisite · 入門前</p>
+                        <h4 className="font-brush font-bold text-foreground text-sm">かな入門 — Kana primer</h4>
+                        <p className="text-xs text-muted-foreground mt-0.5">Pass the knowledge check to unlock Lesson 1</p>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-primary shrink-0" />
+                    </button>
+                  )}
+
                   <div>
                     {continueLessons.map((lesson, index) => (
-                      <LessonCard key={index} {...lesson} onClick={() => navigate(`/lesson/${lesson.lessonNumber}`)} />
+                      <LessonCard
+                        key={index}
+                        {...lesson}
+                        onClick={() => {
+                          if (lesson.status === "locked") {
+                            navigate("/lesson/kana");
+                            return;
+                          }
+                          navigate(`/lesson/${lesson.lessonNumber}`);
+                        }}
+                      />
                     ))}
                   </div>
                 </div>
