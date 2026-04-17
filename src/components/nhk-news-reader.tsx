@@ -8,11 +8,13 @@ import { useFlashcards } from "@/hooks/use-flashcards";
 import { NhkComprehensionQuiz } from "@/components/nhk-comprehension-quiz";
 
 type Level = "N5" | "N4" | "N3" | "N2" | "N1";
+type Category = "top" | "politics" | "sports" | "tech" | "world" | "business" | "society";
 
 interface NhkArticle {
   id: string;
   news_id: string;
   level: Level;
+  category?: Category;
   source: "easy" | "regular";
   title: string;
   summary: string | null;
@@ -25,6 +27,16 @@ interface NhkArticle {
 interface Props {
   level: Level;
 }
+
+const CATEGORIES: { id: Category; label: string; jp: string }[] = [
+  { id: "top", label: "Top", jp: "主要" },
+  { id: "politics", label: "Politics", jp: "政治" },
+  { id: "world", label: "World", jp: "国際" },
+  { id: "business", label: "Business", jp: "経済" },
+  { id: "tech", label: "Tech / Science", jp: "科学" },
+  { id: "sports", label: "Sports", jp: "スポーツ" },
+  { id: "society", label: "Society", jp: "社会" },
+];
 
 function formatDate(iso: string | null) {
   if (!iso) return "";
@@ -61,6 +73,7 @@ export function NhkNewsReader({ level }: Props) {
   const [articles, setArticles] = useState<NhkArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<NhkArticle | null>(null);
+  const [category, setCategory] = useState<Category>("top");
   const { addCard, savedSet } = useFlashcards();
   const savedKeys = savedSet;
   const [savingWord, setSavingWord] = useState<string | null>(null);
@@ -72,7 +85,7 @@ export function NhkNewsReader({ level }: Props) {
       setSelected(null);
       try {
         const { data, error } = await supabase.functions.invoke("fetch-nhk-news", {
-          body: { level },
+          body: { level, category },
         });
         if (cancelled) return;
         if (error) {
@@ -91,7 +104,7 @@ export function NhkNewsReader({ level }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [level]);
+  }, [level, category]);
 
   const isEasyLevel = level === "N5" || level === "N4" || level === "N3";
 
@@ -148,6 +161,28 @@ export function NhkNewsReader({ level }: Props) {
           <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
             NHK News · {level} · {isEasyLevel ? "やさしい日本語" : "通常ニュース"}
           </p>
+        </div>
+
+        {/* Category tabs */}
+        <div className="flex flex-wrap gap-1.5 mb-5">
+          {CATEGORIES.map((c) => {
+            const active = c.id === category;
+            return (
+              <button
+                key={c.id}
+                onClick={() => setCategory(c.id)}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-[11px] tracking-wide whitespace-nowrap transition-all border",
+                  active
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-transparent text-muted-foreground border-border hover:text-foreground hover:border-foreground/40",
+                )}
+              >
+                <span className="serif-jp mr-1.5">{c.jp}</span>
+                <span className="uppercase tracking-[0.18em]">{c.label}</span>
+              </button>
+            );
+          })}
         </div>
 
         {loading && (
