@@ -15,8 +15,8 @@ serve(async (req) => {
   try {
     const { flashcard_id, user_id, japanese, meaning } = await req.json();
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+    if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY not configured");
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -35,24 +35,21 @@ serve(async (req) => {
       });
     }
 
-    // Generate cartoon image
-    const imageRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-3.1-flash-image-preview",
-        messages: [
-          {
+    // Generate cartoon image via Gemini native image generation
+    const imageRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{
             role: "user",
-            content: `Create a cute, simple cartoon illustration on a clean white background representing the Japanese word "${japanese}" which means "${meaning}". Style: kawaii, minimal, colorful flat illustration, no text, round friendly shapes, pastel colors. Think children's flashcard illustration. Single centered object or character.`,
-          },
-        ],
-        modalities: ["image", "text"],
-      }),
-    });
+            parts: [{ text: `Create a cute, simple cartoon illustration on a clean white background representing the Japanese word "${japanese}" which means "${meaning}". Style: kawaii, minimal, colorful flat illustration, no text, round friendly shapes, pastel colors. Think children's flashcard illustration. Single centered object or character.` }],
+          }],
+          generationConfig: { responseModalities: ["IMAGE", "TEXT"] },
+        }),
+      }
+    );
 
     if (!imageRes.ok) {
       const errText = await imageRes.text();
@@ -67,14 +64,15 @@ serve(async (req) => {
     }
 
     const imageData = await imageRes.json();
-    const base64Url = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+    const parts = imageData.candidates?.[0]?.content?.parts ?? [];
+    const imagePart = parts.find((p: { inlineData?: { data: string; mimeType: string } }) => p.inlineData?.data);
 
-    if (!base64Url) {
-      throw new Error("No image returned from AI");
+    if (!imagePart) {
+      throw new Error("No image returned from Gemini");
     }
 
     // Upload to storage
-    const base64Data = base64Url.replace(/^data:image\/\w+;base64,/, "");
+    const base64Data = imagePart.inlineData.data;
     const imageBytes = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
     const fileName = `${user_id}/${flashcard_id}_${Date.now()}.png`;
 

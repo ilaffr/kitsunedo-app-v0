@@ -1,12 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Sumi-e Brush Stroke Design System
-   Japanese ink calligraphy aesthetic inspired by Ghost of Yotei
-*/
-
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@300;400;500;600&display=swap');
 
 @layer base {
   :root {
@@ -181,27 +177,63 @@
     box-shadow: var(--shadow-md), inset 0 0 0 1px hsl(30 8% 35% / 0.35);
   }
 
-  /* Ink CTA button — primary action across the app */
+  /* Vermillion CTA button — hanko seal red, used for celebratory actions */
   .btn-vermillion {
-    background: hsl(var(--foreground));
-    color: hsl(var(--background));
-    box-shadow: var(--shadow-md);
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: var(--shadow-vermillion);
     position: relative;
-    transition: background 0.2s ease;
-    letter-spacing: 0.18em;
+    transition: box-shadow 0.2s ease;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
     font-family: 'Noto Serif JP', serif;
+    font-size: 11px;
     font-weight: 500;
+    padding: 12px 22px;
+    border-radius: 2px;
   }
 
   .btn-vermillion:hover {
+    box-shadow: 0 4px 20px hsl(var(--primary) / 0.35);
+  }
+
+  /* Ink black button — primary dark action */
+  .btn-ink {
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 12px 22px;
+    border-radius: 2px;
+    transition: background 0.2s ease;
+  }
+
+  .btn-ink:hover {
     background: hsl(var(--foreground) / 0.88);
   }
 
-  /* Ink black button */
-  .btn-ink {
-    background: var(--gradient-ink);
-    @apply text-card;
+  /* Eyebrow label — 10px uppercase wide-tracked */
+  .eyebrow {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    color: hsl(var(--muted-foreground));
+    font-weight: 500;
+    font-family: var(--font-sans);
+  }
+
+  /* Square hanko seal — like ginkgo-seal but rect */
+  .hanko-sq {
+    @apply inline-flex items-center justify-center;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 500;
+    border-radius: 2px;
+    box-shadow: 0 2px 6px hsl(var(--primary) / 0.35), inset 0 -2px 4px hsl(0 0% 0% / 0.15);
   }
 
   /* Brush stroke text */

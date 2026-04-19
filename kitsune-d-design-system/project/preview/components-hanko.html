@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"><style>
+  body { margin: 0; }
+  .card { padding: 22px 26px; }
+  .row { display:flex; gap: 32px; align-items:flex-start; flex-wrap:wrap; margin-top: 14px; }
+  .cell { display:flex; flex-direction:column; gap: 10px; align-items:center; }
+  .label { font-size: 9px; letter-spacing: .28em; text-transform: uppercase; color: hsl(var(--muted-foreground)); font-family: ui-monospace,Menlo,monospace; }
+
+  /* Clean hanko — solid vermillion, reversed kanji, crisp inner border.
+     One very soft noise overlay only (opacity ~.06) keeps it from feeling vectorial
+     without breaking the silhouette. */
+  .hanko {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: hsl(6 74% 42%);
+    color: hsl(36 26% 96%);
+    font-family: var(--font-serif);
+    font-weight: 700;
+    position: relative;
+    box-shadow:
+      inset 0 0 0 2px hsl(36 26% 96%),
+      inset 0 0 0 3px hsl(6 74% 42%),
+      0 1px 0 hsl(30 8% 12% / .04);
+  }
+  .hanko::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay; opacity: .22; pointer-events: none;
+  }
+  .hanko.round  { border-radius: 50%; box-shadow: inset 0 0 0 2px hsl(36 26% 96%), inset 0 0 0 3px hsl(6 74% 42%), 0 1px 0 hsl(30 8% 12% / .04); }
+  .hanko.round::after { border-radius: 50%; }
+  .hanko.sq     { border-radius: 1px; }
+  /* Grid for 2x2 kanji block */
+  .hanko.grid   { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 0; padding: 4px; }
+  .hanko.grid > span {
+    display: flex; align-items: center; justify-content: center;
+    box-shadow:
+      inset 1px 0 0 hsl(36 26% 96% / .9),
+      inset 0 1px 0 hsl(36 26% 96% / .9);
+  }
+  .hanko.grid > span:nth-child(1) { box-shadow: none; }
+  .hanko.grid > span:nth-child(2) { box-shadow: inset 1px 0 0 hsl(36 26% 96% / .9); }
+  .hanko.grid > span:nth-child(3) { box-shadow: inset 0 1px 0 hsl(36 26% 96% / .9); }
+</style></head><body><div class="card">
+<p class="eyebrow">Components · Hanko seals</p>
+
+<div class="row">
+
+  <!-- 1. Square 2×2 block -->
+  <div class="cell">
+    <div class="hanko sq grid" style="width:76px;height:76px;font-size:16px;">
+      <span>恭</span><span>新</span><span>賀</span><span>禧</span>
+    </div>
+    <span class="label">Square · 2×2</span>
+  </div>
+
+  <!-- 2. Square single kanji -->
+  <div class="cell">
+    <div class="hanko sq" style="width:64px;height:64px;font-size:36px;">春</div>
+    <span class="label">Square · single</span>
+  </div>
+
+  <!-- 3. Vertical 2-kanji tall -->
+  <div class="cell">
+    <div class="hanko sq" style="width:48px;height:74px;font-size:22px; flex-direction:column; line-height: 1;">
+      <span style="margin-top: 4px;">学</span><span style="margin-bottom: 4px;">道</span>
+    </div>
+    <span class="label">Tall · signature</span>
+  </div>
+
+  <!-- 4. Round single -->
+  <div class="cell">
+    <div class="hanko round" style="width:70px;height:70px;font-size:32px;">牛</div>
+    <span class="label">Round · single</span>
+  </div>
+
+  <!-- 5. Round streak — 2 kanji stacked -->
+  <div class="cell">
+    <div class="hanko round" style="width:60px;height:60px;font-size:18px; flex-direction:column; line-height: 1;">
+      <span style="margin-top: 4px;">七</span><span style="margin-bottom: 4px;">日</span>
+    </div>
+    <span class="label">Round · streak</span>
+  </div>
+
+  <!-- 6. Small corner rarity -->
+  <div class="cell">
+    <div class="hanko sq" style="width:36px;height:36px;font-size:19px;">初</div>
+    <span class="label">Corner · rarity</span>
+  </div>
+
+  <!-- 7. Tiny signature — single kanji -->
+  <div class="cell">
+    <div class="hanko sq" style="width:24px;height:24px;font-size:13px; font-weight: 500;">幸</div>
+    <span class="label">Tiny · avatar</span>
+  </div>
+
+</div>
+</div></body></html>

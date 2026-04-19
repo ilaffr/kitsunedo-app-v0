@@ -1,0 +1,24 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"><style>
+.list { display: flex; flex-direction: column; }
+.row { display:flex; align-items:center; gap: 14px; padding: 12px 14px; border-bottom: 1px solid hsl(var(--foreground) / .08); position: relative; }
+.row:last-child { border-bottom: 0; }
+.row.active::before { content:''; position: absolute; left:0; top: 50%; transform: translateY(-50%); width: 3px; height: 32px; background: hsl(var(--primary)); }
+.seal { width: 38px; height: 38px; display:flex; align-items:center; justify-content:center; font-family: var(--font-serif); font-weight: 500; font-size: 15px; border-radius: 2px; flex-shrink: 0; }
+.seal.done { background: hsl(var(--foreground)); color: hsl(var(--background)); }
+.seal.now { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); box-shadow: 0 2px 8px hsl(var(--primary) / .3); }
+.seal.todo { border: 1px solid hsl(var(--foreground) / .3); color: hsl(var(--foreground)); }
+.info { flex: 1; min-width:0; }
+.info h4 { font-family: var(--font-serif); font-weight:500; font-size: 14px; margin: 0; letter-spacing:.03em; color: hsl(var(--foreground)); }
+.info p { font-family: var(--font-japanese); font-size: 13px; margin: 2px 0 0; color: hsl(var(--muted-foreground)); }
+.meta { font-family: var(--font-serif); font-size: 11px; color: hsl(var(--primary)); letter-spacing: .12em; }
+.meta small { display:block; color: hsl(var(--muted-foreground)); font-size: 9px; letter-spacing: .25em; text-transform: uppercase; text-align: right; margin-top: 2px; }
+</style></head><body><div class="card">
+<p class="eyebrow">Components · Lesson row (states)</p>
+<div class="washi-card" style="padding: 6px 8px;">
+<div class="list">
+  <div class="row"><span class="seal done">✓</span><div class="info"><h4>First Meeting</h4><p>はじめまして</p></div><div class="meta">+25<small>初級</small></div></div>
+  <div class="row active"><span class="seal now">▶</span><div class="info"><h4>At the Shop</h4><p>買い物</p></div><div class="meta">+35<small>中級</small></div></div>
+  <div class="row"><span class="seal todo">3</span><div class="info"><h4>My House</h4><p>私の家</p></div><div class="meta">+40<small>中級</small></div></div>
+</div>
+</div>
+</div></body></html>

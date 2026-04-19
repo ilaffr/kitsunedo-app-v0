@@ -253,7 +253,7 @@ function IntroView({
 
       {primerCleared && (
         <div className="card-paper border-2 border-success/40 p-4 bg-success/5 flex items-center gap-3">
-          <Check className="w-5 h-5 text-success" strokeWidth={3} />
+          <Check className="w-5 h-5 text-success" strokeWidth={1.5} />
           <div className="flex-1 text-sm text-foreground">
             You've already passed this primer
             {bestScore != null && ` with a best score of ${bestScore}%`}. Lesson 1 is unlocked.

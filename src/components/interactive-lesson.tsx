@@ -340,7 +340,7 @@ function SectionNav({
             <m.icon className="w-3.5 h-3.5" strokeWidth={1.5} />
             <span className="hidden sm:inline">{m.label}</span>
             <span className="japanese-text text-xs">{m.kanji}</span>
-            {done && <Check className="w-3 h-3 text-success" strokeWidth={3} />}
+            {done && <Check className="w-3 h-3 text-success" strokeWidth={1.5} />}
             {isRecommended && (
               <span className="absolute -top-1 right-1 w-1.5 h-1.5 rounded-full bg-primary" />
             )}

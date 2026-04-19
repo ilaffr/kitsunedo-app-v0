@@ -1,0 +1,163 @@
+/* Kitsune-dō Design System — Colors & Type
+   Sumi-e (墨絵) ink-brush aesthetic inspired by Ghost of Yōtei
+   Source of truth: kitsudo repo — src/index.css + tailwind.config.ts
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@300;400;500;600&display=swap');
+
+:root {
+  /* ===== Colors (HSL tokens; paired with hsl() wrappers) ===== */
+
+  /* Paper / surfaces */
+  --background: 36 22% 94%;           /* Pale washi rice paper */
+  --foreground: 30 8% 12%;            /* Deep ink black */
+  --card: 38 30% 97%;                 /* Luminous, cooler paper */
+  --card-foreground: 30 8% 12%;
+  --popover: 38 30% 97%;
+  --popover-foreground: 30 8% 12%;
+
+  /* Primary — vermillion hanko seal (use sparingly) */
+  --primary: 5 78% 42%;
+  --primary-foreground: 38 30% 97%;
+
+  /* Secondary / muted — ink wash grays */
+  --secondary: 30 10% 90%;
+  --secondary-foreground: 30 8% 18%;
+  --muted: 32 14% 89%;
+  --muted-foreground: 30 6% 38%;
+
+  /* Accent — deep ink black */
+  --accent: 30 6% 10%;
+  --accent-foreground: 38 30% 97%;
+
+  /* Semantic */
+  --success: 150 35% 35%;             /* Bamboo green */
+  --success-foreground: 40 30% 98%;
+  --warning: 35 80% 50%;               /* Autumn gold */
+  --warning-foreground: 0 0% 8%;
+  --destructive: 0 65% 42%;
+  --destructive-foreground: 38 30% 97%;
+
+  /* Borders — hairline, low contrast */
+  --border: 30 12% 82%;
+  --input: 30 12% 82%;
+  --ring: 5 78% 42%;
+
+  /* Named colors (from tailwind.config) */
+  --ink: hsl(0 0% 8%);
+  --paper: hsl(40 30% 98%);
+  --vermillion: hsl(5 85% 45%);
+  --bamboo: hsl(150 35% 35%);
+  --autumn: hsl(35 80% 50%);
+
+  /* ===== Gradients ===== */
+  --gradient-ink: linear-gradient(180deg, hsl(30 8% 10%), hsl(30 6% 22%));
+  --gradient-vermillion: linear-gradient(135deg, hsl(5 78% 42%), hsl(0 70% 36%));
+  --gradient-paper: linear-gradient(180deg, hsl(38 30% 97%), hsl(34 18% 91%));
+  --gradient-wash: linear-gradient(180deg, hsl(30 8% 10% / 0.7), hsl(30 8% 10% / 0));
+  --gradient-mist: radial-gradient(ellipse at 50% 0%, hsl(30 8% 10% / 0.06), transparent 60%);
+
+  /* ===== Shadows ===== */
+  --shadow-sm: 0 1px 2px hsl(30 10% 10% / 0.05);
+  --shadow-md: 0 2px 8px hsl(30 10% 10% / 0.07);
+  --shadow-lg: 0 12px 32px hsl(30 10% 10% / 0.1);
+  --shadow-ink: 1px 1px 0 hsl(30 8% 10%);
+  --shadow-vermillion: 0 4px 16px hsl(5 78% 42% / 0.22);
+
+  /* ===== Radii (sparing — ≤ rounded-sm) ===== */
+  --radius: 0.125rem;   /* 2px base */
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+
+  /* ===== Typography ===== */
+  --font-serif: 'Noto Serif JP', serif;         /* Headings, kanji, brush feel */
+  --font-sans: 'Outfit', 'Noto Sans JP', sans-serif; /* Body */
+  --font-japanese: 'Noto Sans JP', sans-serif;  /* Japanese inline text */
+
+  /* Display / ceremonial */
+  --display-xxl: 500 8rem/1 var(--font-serif);
+  --display-xl: 500 5.5rem/1 var(--font-serif);
+
+  /* Yōtei title (cinematic caps w/ letter-spacing) */
+  --title-letterspacing: 0.18em;
+  --title-uppercase-letterspacing: 0.32em;
+
+  /* Semantic type */
+  --h1: 500 2.75rem/1.1 var(--font-serif);
+  --h2: 500 2.25rem/1.15 var(--font-serif);
+  --h3: 500 1.75rem/1.2 var(--font-serif);
+  --h4: 600 1.25rem/1.3 var(--font-sans);
+  --h5: 600 1rem/1.4 var(--font-sans);
+  --h6: 600 0.875rem/1.4 var(--font-sans);
+  --p:  400 0.9375rem/1.55 var(--font-sans);
+  --small: 400 0.75rem/1.4 var(--font-sans);
+  --eyebrow: 500 0.625rem/1 var(--font-sans);   /* Uppercase 0.32em tracking eyebrow */
+  --jp-text: 400 1rem/1.4 var(--font-japanese);
+  --code: 400 0.875rem/1.4 ui-monospace, Menlo, monospace;
+}
+
+/* Dark theme — deep ink paper */
+.dark {
+  --background: 30 10% 8%;
+  --foreground: 35 20% 90%;
+  --card: 30 10% 12%;
+  --card-foreground: 35 20% 90%;
+  --primary: 5 80% 55%;
+  --primary-foreground: 0 0% 8%;
+  --secondary: 30 8% 20%;
+  --secondary-foreground: 35 15% 80%;
+  --muted: 30 8% 18%;
+  --muted-foreground: 30 10% 55%;
+  --accent: 35 20% 85%;
+  --accent-foreground: 0 0% 8%;
+  --border: 30 8% 20%;
+  --ring: 5 80% 55%;
+}
+
+/* ===== Base element mapping ===== */
+html, body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font: var(--p);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 { font: var(--h1); letter-spacing: 0.03em; }
+h2 { font: var(--h2); letter-spacing: 0.03em; }
+h3 { font: var(--h3); letter-spacing: 0.03em; }
+h4 { font: var(--h4); letter-spacing: -0.01em; }
+h5 { font: var(--h5); }
+h6 { font: var(--h6); }
+p  { font: var(--p); }
+small, .small { font: var(--small); color: hsl(var(--muted-foreground)); }
+code { font: var(--code); background: hsl(var(--muted)); padding: 0 0.25em; border-radius: var(--radius-sm); }
+
+.eyebrow {
+  font: var(--eyebrow);
+  text-transform: uppercase;
+  letter-spacing: var(--title-uppercase-letterspacing);
+  color: hsl(var(--muted-foreground));
+}
+
+.serif-jp { font-family: var(--font-serif); }
+.japanese-text, .jp { font-family: var(--font-japanese); }
+
+/* Yōtei cinematic page title: small caps + thin ink underline */
+.yotei-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: var(--title-letterspacing);
+  color: hsl(var(--foreground));
+  display: inline-block;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+.yotei-title::after {
+  content: '';
+  position: absolute;
+  left: 12%; right: 12%; bottom: 0;
+  height: 1px;
+  background: hsl(var(--foreground) / 0.55);
+}

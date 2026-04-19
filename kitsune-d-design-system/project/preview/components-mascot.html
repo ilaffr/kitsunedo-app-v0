@@ -1,0 +1,89 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"><style>
+  body { margin: 0; }
+  .card { padding: 22px 26px; }
+  .wrap { display: grid; grid-template-columns: auto 1fr auto; gap: 26px; align-items: center; margin-top: 14px; }
+  .fox-frame {
+    width: 132px; height: 132px;
+    background:
+      radial-gradient(ellipse at 45% 40%, hsl(38 30% 97%) 0%, hsl(36 22% 94%) 55%, hsl(32 14% 89%) 100%);
+    border: 1px solid hsl(var(--foreground) / .08);
+    box-shadow: var(--shadow-sm), inset 0 0 0 1px hsl(30 12% 82% / .5);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .fox-frame::after {
+    content: ''; position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .fox-kanji {
+    position: absolute; top: 6px; left: 8px;
+    font-family: var(--font-serif); font-weight: 500;
+    writing-mode: vertical-rl;
+    font-size: 11px; letter-spacing: .1em;
+    color: hsl(var(--foreground) / .4); line-height: 1;
+  }
+  .fox-seal {
+    position: absolute; bottom: 8px; left: 8px;
+    width: 18px; height: 18px; background: hsl(6 72% 42%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-serif); font-weight: 700; font-size: 10px;
+    color: hsl(36 22% 94%); transform: rotate(-4deg);
+    box-shadow: 0 1px 2px hsl(6 72% 30% / .4);
+  }
+  .fox { width: 104px; height: 104px; object-fit: contain; animation: float 4s ease-in-out infinite; filter: drop-shadow(0 2px 3px hsl(30 8% 10% / .12)); position: relative; z-index: 1; }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+  .bubble {
+    position: relative; padding: 16px 20px;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--foreground) / .1);
+    box-shadow: var(--shadow-md), inset 0 0 0 1px hsl(30 12% 82% / .5);
+    max-width: 300px;
+  }
+  .bubble-jp { font-family: var(--font-serif); font-weight: 500; font-size: 15px; color: hsl(var(--foreground)); margin-bottom: 4px; letter-spacing: .02em; }
+  .bubble-en { font-family: var(--font-sans); font-size: 12px; color: hsl(var(--muted-foreground)); line-height: 1.5; }
+  .bubble::after {
+    content: ''; position: absolute; left: -7px; top: 50%; transform: translateY(-50%) rotate(45deg);
+    width: 12px; height: 12px; background: hsl(var(--card));
+    border-left: 1px solid hsl(var(--foreground) / .1);
+    border-bottom: 1px solid hsl(var(--foreground) / .1);
+  }
+
+  .state { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .state-mini {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: radial-gradient(ellipse at 45% 40%, hsl(38 30% 97%) 0%, hsl(32 14% 89%) 100%);
+    border: 1px solid hsl(var(--foreground) / .1);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .state-mini img { width: 54px; height: 54px; object-fit: contain; mix-blend-mode: multiply; }
+  .state-label { font-size: 9px; letter-spacing: .26em; text-transform: uppercase; color: hsl(var(--muted-foreground)); font-family: ui-monospace, Menlo, monospace; }
+</style></head><body><div class="card">
+<p class="eyebrow">Components · Fox mascot + speech</p>
+<div class="wrap">
+  <div class="fox-frame">
+    <span class="fox-kanji">狐道</span>
+    <img src="../assets/fox-brush.png" class="fox" alt="Kitsune ink fox"/>
+    <span class="fox-seal">幸</span>
+  </div>
+  <div class="bubble">
+    <div class="bubble-jp">素晴らしい。</div>
+    <div class="bubble-en">Your spirit grows stronger. Three scrolls remain today.</div>
+  </div>
+  <div style="display:flex; gap: 18px;">
+    <div class="state">
+      <div class="state-mini"><img src="../assets/fox-brush.png" alt=""/></div>
+      <span class="state-label">Idle</span>
+    </div>
+    <div class="state">
+      <div class="state-mini" style="background: radial-gradient(ellipse at 45% 40%, hsl(5 78% 96%) 0%, hsl(32 14% 89%) 100%);"><img src="../assets/fox-brush.png" alt=""/></div>
+      <span class="state-label">Cheering</span>
+    </div>
+    <div class="state">
+      <div class="state-mini" style="filter: grayscale(1); opacity: .55;"><img src="../assets/fox-brush.png" alt=""/></div>
+      <span class="state-label">Resting</span>
+    </div>
+  </div>
+</div>
+</div></body></html>

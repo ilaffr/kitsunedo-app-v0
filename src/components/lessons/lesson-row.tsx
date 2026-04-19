@@ -53,7 +53,7 @@ export function LessonRow({
           )}
         >
           {completed ? (
-            <Check className="w-4 h-4" strokeWidth={3} />
+            <Check className="w-4 h-4" strokeWidth={1.5} />
           ) : showLockBadge ? (
             <Lock className="w-3.5 h-3.5" />
           ) : available ? (

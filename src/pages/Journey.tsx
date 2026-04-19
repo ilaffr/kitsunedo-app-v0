@@ -581,7 +581,7 @@ function RegionDetail({
                       available ? "bg-primary/10 border-primary/50 text-primary group-hover:bg-primary group-hover:text-primary-foreground" :
                       "bg-muted border-border text-muted-foreground"
                     )}>
-                      {completed ? <Check className="w-3.5 h-3.5" strokeWidth={3} /> : l.id}
+                      {completed ? <Check className="w-3.5 h-3.5" strokeWidth={1.5} /> : l.id}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-bold text-foreground truncate leading-tight">{l.title}</p>

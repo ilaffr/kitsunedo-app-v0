@@ -34,7 +34,7 @@ export function KanaPrimerCard({ cleared, bestScore, onClick }: KanaPrimerCardPr
         </p>
       </div>
       {cleared ? (
-        <Check className="w-5 h-5 text-success" strokeWidth={3} />
+        <Check className="w-5 h-5 text-success" strokeWidth={1.5} />
       ) : (
         <Sparkles className="w-5 h-5 text-primary" />
       )}

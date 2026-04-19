@@ -1,0 +1,22 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"><style>
+.row { display:grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.scroll { display:flex; flex-direction:column; }
+.dowel { height: 5px; margin: 0 2px; background: linear-gradient(180deg, hsl(var(--foreground) / .55), hsl(var(--foreground) / .35)); border-radius: 1px; position: relative; }
+.dowel::before, .dowel::after { content:''; position:absolute; top:0; bottom:0; width: 4px; background: hsl(var(--foreground) / .55); }
+.dowel::before { left:-2px; } .dowel::after { right:-2px; }
+.cord { width: 1px; height: 4px; background: hsl(var(--foreground) / .3); margin: 0 auto; }
+.body { aspect-ratio: 3/4; background: hsl(var(--card)); position: relative; box-shadow: inset 0 0 0 1px hsl(30 12% 82% / .6), 0 1px 2px hsl(30 10% 10% / .05); overflow:hidden; }
+.body img { width: 100%; height: 100%; object-fit: cover; display:block; }
+.hanko { position: absolute; top: 4px; left: 4px; width: 16px; height: 16px; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); font-family: var(--font-serif); font-size: 9px; display:flex; align-items:center; justify-content:center; border-radius: 2px; }
+.caption { text-align:center; margin-top: 6px; font-family: var(--font-serif); font-size: 9px; color: hsl(var(--foreground)); letter-spacing: .05em; }
+.rarity { display:block; font-size: 7px; letter-spacing: .2em; text-transform: uppercase; color: hsl(var(--muted-foreground)); margin-top: 2px; }
+</style></head><body><div class="card">
+<p class="eyebrow">Brand · Yōkai scroll cards</p>
+<div class="row">
+<div class="scroll"><div class="dowel"></div><div class="cord"></div><div class="body"><span class="hanko">初</span><img src="../assets/achievement-kitsune.png"></div><div class="dowel" style="height:3px"></div><p class="caption">First Scroll<span class="rarity">Common</span></p></div>
+<div class="scroll"><div class="dowel"></div><div class="cord"></div><div class="body"><span class="hanko">中</span><img src="../assets/achievement-tanuki.png"></div><div class="dowel" style="height:3px"></div><p class="caption">Word Weaver<span class="rarity">Uncommon</span></p></div>
+<div class="scroll"><div class="dowel"></div><div class="cord"></div><div class="body"><span class="hanko">上</span><img src="../assets/achievement-tengu.png"></div><div class="dowel" style="height:3px"></div><p class="caption">Iron Discipline<span class="rarity">Rare</span></p></div>
+<div class="scroll"><div class="dowel"></div><div class="cord"></div><div class="body"><span class="hanko">中</span><img src="../assets/achievement-ryujin.png"></div><div class="dowel" style="height:3px"></div><p class="caption">Pattern Seeker<span class="rarity">Uncommon</span></p></div>
+<div class="scroll"><div class="dowel"></div><div class="cord"></div><div class="body"><span class="hanko">極</span><img src="../assets/achievement-oni.png"></div><div class="dowel" style="height:3px"></div><p class="caption">Demon's Resolve<span class="rarity">Legendary</span></p></div>
+</div>
+</div></body></html>

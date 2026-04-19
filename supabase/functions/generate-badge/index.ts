@@ -49,8 +49,8 @@ serve(async (req) => {
     const jlpt_mode: string | undefined = body.jlpt_mode;
     const jlpt_elapsed_ms: number | undefined = body.jlpt_elapsed_ms;
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+    if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY not configured");
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -175,15 +175,15 @@ Keep it lighthearted and motivating, never mocking. Higher tiers should be progr
       imagePrompt = `Create a minimalist Japanese sumi-e ink brush illustration on a clean white background. Subject: a small yokai or spirit representing someone who struggles with the Japanese word "${word}". Style: black ink wash, simple brush strokes, slight humor, traditional Japanese art feel. No text in the image. The spirit should look ${tier === 1 ? "gentle and mischievous" : tier === 2 ? "dramatic and theatrical" : "legendary and absurdly powerful"}.`;
     }
 
-    // 1. Generate badge text via AI
-    const textRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    // 1. Generate badge text via Gemini
+    const textRes = await fetch("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        Authorization: `Bearer ${GEMINI_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: "gemini-2.5-flash-preview-04-17",
         messages: [
           {
             role: "system",
@@ -249,34 +249,28 @@ Keep it lighthearted and motivating, never mocking. Higher tiers should be progr
       }
     }
 
-    // 2. Generate sumi-e badge image via AI
+    // 2. Generate sumi-e badge image via Gemini native image generation
     let imageUrl: string | null = null;
     try {
-      const imageRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-3-pro-image-preview",
-          messages: [
-            {
-              role: "user",
-              content: imagePrompt,
-            },
-          ],
-          modalities: ["image", "text"],
-        }),
-      });
+      const imageRes = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${GEMINI_API_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ role: "user", parts: [{ text: imagePrompt }] }],
+            generationConfig: { responseModalities: ["IMAGE", "TEXT"] },
+          }),
+        }
+      );
 
       if (imageRes.ok) {
         const imageData = await imageRes.json();
-        const base64Url = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+        const parts = imageData.candidates?.[0]?.content?.parts ?? [];
+        const imagePart = parts.find((p: { inlineData?: { data: string; mimeType: string } }) => p.inlineData?.data);
 
-        if (base64Url) {
-          // Extract base64 data and upload to storage
-          const base64Data = base64Url.replace(/^data:image\/\w+;base64,/, "");
+        if (imagePart) {
+          const base64Data = imagePart.inlineData.data;
           const imageBytes = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
           const safeDetail = encodeURIComponent(trigger_detail).replace(/%/g, "_");
           const fileName = `${user_id}/${trigger_type}_${safeDetail}_tier${tier}_${Date.now()}.png`;
